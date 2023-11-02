@@ -102,7 +102,7 @@ export default function SignupForm() {
       </div>
       {error && error?.length > 0 && (
         <div className="form__block">
-          <label htmlFor="form__error">{error}</label>
+          <label className="form__error" htmlFor="form__error">{error}</label>
         </div>
       )}
 
@@ -115,7 +115,7 @@ export default function SignupForm() {
       <div className="form__block">
         <button
           type="submit"
-          className="form__btn-submit"
+          className="form__btn--submit"
           disabled={error?.length > 0}
         >
           회원가입
