@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { app } from "firebaseApp";
 import { toast } from "react-toastify";
 
@@ -44,7 +44,7 @@ export default function SignupForm() {
 
       if (value?.length < 8) {
         setError("비밀번호를 8자리 이상 입력해주세요.");
-      } else if (value !== password) {
+      } else if (value !== passwordConfirmation) {
         setError("비밀번호를 다시 확인해주세요.");
       } else {
         setError("");
@@ -102,17 +102,17 @@ export default function SignupForm() {
       </div>
       {error && error?.length > 0 && (
         <div className="form__block">
-          <label className="form__error" htmlFor="form__error">{error}</label>
+          <label className="form__error">{error}</label>
         </div>
       )}
 
       <div className="form__block">
         계정이 있으신가요?
-        <Link to="/login" className="form__link">
+        <Link to="/users/login" className="form__link">
           로그인하기
         </Link>
       </div>
-      <div className="form__block">
+      <div className="form__block--lg">
         <button
           type="submit"
           className="form__btn--submit"
