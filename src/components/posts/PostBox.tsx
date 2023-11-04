@@ -8,7 +8,7 @@ import { FaRegComment, FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { getStorage, ref, deleteObject } from "firebase/storage";
+import { ref, deleteObject } from "firebase/storage";
 
 interface PostBoxProps {
   post: PostProps;
@@ -23,7 +23,6 @@ export default function PostBox({ post }: PostBoxProps) {
     const confirm = window.confirm("해당 게시글을 삭제하시겠습니까?");
     if (confirm) {
       // 스토리지 이미지 먼저 삭제
-
       if (post?.imageUrl) {
         deleteObject(imageRef).catch((error) => {
           console.log(error);
@@ -42,11 +41,7 @@ export default function PostBox({ post }: PostBoxProps) {
         <div className="post__box-profile">
           <div className="post__flex">
             {post?.profileUrl ? (
-              <img
-                src={post?.profileUrl}
-                alt="profile"
-                className="post__box-profile-img"
-              />
+              <img src={post?.profileUrl} alt="profile" className="post__box-profile-img" />
             ) : (
               <FaUserCircle className="post__box-profile-icon" />
             )}
@@ -56,13 +51,7 @@ export default function PostBox({ post }: PostBoxProps) {
           <div className="post__box-content">{post?.content}</div>
           {post?.imageUrl && (
             <div className="post__image-div">
-              <img
-                src={post?.imageUrl}
-                alt="post img"
-                className="post__image"
-                width={100}
-                height={100}
-              />
+              <img src={post?.imageUrl} alt="post img" className="post__image" width={100} height={100} />
             </div>
           )}
           <div className="post-form__hashtags-outputs">
@@ -77,11 +66,7 @@ export default function PostBox({ post }: PostBoxProps) {
       <div className="post__box-footer">
         {user?.uid === post?.uid && (
           <>
-            <button
-              type="button"
-              className="post__delete"
-              onClick={handleDelete}
-            >
+            <button type="button" className="post__delete" onClick={handleDelete}>
               Delete
             </button>
             <button type="button" className="post__edit">

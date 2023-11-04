@@ -5,7 +5,12 @@ import { db, storage } from "firebaseApp";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { PostProps } from "pages/home";
-import { deleteObject, getDownloadURL, ref, uploadString } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadString,
+} from "firebase/storage";
 import AuthContext from "context/AuthContext";
 import { v4 as uuidv4 } from "uuid";
 import PostHeader from "./Header";
@@ -142,7 +147,11 @@ export default function PostEditForm() {
           {tags.length !== 0 ? (
             <span className="post-form__hashtags-outputs">
               {tags?.map((tag, index) => (
-                <span className="post-form__hashtags-tag" key={index} onClick={() => removeTag(tag)}>
+                <span
+                  className="post-form__hashtags-tag"
+                  key={index}
+                  onClick={() => removeTag(tag)}
+                >
                   #{tag}
                 </span>
               ))}
@@ -163,17 +172,38 @@ export default function PostEditForm() {
             <label htmlFor="file-input" className="post-form__file">
               <FiImage className="port-form__file-icon" />
             </label>
-            <input type="file" name="file-input" id="file-input" accept="image/*" onChange={handleFileUpload} className="hidden" />
+            <input
+              type="file"
+              name="file-input"
+              id="file-input"
+              accept="image/*"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
             {imageFile && (
               <div className="post-form__attachment">
-                <img src={imageFile} alt="attachment" width={100} height={100} />
-                <button className="post-form__clear-btn" type="button" onClick={handleDeleteImage}>
+                <img
+                  src={imageFile}
+                  alt="attachment"
+                  width={100}
+                  height={100}
+                />
+                <button
+                  className="post-form__clear-btn"
+                  type="button"
+                  onClick={handleDeleteImage}
+                >
                   Clear
                 </button>
               </div>
             )}
           </div>
-          <input type="submit" value="수정" className="post-form__submit-btn" disabled={isSubmitting} />
+          <input
+            type="submit"
+            value="수정"
+            className="post-form__submit-btn"
+            disabled={isSubmitting}
+          />
         </div>
       </form>
     </div>
