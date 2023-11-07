@@ -40,8 +40,6 @@ export default function HomePage() {
   const [activeTab, setActiveTab] = useState<tabType>("all");
   const { user } = useContext(AuthContext);
 
-  console.log(followingIds);
-
   // 실시간 동기화로 user의 팔로잉 id 배열 가져오기
   const getFollowingIds = useCallback(async () => {
     if (user?.uid) {
