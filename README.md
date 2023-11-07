@@ -44,6 +44,7 @@ Sass와 Media Query를 사용해 어떤 기기에도 모바일에 대응하는 �
 - Router를 설치합니다. `yarn add react-router-dom`, `yarn add —dev @types/react-router-dom`
 - Sass를 설치합니다. `yarn add sass`
 - Firebase를 설치합니다. `yarn add firebase`
+- Recoil을 설치합니다. `yarn add recoil`
 - React-Icons를 설치합니다. `yarn add react-icons`
 - React-Toastify를 설치합니다. `yarn add react-toastify`
 - Uuid를 설치합니다. `yarn add uuid`, `yarn add --dev @types/uuid`
