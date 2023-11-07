@@ -55,7 +55,8 @@ Sass와 Media Query를 사용해 어떤 기기에도 모바일에 대응하는 �
 1. [ **Firebase** ](https://firebase.google.com/?hl=ko)에서 프로젝트 생성 필요
 2. [ **Firebase Authentication** ](https://firebase.google.com/products/auth?hl=ko)에서 사용자 인증 시작하기
 3. [ **Firebase OAuth** ](https://firebase.google.com/docs/auth/web/google-signin?hl=ko)을 참고해 SNS 로그인 구현
-4. [ **FireStore** ](https://firebase.google.com/docs/firestore)를 사용해 데이터 생성 및 실시간 데이터 업데이트
+4. [ **Firestore** ](https://firebase.google.com/docs/firestore)를 사용해 데이터 생성 및 실시간 데이터 업데이트
+4. [ **Firestore 기본 보안 규칙** ](https://firebase.google.com/docs/rules/basics?hl=ko&authuser=0)를 참고해 API키 보안 작업
 
 ## Screenshots
 
