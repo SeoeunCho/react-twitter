@@ -9,6 +9,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "firebaseApp";
+import useTranslation from "hooks/useTranslation";
 import { PostProps } from "pages/home";
 import { useContext, useEffect, useState } from "react";
 
@@ -16,8 +17,7 @@ export default function SearchPage() {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [tagQuery, setTagQuery] = useState<string>("");
   const { user } = useContext(AuthContext);
-
-  console.log(tagQuery);
+  const t = useTranslation();
 
   const onChange = (e: any) => {
     setTagQuery(e?.target?.value.trim());
@@ -47,12 +47,12 @@ export default function SearchPage() {
     <div className="home">
       <div className="home__top">
         <div className="home__title">
-          <div className="home__title-text">Search</div>
+          <div className="home__title-text">{t("MENU_SEARCH")}</div>
         </div>
         <div className="home__search-div">
           <input
             className="home__search"
-            placeholder="해시태그 검색"
+            placeholder={t("SEARCH_HASHTAGS")}
             onChange={onChange}
           />
         </div>
@@ -62,7 +62,7 @@ export default function SearchPage() {
           posts?.map((post) => <PostBox post={post} key={post.id} />)
         ) : (
           <div className="post__no-posts">
-            <div className="post__text">게시글이 없습니다.</div>
+            <div className="post__text">{t("NO_POSTS")}</div>
           </div>
         )}
       </div>

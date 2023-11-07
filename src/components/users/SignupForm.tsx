@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { app } from "firebaseApp";
 import { toast } from "react-toastify";
+import useTranslation from "hooks/useTranslation";
 
 export default function SignupForm() {
   const [error, setError] = useState<string>("");
@@ -16,6 +17,7 @@ export default function SignupForm() {
   const [password, setPassword] = useState<string>("");
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
   const navigate = useNavigate();
+  const t = useTranslation();
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
@@ -23,7 +25,7 @@ export default function SignupForm() {
       const auth = getAuth(app);
       await createUserWithEmailAndPassword(auth, email, password);
       navigate("/");
-      toast.success("성공적으로 회원가입이 되었습니다.");
+      toast.success(t("SUCCESS_SIGNIN_TOAST"));
     } catch (error: any) {
       toast.error(error?.code);
     }
@@ -39,7 +41,7 @@ export default function SignupForm() {
       const validRegex =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
       if (!value?.match(validRegex)) {
-        setError("이메일 형식이 올바르지 않습니다.");
+        setError(t("EMAIL_CHECK_TOAST"));
       } else {
         setError("");
       }
@@ -49,9 +51,9 @@ export default function SignupForm() {
       setPassword(value);
 
       if (value?.length < 8) {
-        setError("비밀번호를 8자리 이상 입력해주세요.");
+        setError(t("PW_CHECK_TOAST"));
       } else if (value !== passwordConfirmation) {
-        setError("비밀번호를 다시 확인해주세요.");
+        setError(t("PW_RECHECK_TOAST"));
       } else {
         setError("");
       }
@@ -61,9 +63,9 @@ export default function SignupForm() {
       setPasswordConfirmation(value);
 
       if (value?.length < 8) {
-        setError("비밀번호를 8자리 이상 입력해주세요.");
+        setError(t("PW_CHECK_TOAST"));
       } else if (value !== password) {
-        setError("비밀번호를 다시 확인해주세요.");
+        setError(t("PW_RECHECK_TOAST"));
       } else {
         setError("");
       }
@@ -92,7 +94,7 @@ export default function SignupForm() {
     )
       .then((result) => {
         console.log(result);
-        toast.success("로그인 되었습니다.");
+        toast.success(t("LOGIN_TOAST"));
       })
       .catch((error) => {
         console.log(error);
@@ -103,9 +105,9 @@ export default function SignupForm() {
 
   return (
     <form className="form form--lg" onSubmit={onSubmit}>
-      <div className="form__title">회원가입</div>
+      <div className="form__title">{t("SIGNUP_LINK")}</div>
       <div className="form__block">
-        <label htmlFor="email">이메일</label>
+        <label htmlFor="email">{t("FORM_EMAIL")}</label>
         <input
           type="text"
           name="email"
@@ -116,7 +118,7 @@ export default function SignupForm() {
         />
       </div>
       <div className="form__block">
-        <label htmlFor="password">비밀번호</label>
+        <label htmlFor="password">{t("FORM_PASSWORD")}</label>
         <input
           type="password"
           name="password"
@@ -127,7 +129,9 @@ export default function SignupForm() {
         />
       </div>
       <div className="form__block">
-        <label htmlFor="password_confirmation">비밀번호 확인</label>
+        <label htmlFor="password_confirmation">
+          {t("FORM_PASSWORD_CHECK")}
+        </label>
         <input
           type="password"
           name="password_confirmation"
@@ -143,9 +147,9 @@ export default function SignupForm() {
         </div>
       )}
       <div className="form__block">
-        계정이 있으신가요?
+        {t("YES_ACCOUNT")}
         <Link to="/users/login" className="form__link">
-          로그인하기
+          {t("LOGIN_LINK")}
         </Link>
       </div>
       <div className="form__block--lg">
@@ -154,7 +158,7 @@ export default function SignupForm() {
           className="form__btn--submit"
           disabled={error?.length > 0}
         >
-          회원가입
+          {t("SIGNUP_LINK")}
         </button>
       </div>
       <div className="form__block">
@@ -164,7 +168,7 @@ export default function SignupForm() {
           className="form__btn--google"
           onClick={onClickSocialLogin}
         >
-          Google로 회원가입
+          {t("SIGNUP_GOOGLE")}
         </button>
       </div>
       <div className="form__block">
@@ -174,7 +178,7 @@ export default function SignupForm() {
           className="form__btn--github"
           onClick={onClickSocialLogin}
         >
-          Github로 회원가입
+          {t("SIGNUP_GITHUB")}
         </button>
       </div>
     </form>

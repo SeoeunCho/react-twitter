@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 
 import { ref, deleteObject } from "firebase/storage";
 import FollowingBox from "components/following/FollowingBox";
+import useTranslation from "hooks/useTranslation";
 
 interface PostBoxProps {
   post: PostProps;
@@ -25,6 +26,7 @@ export default function PostBox({ post }: PostBoxProps) {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const imageRef = ref(storage, post?.imageUrl);
+  const t = useTranslation();
 
   const toggleLike = async () => {
     const postRef = doc(db, "posts", post.id);
@@ -45,7 +47,7 @@ export default function PostBox({ post }: PostBoxProps) {
   };
 
   const handleDelete = async () => {
-    const confirm = window.confirm("해당 게시글을 삭제하시겠습니까?");
+    const confirm = window.confirm(t("CHECK_DELETE_POST_TOAST"));
     if (confirm) {
       // 스토리지 이미지 먼저 삭제
       if (post?.imageUrl) {
@@ -55,7 +57,7 @@ export default function PostBox({ post }: PostBoxProps) {
       }
 
       await deleteDoc(doc(db, "posts", post.id));
-      toast.success("게시글을 삭제했습니다.");
+      toast.success(t("DELETE_POST_TOAST"));
       navigate("/");
     }
   };
@@ -112,10 +114,10 @@ export default function PostBox({ post }: PostBoxProps) {
               className="post__delete"
               onClick={handleDelete}
             >
-              Delete
+              {t("BUTTON_DELETE")}
             </button>
             <button type="button" className="post__edit">
-              <Link to={`/posts/edit/${post?.id}`}>Edit</Link>
+              <Link to={`/posts/edit/${post?.id}`}>{t("BUTTON_EDIT")}</Link>
             </button>
           </>
         )}

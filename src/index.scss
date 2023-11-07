@@ -211,7 +211,6 @@ body {
     border: none;
     resize: none;
     outline: none;
-    margin-top: 8px;
     width: calc(100% - 32px);
   }
 
@@ -224,6 +223,7 @@ body {
       flex-wrap: wrap;
       gap: 8px 1px;
       align-items: center;
+      margin-bottom: 8px;
     }
 
     &-tag {
@@ -318,7 +318,7 @@ body {
       border-radius: 4px;
     }
   }
-  padding-bottom: 40px;
+  padding-bottom: 50px;
 
   &__flex {
     display: flex;

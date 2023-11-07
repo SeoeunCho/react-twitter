@@ -9,34 +9,36 @@ import { getAuth, signOut } from "firebase/auth";
 import { app } from "firebaseApp";
 import { toast } from "react-toastify";
 import { IoMdNotificationsOutline } from "react-icons/io";
+import useTranslation from "hooks/useTranslation";
 
 export const MenuList = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const t = useTranslation();
 
   return (
     <div className="footer">
       <div className="footer__grid">
         <button type="button" onClick={() => navigate("/")}>
           <BsHouse />
-          Home
+          {t("MENU_HOME")}
         </button>
         <button type="button" onClick={() => navigate("/profile")}>
           <BiUserCircle />
-          Profile
+          {t("MENU_PROFILE")}
         </button>
         <button type="button" onClick={() => navigate("/search")}>
           <AiOutlineSearch />
-          Search
+          {t("MENU_SEARCH")}
         </button>
         <button type="button" onClick={() => navigate("/notifications")}>
           <IoMdNotificationsOutline />
-          Notification
+          {t("MENU_NOTI")}
         </button>
         {user === null ? (
           <button type="button" onClick={() => navigate("/users/login")}>
             <MdLogin />
-            Login
+            {t("MENU_LOGIN")}
           </button>
         ) : (
           <button
@@ -44,11 +46,11 @@ export const MenuList = () => {
             onClick={async () => {
               const auth = getAuth(app);
               await signOut(auth);
-              toast.success("로그아웃 되었습니다.")
+              toast.success(t("LOGOUT_TOAST"));
             }}
           >
             <MdLogout />
-            Logout
+            {t("MENU_LOGOUT")}
           </button>
         )}
       </div>

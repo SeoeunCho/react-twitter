@@ -14,6 +14,7 @@ import {
 import AuthContext from "context/AuthContext";
 import { v4 as uuidv4 } from "uuid";
 import PostHeader from "./Header";
+import useTranslation from "hooks/useTranslation";
 
 export default function PostEditForm() {
   const params = useParams();
@@ -25,6 +26,7 @@ export default function PostEditForm() {
   const [imageFile, setImageFile] = useState<string | null>(null);
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+  const t = useTranslation();
 
   const handleFileUpload = (e: any) => {
     const {
@@ -82,7 +84,7 @@ export default function PostEditForm() {
           imageUrl: imageUrl,
         });
         navigate(`/posts/${post?.id}`);
-        toast.success("게시글이 수정되었습니다.");
+        toast.success(t("EDIT_POST_TOAST"));
       }
       setImageFile(null);
       setIsSubmitting(false);
@@ -114,7 +116,7 @@ export default function PostEditForm() {
       // 만약 같은 태그가 있다면 에러를 띄운다
       // 태그를 생성해준다
       if (tags?.includes(e.target.value?.trim())) {
-        toast.error("같은 태그가 있습니다.");
+        toast.error(t("SAME_TAG_TOAST"));
       } else {
         setTags((prev) => (prev?.length > 0 ? [...prev, hashTag] : [hashTag]));
         setHashTag("");
@@ -139,7 +141,7 @@ export default function PostEditForm() {
           required
           name="content"
           id="content"
-          placeholder="What is happening?"
+          placeholder={t("POST_PLACEHOLDER")}
           onChange={onChange}
           value={content}
         />
@@ -161,7 +163,7 @@ export default function PostEditForm() {
             className="post-form__input"
             name="hashtag"
             id="hashtag"
-            placeholder="해시태그 + 스페이스바 입력"
+            placeholder={t("POST_HASHTAG")}
             onChange={onChangeHashTag}
             onKeyUp={handleKeyUp}
             value={hashTag}
@@ -193,14 +195,14 @@ export default function PostEditForm() {
                   type="button"
                   onClick={handleDeleteImage}
                 >
-                  Clear
+                  {t("BUTTON_DELETE")}
                 </button>
               </div>
             )}
           </div>
           <input
             type="submit"
-            value="수정"
+            value={t("BUTTON_EDIT")}
             className="post-form__submit-btn"
             disabled={isSubmitting}
           />

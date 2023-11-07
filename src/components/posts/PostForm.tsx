@@ -6,6 +6,7 @@ import { db, storage } from "firebaseApp";
 import { toast } from "react-toastify";
 import AuthContext from "context/AuthContext";
 import { v4 as uuidv4 } from "uuid";
+import useTranslation from "hooks/useTranslation";
 
 export default function PostForm() {
   const [content, setContent] = useState<string>("");
@@ -14,6 +15,7 @@ export default function PostForm() {
   const [imageFile, setImageFile] = useState<string | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const { user } = useContext(AuthContext);
+  const t = useTranslation();
 
   const handleFileUpload = (e: any) => {
     const {
@@ -60,7 +62,7 @@ export default function PostForm() {
       setTags([]);
       setHashTag("");
       setContent("");
-      toast.success("게시글이 등록되었습니다.");
+      toast.success(t("UPDATE_POST_TOAST"));
       setImageFile(null);
       setIsSubmitting(false);
     } catch (e: any) {
@@ -91,7 +93,7 @@ export default function PostForm() {
       // 만약 같은 태그가 있다면 에러를 띄운다
       // 태그를 생성해준다
       if (tags?.includes(e.target.value?.trim())) {
-        toast.error("같은 태그가 있습니다.");
+        toast.error(t("SAME_TAG_TOAST"));
       } else {
         setTags((prev) => (prev?.length > 0 ? [...prev, hashTag] : [hashTag]));
         setHashTag("");
@@ -110,7 +112,7 @@ export default function PostForm() {
         required
         name="content"
         id="content"
-        placeholder="What is happening?"
+        placeholder={t("POST_PLACEHOLDER")}
         onChange={onChange}
         value={content}
       />
@@ -132,7 +134,7 @@ export default function PostForm() {
           className="post-form__input"
           name="hashtag"
           id="hashtag"
-          placeholder="해시태그 + 스페이스바 입력"
+          placeholder={t("POST_HASHTAG")}
           onChange={onChangeHashTag}
           onKeyUp={handleKeyUp}
           value={hashTag}
@@ -159,14 +161,14 @@ export default function PostForm() {
                 type="button"
                 onClick={handleDeleteImage}
               >
-                Clear
+                {t("BUTTON_DELETE")}
               </button>
             </div>
           )}
         </div>
         <input
           type="submit"
-          value="Tweet"
+          value={t("BUTTON_TWEET")}
           className="post-form__submit-btn"
           disabled={isSubmitting}
         />
