@@ -17,7 +17,7 @@ export interface NotificationProps {
   url: string;
   isRead: boolean;
   content: string;
-  createdAt: string;
+  createdAt: number;
 }
 
 export default function NotificationsPage() {

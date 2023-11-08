@@ -9,8 +9,8 @@ const TRANSLATIONS = {
     en: "Profile",
   },
   MENU_SEARCH: {
-    ko: "검색",
-    en: "Search",
+    ko: "탐색하기",
+    en: "Explore",
   },
   MENU_NOTI: {
     ko: "알림",
@@ -39,11 +39,11 @@ const TRANSLATIONS = {
     en: "Follow",
   },
   BUTTON_EDIT: {
-    ko: "수정",
+    ko: "수정하기",
     en: "Edit",
   },
   BUTTON_DELETE: {
-    ko: "삭제",
+    ko: "삭제하기",
     en: "Delete",
   },
   BUTTON_EDIT_PROFILE: {
@@ -58,10 +58,18 @@ const TRANSLATIONS = {
     ko: "트윗하기",
     en: "Tweet",
   },
+  BUTTON_LOGIN: {
+    ko: "로그인",
+    en: "Log in",
+  },
+  BUTTON_SIGNUP: {
+    ko: "가입하기",
+    en: "Sign up",
+  },
 
   // post
   NO_POSTS: {
-    ko: "게시글이 없습니다.",
+    ko: "아직은 여기에 아무 것도 없습니다.",
     en: "No Posts Yet",
   },
   POST_PLACEHOLDER: {
@@ -83,7 +91,7 @@ const TRANSLATIONS = {
 
   // tabs
   TAB_FOLLOWING: {
-    ko: "팔로잉",
+    ko: "팔로잉 중",
     en: "Following",
   },
   TAB_ALL: {
@@ -115,6 +123,18 @@ const TRANSLATIONS = {
     en: "No Notifications",
   },
   // signin, signup
+  AUTH_TEXT: {
+    ko: "지금 일어나고 있는 일",
+    en: "Happening now",
+  },
+  AUTH_LOGIN_TEXT: {
+    ko: "Xwitter 로그인하기",
+    en: "Sign in to Xwitter.",
+  },
+  AUTH_SIGNUP_TEXT: {
+    ko: "지금 가입하세요.",
+    en: "Join today.",
+  },
   FORM_EMAIL: {
     ko: "이메일",
     en: "Email",
@@ -132,34 +152,39 @@ const TRANSLATIONS = {
     en: "No Account?",
   },
   YES_ACCOUNT: {
-    ko: "계정이 있으신가요?",
-    en: "Already have account?",
+    ko: "이미 Xwitter에 가입하셨나요?",
+    en: "Already joined Xwitter?",
   },
   LOGIN_WITH_GOOGLE: {
-    ko: "Google 로그인",
-    en: "Continue with Google",
+    ko: "Google 계정으로 로그인",
+    en: "Sign in with Google",
   },
   LOGIN_WITH_GITHUB: {
-    ko: "Github 로그인",
-    en: "Continue with Github",
+    ko: "Github 계정으로 로그인",
+    en: "Sign in with Github",
   },
   SIGNUP_GOOGLE: {
-    ko: "Google 회원가입",
-    en: "Continue with Google",
+    ko: "Google 계정으로 가입하기",
+    en: "Sign up with Google",
   },
   SIGNUP_GITHUB: {
-    ko: "Github 회원가입",
-    en: "Continue with Github",
+    ko: "Github 계정으로 가입하기",
+    en: "Sign up with Github",
   },
   SIGNUP_LINK: {
-    ko: "회원가입",
+    ko: "가입하기",
     en: "Sign up",
   },
   LOGIN_LINK: {
-    ko: "로그인",
-    en: "Login",
+    ko: "로그인하기",
+    en: "Log in",
   },
+
   // toast
+  SUBMIT_ERROR_TOAST: {
+    ko: "트윗할 내용을 입력해주세요.",
+    en: "Please enter what you want to tweet.",
+  },
   SUCCESS_LOGIN_TOAST: {
     ko: "성공적으로 로그인 되었습니다.",
     en: "You have logged in successfully.",

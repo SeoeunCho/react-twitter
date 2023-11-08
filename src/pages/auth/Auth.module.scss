@@ -1,0 +1,128 @@
+/* 컨테이너 */
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+/* 이미지 */
+.authImage {
+  width: 50%;
+  height: 100%;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: rotate(-180deg);
+  }
+}
+
+/* 가입 폼 */
+.auth {
+  padding: 40px;
+  width: 50%;
+  max-width: 760px;
+  min-width: 437px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 90px;
+
+  .xwitter__logo {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    svg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      color: var(--mainColor);
+    }
+  }
+
+  .xwitter__notice {
+    font-size: 60px;
+    line-height: 70px;
+    word-break: keep-all;
+    font-weight: 700;
+    margin: 48px 0;
+  }
+
+  .xwitter__info {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 48px;
+  }
+
+  .auth__notice {
+    font-weight: 700;
+    display: flex;
+
+    > span {
+      margin-right: 8px;
+    }
+  }
+
+  .authSwitch {
+    cursor: pointer;
+    color: var(--mainColor);
+    text-decoration: underline;
+    text-underline-position: under;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    overflow: auto;
+  }
+
+  .authImage {
+    display: none;
+  }
+
+  .auth {
+    min-width: 370px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 16px;
+
+    .xwitter__notice {
+      font-size: 50px;
+      line-height: 60px;
+      margin: 35px 0;
+      word-break: keep-all;
+    }
+
+    .xwitter__info {
+      font-size: 26px;
+    }
+
+    .auth__notice {
+      flex-direction: column;
+
+      > span {
+        margin-bottom: 12px;
+      }
+    }
+  }
+
+  .xwitter__notice,
+  .xwitter__info,
+  .xwitter__logo,
+  .auth .authBtns,
+  .auth__notice {
+    margin: 0 auto;
+    text-align: center;
+  }
+}

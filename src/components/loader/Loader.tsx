@@ -1,5 +1,9 @@
-import styles from "./Loader.module.scss";
+import { AiOutlineTwitter } from "react-icons/ai";
 
 export default function Loader() {
-  return <div className={styles.loader}></div>;
+  return (
+    <div className="render__loading">
+      <AiOutlineTwitter className="render__logo" />
+    </div>
+  );
 }

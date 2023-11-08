@@ -1,0 +1,270 @@
+.postForm {
+  display: flex;
+  position: relative;
+  background-color: white;
+  padding: 16px;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--border);
+}
+
+.postForm.modalBorder {
+  border-radius: 16px;
+}
+
+.postInput__container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.xweet__profile {
+  margin-right: 12px;
+  height: 100%;
+}
+
+.profile__image {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: contain;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.postInput {
+  /* width: 100%; */
+
+  /* 해쉬태그 */
+  &__hashtags {
+    border-bottom: 1px solid var(--border);
+
+    &.focus input::placeholder {
+      opacity: 0.6;
+      transition: all 0.2s;
+    }
+
+    &_outputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 1px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    &_tag {
+      font-size: 14px;
+      border: 1px solid var(--mainColor);
+      color: var(--mainColor);
+      border-radius: 10px;
+      padding: 2px 8px;
+      margin-right: 6px;
+      cursor: pointer;
+
+      &:hover,
+      &:focus {
+        color: var(--mainColor);
+        border: 1px solid var(--mainColor);
+      }
+    }
+
+    &_input {
+      font-size: 14px;
+      padding-bottom: 5px;
+      padding-left: 5px;
+      color: var(--mainColor);
+
+      &::placeholder {
+        color: var(--subColor);
+      }
+
+      &:focus {
+        color: var(--mainColor);
+      }
+    }
+  }
+}
+
+.postInput__input {
+  width: 100%;
+  // max-height: 100%;
+  // height: 52px;
+  max-height: 100px;
+  /* overflow: hidden; */
+  box-sizing: border-box;
+  outline: none;
+  resize: none;
+  border: none;
+  // border-bottom: 1px solid var(--border);
+  font-weight: 500;
+  font-size: 20px;
+  // margin-bottom: 6px;
+  font-size: 16px;
+  line-height: 24px;
+  caret-color: var(--mainColor);
+}
+
+.postInput__input::placeholder {
+  font-weight: 400;
+  color: var(--placehoder);
+}
+
+.focus textarea::placeholder {
+  opacity: 0.4;
+  transition: all 0.2s;
+}
+
+.postInput__add {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-top: 12px;
+  margin-bottom: -6px;
+}
+
+/* 아이콘 공통 */
+.postInput__iconBox {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-sizing: content-box;
+  margin-right: 2px;
+  transition: all 0.2s;
+}
+
+.postInput__icon {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.postInput__icon svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: var(--mainColor);
+}
+
+.postInput__icon:hover {
+  background-color: var(--btnLightBorder);
+}
+
+.postInput__iconBox input {
+  opacity: 0;
+  display: none;
+}
+
+/* 배경 아이콘 */
+.postInput__image input[type="file"] {
+  display: hidden;
+  width: 0px;
+  height: 0px;
+  opacity: 0;
+}
+
+.postInput__iconBox label {
+  cursor: pointer;
+}
+
+/* 이모지 아이콘 */
+.emoji {
+  position: absolute;
+  top: 15px;
+  left: 50px;
+  user-select: none;
+  z-index: 20;
+}
+
+.emoji__hidden {
+  display: none;
+}
+
+.emoji__block {
+  display: block;
+}
+
+.postInput__arrow {
+  background-color: var(--mainColor);
+  padding: 10px 16px;
+  margin-left: auto;
+  text-align: center;
+  border-radius: 9999px;
+  transition: all 0.2s;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  user-select: none;
+}
+
+.postInput__arrow:hover {
+  background-color: var(--btnBgHover);
+  cursor: pointer;
+}
+
+.postInput__arrow:disabled {
+  opacity: 0.5;
+  // background-color: var(--btnLightBorder);
+  transition: all 0.3s;
+  cursor: auto;
+}
+
+/* 이미지 */
+.postForm__attachment {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin: 16px 0;
+  overflow: hidden;
+  max-width: 400px;
+}
+
+.postForm__Image {
+  width: 100%;
+  height: 100%;
+}
+
+.postForm__attachment img {
+  border-radius: 15px;
+  width: 100%;
+  height: 100%;
+}
+
+.postForm__clear {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.6s;
+  padding: 3px;
+  border-radius: 50%;
+  font-size: 25px;
+  background-color: #0f1419bf;
+  color: #fff;
+}
+
+.postForm__clear:hover {
+}
+
+@media screen and (max-width: 500px) {
+  .xweet__profile {
+    display: none;
+  }
+
+  .postInput__iconBox .postInput__icon.emoji__icon {
+    display: none;
+  }
+}

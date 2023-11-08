@@ -36,7 +36,7 @@ export const MenuList = () => {
           <span className="footer__grid--text">{t("MENU_NOTI")}</span>
         </button>
         {user === null ? (
-          <button type="button" onClick={() => navigate("/users/login")}>
+          <button type="button" onClick={() => navigate("/auth")}>
             <MdLogin />
             <span className="footer__grid--text">{t("MENU_LOGIN")}</span>
           </button>

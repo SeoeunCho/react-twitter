@@ -15,7 +15,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 
-const PROFILE_DEFAULT_URL = "/logo512.png";
+const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
 type TabType = "my" | "like";
 

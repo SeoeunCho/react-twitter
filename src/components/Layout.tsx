@@ -7,9 +7,13 @@ interface LayoutProps {
 
 export const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="layout">
+    // <div className="layout">
+    //   {children}
+    //   <MenuList />
+    // </div>
+    <>
       {children}
       <MenuList />
-    </div>
+    </>
   );
 };

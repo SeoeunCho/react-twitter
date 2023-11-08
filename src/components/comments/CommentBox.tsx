@@ -11,7 +11,7 @@ export interface CommentProps {
   comment: string;
   uid: string;
   email: string;
-  createdAt: string;
+  createdAt: number;
 }
 
 interface CommentBoxProps {

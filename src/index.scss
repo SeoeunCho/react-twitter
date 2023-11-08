@@ -1,24 +1,496 @@
 @import "./utils.scss";
+@import "https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css";
+
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&family=Noto+Sans+KR:wght@100;300;400;500;700&family=Noto+Sans:wght@100;300;400;500;700&display=swap");
+
+:root {
+  --mainColor: #4da0eb;
+  --subColor: rgb(112, 188, 255);
+  // --btnBorder: #dadce0;
+  --btnBorder: #a6d0f5;
+  --btnLightBorder: #d2e3fc;
+  --btnBgHover: #4472c4;
+  --gray: #dddddd;
+  --grayBorder: #586571;
+  --grayBg: #ececec;
+  --lightGray: rgb(239, 243, 244);
+  --lightGrayHover: rgb(230, 230, 230);
+  --danger: rgb(235, 0, 0);
+  --border: #ebebeb;
+  --placehoder: #9e9e9e;
+  --placehoderLight: #bbbaba;
+  // --danger: #be4661;
+
+  --background: #1e293b;
+  --activeBg: #3c495f5f;
+  --backgroundLight: #263340;
+  // --border: #708090;
+  --primaryColor: #60a5fa;
+  --activeBorder: #3b82f6;
+  --grayText: #9ca3af;
+  // --danger: #dc2626;
+  --dangerDark: #dc26268e;
+  // --gray: #6b7280;
+  --grayDark: #4c515b;
+}
 
 // 전체 레이아웃
-body {
-  margin: 0;
-  font-family: $font;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+* {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
+  font-size: 15px;
 }
 
-* {
-  background-color: $background;
-  color: $white;
+html {
+  scroll-behavior: smooth;
 }
+
+input {
+  all: unset;
+  box-sizing: border-box;
+  appearance: none;
+}
+
+body {
+  overflow-x: hidden;
+  color: #0f1419;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  @extend .button;
+}
+
+form {
+  width: 100%;
+}
+
+/* 버튼 */
+.button {
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+/* 스크롤바 */
+::-webkit-scrollbar {
+  width: auto;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--mainColor);
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 5px solid transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: #42806613;
+}
+
+/* 컴포넌트 */
+.container {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.center__container {
+  flex: 1 1 auto;
+  max-width: 600px;
+  /* width: 100%; */
+  border-right: 1px solid var(--border);
+  padding-bottom: 57px;
+}
+
+.render__loading {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .render__logo {
+    color: var(--btnBorder);
+    font-size: 80px;
+  }
+}
+
+@media screen and (max-width: 705px) {
+  .center__container {
+    border: 0;
+  }
+}
+
+/* 탭 메뉴 */
+.tab__container {
+  position: relative;
+
+  .main__container {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    width: 100%;
+    // height: 60px;
+    // border-bottom: 1px solid var(--border);
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+
+    .main__category {
+      padding: 0 16px;
+    }
+
+    /* 카테고리 버튼 */
+    .categoryList {
+      display: flex;
+      width: 100%;
+      height: 53px;
+      user-select: none;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+
+      .container {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        font-size: 15px;
+      }
+
+      .container .btnBox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        text-align: center;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .container .btnBox:hover {
+        background: var(--grayBg);
+      }
+
+      .container .btnBox p {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        word-break: keep-all;
+        padding: 0 6px;
+        line-height: 18px;
+      }
+
+      .container .selectedBox {
+        font-weight: 700;
+      }
+
+      .container .selectedBox::after {
+        position: absolute;
+        width: 50%;
+        height: 4px;
+        border-radius: 9999px;
+        bottom: 0;
+        content: "";
+        display: block;
+        background: var(--mainColor);
+      }
+
+      @media screen and (max-width: 500px) {
+        .container.sizeContainer {
+          width: auto;
+          flex: 1 1 auto;
+        }
+
+        .container .btnBox p {
+          font-size: 14px;
+        }
+
+        .container.sizeContainer .selectedBox::after {
+          width: 50%;
+        }
+      }
+    }
+  }
+}
+
+/* 홈 카테고리 */
+.main__category {
+  position: sticky;
+  top: 0px;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid var(--border);
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 0 16px;
+
+  h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .change__emoji {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+
+    &::after {
+      display: block;
+      content: "";
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      z-index: -1;
+      transition: all 0.2s;
+    }
+
+    svg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover::after {
+      background: var(--grayBg);
+    }
+  }
+
+  .effect_icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* cursor: pointer; */
+    position: relative;
+
+    &::after {
+      display: block;
+      content: "";
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      z-index: -1;
+      transition: all 0.2s;
+    }
+
+    svg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      &::after {
+        background: var(--grayBg);
+      }
+    }
+  }
+}
+
+/* 나머지 카테고리 (상단 닉네임) */
+.minor__category {
+  position: sticky;
+  top: 0px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid #ebebeb;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 0 16px;
+
+  h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* 이모지 */
+  .minor__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    margin-right: 30px;
+
+    &:last-child {
+      margin-left: auto;
+      margin-right: 0;
+    }
+
+    &::after {
+      display: block;
+      content: "";
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      z-index: -1;
+      transition: all 0.2s;
+    }
+
+    svg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      &::after {
+        background: #ececec;
+      }
+    }
+  }
+
+  .userInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8px 0;
+    gap: 6px;
+    min-width: 200px;
+    overflow: hidden;
+
+    p {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .category__name {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .category__sub {
+      /* margin-top: 4px; */
+      font-size: 13px;
+      font-weight: 400;
+      color: #53716a;
+    }
+  }
+
+  /* 프로필 카테고리 아이콘 */
+  .minor__iconExit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    margin-right: 30px;
+
+    &:last-child {
+      margin-left: auto;
+      margin-right: 0;
+    }
+
+    &::after {
+      display: block;
+      content: "";
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      z-index: -1;
+      transition: all 0.2s;
+    }
+
+    svg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+    }
+
+    &:hover {
+      &::after {
+        background: #ececec;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .main__category h2 {
+    font-size: 17px;
+  }
+
+  .minor__category .userInfo .category__name {
+    font-size: 17px;
+  }
+}
+
+/*이하 오리지널 삭제필요*/
+
+// $background: #1e293b;
+// $activeBg: #3c495f5f;
+// $white: #ffffff;
+// $backgroundLight: #263340;
+// $border: #708090;
+// $primaryColor: #60a5fa;
+// $activeBorder: #3b82f6;
+// $grayText: #9ca3af;
+// $danger: #dc2626;
+// $dangerDark: #dc26268e;
+// $gray: #6b7280;
+// $grayDark: #4c515b;
+
+// $font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+//   "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+
+// * {
+//   background-color: var(--background);
+//   color: white;
+// }
+
+// body {
+//   margin: 0;
+//   font-family: $font;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+// }
 
 .layout {
   max-width: 600px;
   margin: 0 auto;
   position: relative;
-  border-left: 1px solid $border;
-  border-right: 1px solid $border;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
   min-height: 100vh;
 }
 
@@ -61,7 +533,7 @@ body {
   max-width: 600px;
   margin: 0 auto;
   background-color: transparent;
-  color: $white;
+  color: white;
 
   &__grid {
     display: grid;
@@ -144,7 +616,7 @@ body {
 
   &__search {
     @extend .post-form__input;
-    background-color: $backgroundLight;
+    background-color: var(--backgroundLight);
     border-radius: 20px;
     margin-bottom: 20px;
     padding: 12px;
@@ -153,8 +625,8 @@ body {
     font-weight: 600;
 
     &:focus {
-      border: 1px solid $primaryColor;
-      background-color: $activeBg;
+      border: 1px solid var(--primaryColor);
+      background-color: var(--activeBg);
     }
   }
 
@@ -187,12 +659,12 @@ body {
 
     &--active {
       font-weight: 700;
-      border-bottom: 2px solid $activeBorder;
+      border-bottom: 2px solid var(--activeBorder);
     }
 
     &:hover,
     &:focus {
-      background-color: $activeBg;
+      background-color: var(--activeBg);
     }
   }
 }
@@ -202,7 +674,7 @@ body {
     padding: 16px;
 
     .post-form__input {
-      border-bottom: 1px solid $gray;
+      border-bottom: 1px solid var(--gray);
       padding: 8px 2px;
       font-size: 16px;
       width: 100%;
@@ -230,16 +702,16 @@ body {
   &__clear-btn {
     @extend .button;
     padding: 0.2rem 0.8rem;
-    background-color: $danger;
+    background-color: var(--danger);
 
     &:hover,
     &:focus {
-      background-color: $dangerDark;
+      background-color: var(--dangerDark);
     }
   }
 
   &__input {
-    font-family: $font;
+    font-family: var(--font);
     padding: 8px;
     border: none;
     resize: none;
@@ -249,7 +721,7 @@ body {
 
   &__hashtags {
     padding: 16px;
-    border-bottom: 1px solid $border;
+    border-bottom: 1px solid var(--border);
 
     &-outputs {
       display: flex;
@@ -261,8 +733,8 @@ body {
 
     &-tag {
       font-size: 14px;
-      border: 1px solid $primaryColor;
-      color: $primaryColor;
+      border: 1px solid var(--primaryColor);
+      color: var(--primaryColor);
       border-radius: 10px;
       padding: 2px 8px;
       margin-right: 6px;
@@ -270,14 +742,14 @@ body {
 
       &:hover,
       &:focus {
-        color: $activeBorder;
-        border: 1px solid $activeBorder;
+        color: var(--activeBorder);
+        border: 1px solid var(--activeBorder);
       }
     }
   }
 
   &__textarea {
-    font-family: $font;
+    // font-family: --font;
     min-height: 120px;
     display: block;
     width: calc(100% - 32px);
@@ -286,11 +758,11 @@ body {
     resize: none;
     outline: none;
     font-size: 20px;
-    border-bottom: 1px solid $border;
+    border-bottom: 1px solid var(--border);
 
     &::placeholder {
-      font-family: $font;
-      color: $grayText;
+      // font-family: --font;
+      color: var(--grayText);
       font-size: 20px;
     }
   }
@@ -299,7 +771,7 @@ body {
     display: flex;
     padding: 0.75rem 1rem;
     justify-content: space-between;
-    border-bottom: 1px solid $border;
+    // border-bottom: 1px solid var(--border);
     align-items: center;
 
     .post-form__file {
@@ -318,7 +790,7 @@ body {
   &__submit-btn {
     @extend .button;
     padding: 0.5rem 1rem;
-    background-color: $primaryColor;
+    background-color: var(--primaryColor);
   }
 }
 
@@ -346,7 +818,7 @@ body {
 
     .post__text {
       font-size: 14px;
-      border: 1px solid $gray;
+      border: 1px solid var(--gray);
       padding: 16px;
       border-radius: 4px;
     }
@@ -368,37 +840,36 @@ body {
 
   &__follow-btn {
     @extend .button;
-    background-color: $white;
-    color: $activeBorder;
+    background-color: var(--gray);
 
-    &:hover,
-    &:focus {
-      background-color: $activeBorder;
-      color: $white;
+    &:hover {
+      background-color: var(--mainColor);
+      color: white;
     }
   }
 
   &__following-btn {
+    display: inline-block;
     @extend .button;
-    background-color: $activeBorder;
-    color: $white;
+    background-color: white;
+    border: 1px solid var(--btnBorder);
+    color: var(--mainColor);
 
-    &:hover,
-    &:focus {
-      background-color: $white;
-      color: $activeBorder;
+    &:hover {
+      background-color: var(--lightGray);
+      color: var(--mainColor);
     }
   }
 
   &__email,
   &__createdAt {
     font-size: 12px;
-    color: $grayText;
+    color: var(--grayText);
   }
 
   &__box {
     padding: 10px 0px;
-    border-bottom: 1px solid $border;
+    border-bottom: 1px solid var(--border);
 
     a {
       text-decoration: none;
@@ -435,16 +906,16 @@ body {
         @extend .button;
 
         &.post__delete {
-          background-color: $danger;
+          background-color: var(--danger);
 
           &:hover,
           &:focus {
-            background-color: $dangerDark;
+            background-color: var(--dangerDark);
           }
         }
 
         &.post__edit {
-          background-color: $gray;
+          background-color: var(--gray);
 
           a {
             background-color: transparent;
@@ -452,7 +923,7 @@ body {
 
           &:hover,
           &:focus {
-            background-color: $grayDark;
+            background-color: var(--grayDark);
           }
         }
 
@@ -462,7 +933,7 @@ body {
 
           &:hover,
           &:focus {
-            color: $gray;
+            color: var(--gray);
           }
         }
       }
@@ -512,29 +983,29 @@ body {
     font-size: 16px;
     margin: 0 auto;
     color: white;
-    background-color: $primaryColor;
+    background-color: var(--primaryColor);
 
     &:hover,
     &:focus {
-      background-color: $activeBorder;
+      background-color: var(--activeBorder);
     }
   }
 
-  &__title {
-    text-align: center;
-    font-size: 24px;
-    font-weight: 700;
-    padding-bottom: 20px;
-  }
+  // &__title {
+  //   text-align: center;
+  //   font-size: 24px;
+  //   font-weight: 700;
+  //   padding-bottom: 20px;
+  // }
 
   &__link {
     margin-left: 10px;
     text-decoration: none;
-    color: $grayText;
+    color: var(--grayText);
 
     &:hover,
     &:focus {
-      color: $gray;
+      color: var(--gray);
     }
   }
 
@@ -544,13 +1015,13 @@ body {
 
   &__btn--google {
     @extend .form__btn--submit;
-    background-color: $white;
-    color: $activeBorder;
+    background-color: white;
+    color: var(--activeBorder);
 
     &:hover,
     &:focus {
-      background-color: $activeBorder;
-      color: $white;
+      background-color: var(--activeBorder);
+      color: white;
     }
   }
 
@@ -561,8 +1032,8 @@ body {
 
     &:hover,
     &:focus {
-      background-color: $activeBg;
-      color: $white;
+      background-color: var(--activeBg);
+      color: white;
     }
   }
 }
@@ -588,20 +1059,20 @@ body {
 
   &__btn {
     @extend .button;
-    background-color: $primaryColor;
+    background-color: var(--primaryColor);
 
     &:hover,
     &:focus {
-      background-color: $activeBorder;
+      background-color: var(--activeBorder);
     }
 
     &--language {
       @extend .button;
-      background-color: $gray;
+      background-color: var(--gray);
 
       &:hover,
       &:focus {
-        background-color: $grayDark;
+        background-color: var(--grayDark);
       }
     }
   }
@@ -613,14 +1084,66 @@ body {
 
   &__name {
     font-size: 16px;
-    color: $white;
+    color: white;
     font-weight: 700;
     margin-bottom: 4px;
   }
 
   &__email {
     font-size: 14px;
-    color: $grayText;
+    color: var(--grayText);
     margin-bottom: 4px;
+  }
+}
+
+/* 정보 없을 때 */
+.noInfoBox {
+  word-break: keep-all;
+
+  .noInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 400px;
+    margin: 32px auto;
+    // padding: 0 32px;
+    text-align: center;
+    letter-spacing: -0.5px;
+
+    img {
+      margin: 16px 0 20px;
+      width: 300px;
+    }
+
+    h2 {
+      font-size: 31px;
+      font-weight: 700;
+      line-height: 40px;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 15px;
+      line-height: 20px;
+      color: #536471;
+    }
+  }
+}
+
+@media screen and (max-width: 687px) {
+  .noInfoBox {
+    .noInfo {
+      width: 100%;
+
+      img {
+        margin: 10px 0 15px;
+      }
+
+      h2 {
+        font-size: 26px;
+        line-height: 35px;
+      }
+    }
   }
 }

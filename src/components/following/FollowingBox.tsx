@@ -55,11 +55,7 @@ export default function FollowingBox({ post }: FollowingProps) {
 
         // 팔로잉 알림 생성
         await addDoc(collection(db, "notifications"), {
-          createdAt: new Date()?.toLocaleDateString("ko", {
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          }),
+          createdAt: Date.now(),
           content: `${user?.email || user?.displayName}님이 회원님을 팔로우하기 시작했습니다.`,
           url: "#",
           isRead: false,
