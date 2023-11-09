@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Router from "components/Router";
 import { Layout } from "components/Layout";
@@ -6,7 +6,6 @@ import { Layout } from "components/Layout";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "firebaseApp";
 import { ToastContainer } from "react-toastify";
-// import 'react-toastify/dist/'
 
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "components/loader/Loader";

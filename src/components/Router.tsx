@@ -12,14 +12,20 @@ import TopButton from "../components/buttons/TopButton";
 // import LoginPage from "pages/users/login";
 // import SignupPage from "pages/users/signup";
 import { Route, Routes, Navigate } from "react-router-dom";
+// import AuthContext from "context/AuthContext";
+// import useTranslation from "hooks/useTranslation";
 
 import LeftMenu from "pages/menu";
+// import { useContext } from "react";
 
 interface RouterProps {
   isAuthenticated: boolean;
 }
 
 export default function Router({ isAuthenticated }: RouterProps) {
+  // const { user } = useContext(AuthContext);
+  // const t = useTranslation();
+
   return (
     <>
       <TopButton />
@@ -35,7 +41,7 @@ export default function Router({ isAuthenticated }: RouterProps) {
                 <Route path="/posts/:id" element={<PostDetail />} />
                 <Route path="/posts/new" element={<PostNew />} />
                 <Route path="/posts/edit/:id" element={<PostEdit />} />
-                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/profile/:id" element={<ProfilePage />} />
                 <Route path="/profile/edit" element={<ProfileEdit />} />
                 <Route path="/notifications" element={<NotificationsPage />} />
                 <Route path="/search" element={<SearchPage />} />

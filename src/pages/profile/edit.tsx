@@ -32,6 +32,8 @@ export default function ProfileEdit() {
     setDisplayName(value);
   };
 
+  
+
   const onSubmit = async (e: any) => {
     let key = `${user?.uid}/${uuidv4()}`;
     const storageRef = ref(storage, key);

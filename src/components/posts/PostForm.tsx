@@ -49,7 +49,6 @@ export default function PostForm({ setXweetModal, xweetModal }: any) {
       setImageFile(result);
     };
   };
-  console.log("user", user);
 
   const onSubmit = async (e: any) => {
     setIsSubmitting(true);

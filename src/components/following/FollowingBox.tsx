@@ -56,10 +56,11 @@ export default function FollowingBox({ post }: FollowingProps) {
         // 팔로잉 알림 생성
         await addDoc(collection(db, "notifications"), {
           createdAt: Date.now(),
-          content: `${user?.email || user?.displayName}님이 회원님을 팔로우하기 시작했습니다.`,
+          content: "",
           url: "#",
           isRead: false,
           uid: post?.uid,
+          displayName: user?.email || user?.displayName,
         });
 
         toast.success(t("FOLLOWING_TOAST"));
@@ -126,7 +127,7 @@ export default function FollowingBox({ post }: FollowingProps) {
             className="post__follow-btn"
             onClick={onClickFollow}
           >
-            {t('BUTTON_FOLLOW')}
+            {t("BUTTON_FOLLOW")}
           </button>
         ))}
     </>

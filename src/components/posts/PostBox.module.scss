@@ -7,14 +7,21 @@
   flex: 1 1 auto;
   color: rgba(0, 0, 0, 0.8);
   border-bottom: 1px solid var(--border);
-}
 
-.xweet:hover {
-  background: #ececec70;
+  &:hover {
+    background: #ececec70;
+  }
+
+  &.hoverPost {
+    &:hover {
+      background: white !important;
+      cursor: auto;
+    }
+  }
 }
 
 .xweet .xweet__wrapper {
-  cursor: pointer;
+  // cursor: pointer;
 }
 
 /* 리트윗 */
@@ -152,6 +159,15 @@
   font-size: 12px;
 }
 
+/* 컨텐츠 */
+.xweet__content {
+  // cursor: pointer;
+
+  &.editPost {
+    cursor: auto;
+  }
+}
+
 /* 텍스트 */
 .xweet__text {
   font-size: 14px;
@@ -165,7 +181,7 @@
 
 /* 이미지 */
 .xweet__image {
-  cursor: pointer;
+  // cursor: pointer;
   width: 100%;
   height: 100%;
   display: flex;

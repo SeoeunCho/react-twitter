@@ -50,18 +50,11 @@ export default function CommentForm({ post }: CommentFormProps) {
       // 댓글 생성 알림 만들기
       if (user?.uid !== post?.uid) {
         await addDoc(collection(db, "notifications"), {
-          // createdAt: new Date()?.toLocaleDateString("ko", {
-          //   hour: "2-digit",
-          //   minute: "2-digit",
-          //   second: "2-digit",
-          // }),
           createdAt: Date.now(),
           uid: post?.uid,
           isRead: false,
           url: `/posts/${post?.id}`,
-          content: `'${truncate(
-            post?.content
-          )}' 게시글에 댓글이 작성되었습니다.`,
+          content: truncate(post?.content),
         });
       }
 

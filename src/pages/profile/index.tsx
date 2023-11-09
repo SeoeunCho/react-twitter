@@ -120,7 +120,7 @@ export default function ProfilePage() {
         {activeTab === "my" && (
           <div className="post">
             {myPosts?.length > 0 ? (
-              myPosts?.map((post) => <PostBox post={post} key={post.id} />)
+              myPosts?.map((post) => <PostBox post={post} key={post.id} editPost={false} />)
             ) : (
               <div className="post__no-posts">
                 <div className="post__text">{t("NO_POSTS")}</div>
@@ -132,7 +132,7 @@ export default function ProfilePage() {
         {activeTab === "like" && (
           <div className="post">
             {likePosts?.length > 0 ? (
-              likePosts?.map((post) => <PostBox post={post} key={post.id} />)
+              likePosts?.map((post) => <PostBox post={post} key={post.id} editPost={false} />)
             ) : (
               <div className="post__no-posts">
                 <div className="post__text">{t("NO_POSTS")}</div>

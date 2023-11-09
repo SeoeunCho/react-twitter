@@ -10,10 +10,11 @@ import {
   doc,
   where,
 } from "firebase/firestore";
-import AuthContext from "context/AuthContext";
+
 import { db } from "firebaseApp";
-import useTranslation from "hooks/useTranslation";
 import { Link } from "react-router-dom";
+import AuthContext from "context/AuthContext";
+import useTranslation from "hooks/useTranslation";
 
 export interface PostProps {
   id: string;
@@ -104,7 +105,7 @@ export default function HomePage() {
         id: doc.id,
         ...doc.data(),
       }));
-      console.log("reXweetArray", reXweetArray);
+      // console.log("reXweetArray", reXweetArray);
 
       // setReXweets(reXweetArray);
     });
@@ -147,7 +148,7 @@ export default function HomePage() {
                     activeTab === "following" && "selectedBox"
                   }`}
                 >
-                  {t("TAB_FOLLOWING")}
+                  {t("TAB_FOLLOWING_ING")}
                 </div>
               </div>
             </nav>
@@ -155,17 +156,16 @@ export default function HomePage() {
         </div>
       </div>
 
-      <PostForm />
-
       {activeTab === "all" && (
         <>
+          <PostForm />
           {posts?.length > 0 ? (
-            posts?.map((post) => <PostBox post={post} key={post.id} />)
+            posts?.map((post) => <PostBox post={post} key={post.id} editPost={false} />)
           ) : (
             <div className="noInfoBox">
               <div className="noInfo">
-                <h2>아직은 여기에 아무 것도 없습니다.</h2>
-                <p>타임라인이 비어있습니다. 지금 트윗해보세요.</p>
+                <h2>{t("NO_POSTS")}</h2>
+                <p>{t("NO_POSTS_LIST")}</p>
               </div>
             </div>
           )}
@@ -175,13 +175,12 @@ export default function HomePage() {
       {activeTab === "following" && (
         <div className="post">
           {followingPosts?.length > 0 ? (
-            followingPosts?.map((post) => <PostBox post={post} key={post.id} />)
+            followingPosts?.map((post) => <PostBox post={post} key={post.id} editPost={false} />)
           ) : (
             <div className="noInfoBox">
               <div className="noInfo">
-                <h2>아직은 여기에 아무 것도 없습니다.</h2>
-                <p>타임라인이 비어있습니다.</p>
-                <p>아직 아무도 팔로우하고 있지 않습니다.</p>
+                <h2>{t("NO_POSTS")}</h2>
+                <p>{t("NO_POSTS_FLLOWING")}</p>
               </div>
             </div>
           )}

@@ -14,7 +14,7 @@ export default function LeftMenu() {
   const [selected, setSelected] = useState<number>(1);
   const [xweetModal, setXweetModal] = useState<boolean>(false);
 
-  // const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   // const navigate = useNavigate();
   const t = useTranslation();
 
@@ -98,7 +98,7 @@ export default function LeftMenu() {
                   </Link>
                 </li>
                 <li>
-                  <Link to={"/profile"} onClick={() => onSelect(4)}>
+                  <Link to={`/profile/${user?.email}`} onClick={() => onSelect(4)}>
                     <div className={styled.leftMenu__list}>
                       {selected === 4 ? (
                         <>

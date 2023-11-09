@@ -32,7 +32,7 @@ export default function PostDetail() {
       <PostHeader />
       {post ? (
         <>
-          <PostBox post={post} />
+          <PostBox post={post} editPost={true} />
           <CommentForm post={post} />
           {post?.comments
             ?.slice(0)

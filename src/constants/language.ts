@@ -68,10 +68,6 @@ const TRANSLATIONS = {
   },
 
   // post
-  NO_POSTS: {
-    ko: "아직은 여기에 아무 것도 없습니다.",
-    en: "No Posts Yet",
-  },
   POST_PLACEHOLDER: {
     ko: "무슨 일이 일어나고 있나요?",
     en: "What's happening?",
@@ -89,9 +85,46 @@ const TRANSLATIONS = {
     en: "Name",
   },
 
+  /* no post === start */
+  // 홈
+  NO_POSTS: {
+    ko: "아직은 여기에 아무 것도 없습니다.",
+    en: "No Posts Yet",
+  },
+  NO_POSTS_LIST: {
+    ko: "타임라인이 비어있습니다. 지금 트윗해보세요.",
+    en: "No Posts Yet",
+  },
+  NO_POSTS_FLLOWING: {
+    ko: "타임라인이 비어있습니다. 아직 아무도 팔로우하고 있지 않습니다.",
+    en: "No Posts Yet",
+  },
+
+  // 검색
+  NO_SEARCH_LIST: {
+    ko: "타임라인이 비어있습니다. 지금 트윗해보세요.",
+    en: "No Posts Yet",
+  },
+
+  // 알림
+  NO_NOTIFICATIONS_FOLLOWING: {
+    ko: "누군가가 나를 팔로우를 하면 여기에 표시됩니다.",
+    en: "No Notifications",
+  },
+  NO_NOTIFICATIONS_COMMENT: {
+    ko: "누군가가 나의 게시글에 댓글을 달면 여기에 표시됩니다.",
+    en: "No Notifications",
+  },
+
+  /* no post === end */
+
   // tabs
-  TAB_FOLLOWING: {
+  TAB_FOLLOWING_ING: {
     ko: "팔로잉 중",
+    en: "Following",
+  },
+  TAB_FOLLOWING: {
+    ko: "팔로잉",
     en: "Following",
   },
   TAB_ALL: {
@@ -106,6 +139,10 @@ const TRANSLATIONS = {
     ko: "트윗",
     en: "Tweets",
   },
+  TAB_COMMENT: {
+    ko: "댓글",
+    en: "Comments",
+  },
 
   // search
   SEARCH_HASHTAGS: {
@@ -117,11 +154,7 @@ const TRANSLATIONS = {
     ko: "사용자님",
     en: "User",
   },
-  // notification
-  NO_NOTIFICATIONS: {
-    ko: "알림이 없습니다.",
-    en: "No Notifications",
-  },
+
   // signin, signup
   AUTH_TEXT: {
     ko: "지금 일어나고 있는 일",
@@ -153,7 +186,7 @@ const TRANSLATIONS = {
   },
   YES_ACCOUNT: {
     ko: "이미 Xwitter에 가입하셨나요?",
-    en: "Already joined Xwitter?",
+    en: "Already have an account?",
   },
   LOGIN_WITH_GOOGLE: {
     ko: "Google 계정으로 로그인",

@@ -59,7 +59,7 @@ export default function SearchPage() {
       </div>
       <div className="post">
         {posts?.length > 0 ? (
-          posts?.map((post) => <PostBox post={post} key={post.id} />)
+          posts?.map((post) => <PostBox post={post} key={post.id} editPost={false} />)
         ) : (
           <div className="post__no-posts">
             <div className="post__text">{t("NO_POSTS")}</div>

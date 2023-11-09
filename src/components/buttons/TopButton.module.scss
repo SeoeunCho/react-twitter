@@ -14,7 +14,7 @@
     padding: 0;
     display: flex;
     border: 1px solid #dadada;
-    background: #fff;
+    background: white;
     border-radius: 50%;
     align-items: center;
     justify-content: center;
@@ -22,8 +22,8 @@
 
     &:hover,
     &:active {
-      background: #6fa78f;
-      border: 1px solid #6fa78f;
+      background: var(--subColor);
+      border: 1px solid var(--subColor);
     }
 
     svg {
@@ -44,7 +44,7 @@
 }
 
 .container .btn:hover svg {
-  color: #fff;
+  color: white;
 }
 
 @media screen and (max-width: 767px) {
@@ -64,7 +64,7 @@
       &:hover,
       &:active {
         color: #222;
-        background: #fff;
+        background: white;
         border: 1px solid #dadada;
       }
     }
