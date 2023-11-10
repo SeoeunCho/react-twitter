@@ -70,6 +70,10 @@
           padding: 8px 0;
           user-select: none;
 
+          b {
+            font-weight: bold;
+          }
+
           svg {
             margin-right: 15px;
             font-size: 24px;
@@ -84,7 +88,7 @@
             transition: all 0.3s;
 
             &:hover {
-              background-color: #e9f1ef;
+              background-color: #e9eff1;
             }
           }
         }
@@ -100,11 +104,24 @@
     margin: 12px 0;
     position: relative;
 
+    p {
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     &:hover {
       background-color: var(--btnLightBorder);
     }
 
     .leftMenu__userInfo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      transition: background-color 0.2s;
+
       .userInfo__name {
         margin: 0 12px;
         overflow: hidden;
@@ -123,17 +140,6 @@
       .userInfo__etc {
         margin-left: auto;
         font-size: 20px;
-      }
-    }
-
-    .container {
-      .leftMenu__user {
-        p {
-          width: 100%;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
       }
     }
   }
@@ -262,7 +268,7 @@
     }
   }
 
-  .leftMenu__xweet .userInfo__name,
+  .userInfo__name,
   .userInfo__etc {
     display: none;
   }
@@ -308,9 +314,9 @@
                 padding: 8px;
               }
 
-              &:nth-child(3) {
-                display: none;
-              }
+              // &:nth-child(3) {
+              //   display: none;
+              // }
 
               &:nth-child(4) {
                 .leftMenu__list {

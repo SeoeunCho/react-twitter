@@ -3,7 +3,7 @@
 이 프로젝트는 React에서 TypeScript사용에 익숙해지기 위해 제작한 반응형 앱입니다.
 Youtube, Unsplash, TMDB(The Movie Database) API를
 Firebase를 이용하여 데이터를 생성하고 사용자 인증에서 회원가입 및 로그인을 구축하고
-CRUD를 구현하여 게시글 등록, 댓글, 좋아요 등의 소셜 SNS 기능 및 실시간 업데이트와 알림목록을 생성했습니다.
+CRUD를 구현하여 게시글 등록, 답글, 좋아요 등의 소셜 SNS 기능 및 실시간 업데이트와 알림목록을 생성했습니다.
 Sass와 Media Query를 사용해 어떤 기기에도 모바일에 대응하는 반응형으로 작업했습니다.
 전역 상태 라이브러리 Recoil로 메뉴명 다국어 처리 기능을 추가하고 Vercel로 배포했습니다. 
 

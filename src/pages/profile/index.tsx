@@ -1,4 +1,5 @@
 import { languageState } from "atom";
+import Header from "components/header";
 import PostBox from "components/posts/PostBox";
 import AuthContext from "context/AuthContext";
 import {
@@ -70,7 +71,7 @@ export default function ProfilePage() {
   return (
     <div className="home">
       <div className="home__top">
-        <div className="home__title">{t("MENU_PROFILE")}</div>
+        <Header menu={"profile"} text={"MENU_PROFILE"} />
         <div className="profile">
           <img
             src={user?.photoURL || PROFILE_DEFAULT_URL}
@@ -97,7 +98,9 @@ export default function ProfilePage() {
           </div>
         </div>
         <div className="profile__text">
-          <div className="profile__name">{user?.displayName || t("PROFILE_NAME")}</div>
+          <div className="profile__name">
+            {user?.displayName || t("PROFILE_NAME")}
+          </div>
           <div className="profile__email">{user?.email}</div>
         </div>
         <div className="home__tabs">
@@ -120,7 +123,9 @@ export default function ProfilePage() {
         {activeTab === "my" && (
           <div className="post">
             {myPosts?.length > 0 ? (
-              myPosts?.map((post) => <PostBox post={post} key={post.id} editPost={false} />)
+              myPosts?.map((post) => (
+                <PostBox post={post} data={null} detailId={post.id} key={post.id} postType={"xweet"} detailPost={false} />
+              ))
             ) : (
               <div className="post__no-posts">
                 <div className="post__text">{t("NO_POSTS")}</div>
@@ -132,7 +137,9 @@ export default function ProfilePage() {
         {activeTab === "like" && (
           <div className="post">
             {likePosts?.length > 0 ? (
-              likePosts?.map((post) => <PostBox post={post} key={post.id} editPost={false} />)
+              likePosts?.map((post) => (
+                <PostBox post={post} data={null} detailId={post.id} key={post.id} postType={"xweet"} detailPost={false} />
+              ))
             ) : (
               <div className="post__no-posts">
                 <div className="post__text">{t("NO_POSTS")}</div>

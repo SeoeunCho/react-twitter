@@ -1,32 +1,64 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { FiImage } from "react-icons/fi";
 import { db, storage } from "firebaseApp";
-import { toast } from "react-toastify";
-import { useNavigate, useParams } from "react-router-dom";
-import { PostProps } from "pages/home";
 import {
   deleteObject,
   getDownloadURL,
   ref,
   uploadString,
 } from "firebase/storage";
-import AuthContext from "context/AuthContext";
 import { v4 as uuidv4 } from "uuid";
-import PostHeader from "./Header";
+import { toast } from "react-toastify";
+import { PostProps } from "pages/home";
+
+import Picker from "emoji-picker-react";
+import useEmojiModalOutClick from "hooks/useEmojiModalOutClick";
+import BarLoader from "components/loader/BarLoader";
+import styled from "./PostForm.module.scss";
+
+import { FiImage } from "react-icons/fi";
+import { BsReplyFill } from "react-icons/bs";
+import { GrEmoji } from "react-icons/gr";
+import { IoCloseSharp, IoImageOutline } from "react-icons/io5";
+
+import { useNavigate, useParams } from "react-router-dom";
+import { languageState } from "atom";
+import { useRecoilState } from "recoil";
+
+import AuthContext from "context/AuthContext";
 import useTranslation from "hooks/useTranslation";
 
-export default function PostEditForm() {
+const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
+
+export default function PostEditForm({
+  detailId,
+  editModal,
+  setEditModal,
+}: {
+  detailId: string;
+  editModal: boolean;
+  setEditModal: any;
+}) {
   const params = useParams();
   const [post, setPost] = useState<PostProps | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [content, setContent] = useState<string>("");
   const [hashTag, setHashTag] = useState<string>("");
-  const [tags, setTags] = useState<string[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [imageFile, setImageFile] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const [tags, setTags] = useState<string[]>([]);
+  const [progressBarCount, setProgressBarCount] = useState<number>(0);
+
+  const [select, setSelect] = useState("");
+  const fileInput = useRef<any>();
+  const textRef = useRef<any>();
+  const emojiRef = useRef<any>();
+
+  // 이모지 모달 밖 클릭 시 창 끔
+  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({ emojiRef });
+
   const { user } = useContext(AuthContext);
   const t = useTranslation();
+  const navigate = useNavigate();
 
   const handleFileUpload = (e: any) => {
     const {
@@ -44,52 +76,88 @@ export default function PostEditForm() {
   };
 
   const getPost = useCallback(async () => {
-    if (params.id) {
-      const docRef = doc(db, "posts", params.id);
+    if (detailId) {
+      const docRef = doc(db, "posts", detailId);
       const docSnap = await getDoc(docRef);
       setPost({ ...(docSnap?.data() as PostProps), id: docSnap.id });
       setContent(docSnap?.data()?.content);
       setTags(docSnap?.data()?.hashTags);
       setImageFile(docSnap?.data()?.imageUrl);
     }
-  }, [params.id]);
+  }, [detailId]);
 
   const onSubmit = async (e: any) => {
-    setIsSubmitting(true);
+    e.preventDefault();
+    setProgressBarCount(0); // 프로그레스 바 초기화
+
+    //파일 경로 참조 만들기
     const key = `${user?.uid}/${uuidv4()}`;
     const storageRef = ref(storage, key);
-    e.preventDefault();
 
-    try {
-      if (post) {
-        // 기존 사진 지우고 새로운 사진 업로드
-        if (post?.imageUrl) {
-          let imageRef = ref(storage, post?.imageUrl);
-          await deleteObject(imageRef).catch((error) => {
-            console.log(error);
-          });
+    // 입력 값 없을 시 업로드 X
+    if (content !== "") {
+      const editPost = async () => {
+        try {
+          if (post) {
+            // 기존 사진 지우고 새로운 사진 업로드
+            if (post?.imageUrl) {
+              let imageRef = ref(storage, post?.imageUrl);
+              await deleteObject(imageRef).catch((error) => {
+                console.log(error);
+              });
+            }
+
+            // 새로운 파일 있다면 업로드
+            let imageUrl = "";
+
+            if (imageFile) {
+              console.log("imageFile", imageFile, "imageFile", imageUrl);
+              const data = await uploadString(
+                storageRef,
+                imageFile,
+                "data_url"
+              );
+              imageUrl = await getDownloadURL(data?.ref);
+            }
+
+            const postRef = doc(db, "posts", post?.id);
+            await updateDoc(postRef, {
+              content: content,
+              hashTags: tags,
+              imageUrl: imageUrl,
+            });
+            toast.success(t("EDIT_POST_TOAST"));
+            setImageFile(null);
+            setIsSubmitting(false);
+          }
+
+          if (!editModal) {
+            if (textRef.current) textRef.current.style.height = "52px";
+          } else {
+            setEditModal(false);
+          }
+        } catch (e: any) {
+          console.log("form error", e);
         }
+      };
 
-        // 새로운 파일 있다면 업로드
-        let imageUrl = "";
-        if (imageFile) {
-          const data = await uploadString(storageRef, imageFile, "data_url");
-          imageUrl = await getDownloadURL(data?.ref);
+      let start = 0;
+      const interval = setInterval(() => {
+        if (start <= 100) {
+          setProgressBarCount((prev) => (prev === 100 ? 100 : prev + 1));
+          start++; // progress 증가
         }
+        if (start === 100) {
+          editPost();
+          return;
+        }
+      });
 
-        const postRef = doc(db, "posts", post?.id);
-        await updateDoc(postRef, {
-          content: content,
-          hashTags: tags,
-          imageUrl: imageUrl,
-        });
-        navigate(`/posts/${post?.id}`);
-        toast.success(t("EDIT_POST_TOAST"));
-      }
-      setImageFile(null);
-      setIsSubmitting(false);
-    } catch (e: any) {
-      console.log(e);
+      return () => {
+        clearInterval(interval);
+      };
+    } else {
+      toast.error(t("SUBMIT_ERROR_TOAST"));
     }
   };
 
@@ -128,86 +196,229 @@ export default function PostEditForm() {
     setImageFile(null);
   };
 
+  const onEmojiClick = (event: any) => {
+    const textEmoji =
+      content.slice(0, textRef.current?.selectionStart) +
+      event.emoji +
+      content.slice(textRef.current?.selectionEnd, content.length);
+    setContent(textEmoji);
+  };
+
   useEffect(() => {
-    if (params.id) getPost();
-  }, [getPost, params.id]);
+    if (detailId) getPost();
+  }, [getPost, detailId]);
 
   return (
-    <div className="post">
-      <PostHeader />
-      <form className="post-form" onSubmit={onSubmit}>
-        <textarea
-          className="post-form__textarea"
-          required
-          name="content"
-          id="content"
-          placeholder={t("POST_PLACEHOLDER")}
-          onChange={onChange}
-          value={content}
-        />
-        <div className="post-form__hashtags">
-          {tags.length !== 0 ? (
-            <span className="post-form__hashtags-outputs">
-              {tags?.map((tag, index) => (
-                <span
-                  className="post-form__hashtags-tag"
-                  key={index}
-                  onClick={() => removeTag(tag)}
-                >
-                  #{tag}
-                </span>
-              ))}
-            </span>
-          ) : null}
-          <input
-            className="post-form__input"
-            name="hashtag"
-            id="hashtag"
-            placeholder={t("POST_HASHTAG")}
-            onChange={onChangeHashTag}
-            onKeyUp={handleKeyUp}
-            value={hashTag}
-          />
-        </div>
-        <div className="post-form__submit-area">
-          <div className="post-form__image-area">
-            <label htmlFor="file-input" className="post-form__file">
-              <FiImage className="port-form__file-icon" />
-            </label>
-            <input
-              type="file"
-              name="file-input"
-              id="file-input"
-              accept="image/*"
-              onChange={handleFileUpload}
-              className="hidden"
-            />
-            {imageFile && (
-              <div className="post-form__attachment">
-                <img
-                  src={imageFile}
-                  alt="attachment"
-                  width={100}
-                  height={100}
-                />
-                <button
-                  className="post-form__clear-btn"
-                  type="button"
-                  onClick={handleDeleteImage}
-                >
-                  {t("BUTTON_DELETE")}
-                </button>
-              </div>
+    <>
+      {progressBarCount !== 0 && <BarLoader count={progressBarCount} />}
+      <div className={`${styled.postForm} ${editModal && styled.modalBorder}`}>
+        <div className={styled.postInput__container}>
+          <div className={styled.xweet__profile}>
+            {user && (
+              <img
+                src={user?.photoURL || PROFILE_DEFAULT_URL}
+                alt="profileImg"
+                className={styled.profile__image}
+              />
             )}
           </div>
-          <input
-            type="submit"
-            value={t("BUTTON_EDIT")}
-            className="post-form__submit-btn"
-            disabled={isSubmitting}
-          />
+          <form className={styled.postInput} onSubmit={onSubmit}>
+            <div
+              className={`${styled.postForm__content} ${
+                select === "text" && styled.focus
+              }`}
+            >
+              <textarea
+                className={styled.postInput__input}
+                spellCheck="false"
+                value={content}
+                ref={textRef}
+                name="content"
+                id="content"
+                required
+                placeholder={t("POST_PLACEHOLDER")}
+                onChange={onChange}
+                onFocus={() => setSelect("text")}
+                onBlur={() => setSelect("")}
+                maxLength={280}
+              />
+              <div
+                className={`${styled.postInput__hashtags} ${
+                  select === "hashtag" && styled.focus
+                }`}
+              >
+                {tags.length !== 0 ? (
+                  <span className={styled.postInput__hashtags_outputs}>
+                    {tags?.map((tag, index) => (
+                      <span
+                        className={styled.postInput__hashtags_tag}
+                        key={index}
+                        onClick={() => removeTag(tag)}
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </span>
+                ) : null}
+                <input
+                  className={styled.postInput__hashtags_input}
+                  name="hashtag"
+                  id="hashtag"
+                  placeholder={t("POST_HASHTAG")}
+                  onChange={onChangeHashTag}
+                  onKeyUp={handleKeyUp}
+                  value={hashTag}
+                  onFocus={() => setSelect("hashtag")}
+                  onBlur={() => setSelect("")}
+                />
+              </div>
+
+              {imageFile && (
+                <div className={styled.postForm__attachment}>
+                  <div className={styled.postForm__Image}>
+                    <img
+                      src={imageFile}
+                      alt="upload file"
+                      style={{
+                        backgroundImage: imageFile,
+                      }}
+                    />
+                  </div>
+                  <div
+                    className={styled.postForm__clear}
+                    onClick={handleDeleteImage}
+                  >
+                    <IoCloseSharp />
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className={styled.postInput__add}>
+              <div className={styled.postInput__iconBox}>
+                <label
+                  htmlFor={editModal ? "modal-attach-file" : "attach-file"}
+                  className={styled.postInput__label}
+                >
+                  <div className={styled.postInput__icon}>
+                    <IoImageOutline />
+                  </div>
+                </label>
+                <input
+                  ref={fileInput}
+                  id={editModal ? "modal-attach-file" : "attach-file"}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                />
+              </div>
+              <div
+                ref={emojiRef}
+                onClick={toggleEmoji}
+                className={styled.postInput__iconBox}
+              >
+                <div
+                  className={`${styled.postInput__icon} ${styled.emoji__icon}`}
+                >
+                  <GrEmoji />
+                </div>
+                {/* 해결: clickEmoji이 true일 때만 실행해서textarea 버벅이지 않음 */}
+                {clickEmoji && (
+                  <div
+                    className={`${styled.emoji} 
+                    ${clickEmoji ? styled.emoji__block : styled.emoji__hidden}
+                  `}
+                  >
+                    <Picker onEmojiClick={onEmojiClick} />
+                  </div>
+                )}
+              </div>
+              <input
+                type="submit"
+                value={t("BUTTON_EDIT")}
+                className={styled.postInput__arrow}
+                disabled={content === "" && imageFile === ""}
+              />
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
+      </div>
+    </>
+
+    // <div className="post">
+    //   <Header menu={"postEdit"} text={"BUTTON_EDIT"} />
+    //   <form className="post-form" onSubmit={onSubmit}>
+    //     <textarea
+    //       className="post-form__textarea"
+    //       required
+    //       name="content"
+    //       id="content"
+    //       placeholder={t("POST_PLACEHOLDER")}
+    //       onChange={onChange}
+    //       value={content}
+    //     />
+    //     <div className="post-form__hashtags">
+    //       {tags.length !== 0 ? (
+    //         <span className="post-form__hashtags-outputs">
+    //           {tags?.map((tag, index) => (
+    //             <span
+    //               className="post-form__hashtags-tag"
+    //               key={index}
+    //               onClick={() => removeTag(tag)}
+    //             >
+    //               #{tag}
+    //             </span>
+    //           ))}
+    //         </span>
+    //       ) : null}
+    //       <input
+    //         className="post-form__input"
+    //         name="hashtag"
+    //         id="hashtag"
+    //         placeholder={t("POST_HASHTAG")}
+    //         onChange={onChangeHashTag}
+    //         onKeyUp={handleKeyUp}
+    //         value={hashTag}
+    //       />
+    //     </div>
+    //     <div className="post-form__submit-area">
+    //       <div className="post-form__image-area">
+    //         <label htmlFor="file-input" className="post-form__file">
+    //           <FiImage className="port-form__file-icon" />
+    //         </label>
+    //         <input
+    //           type="file"
+    //           name="file-input"
+    //           id="file-input"
+    //           accept="image/*"
+    //           onChange={handleFileUpload}
+    //           className="hidden"
+    //         />
+    //         {imageFile && (
+    //           <div className="post-form__attachment">
+    //             <img
+    //               src={imageFile}
+    //               alt="attachment"
+    //               width={100}
+    //               height={100}
+    //             />
+    //             <button
+    //               className="post-form__clear-btn"
+    //               type="button"
+    //               onClick={handleDeleteImage}
+    //             >
+    //               {t("BUTTON_DELETE")}
+    //             </button>
+    //           </div>
+    //         )}
+    //       </div>
+    //       <input
+    //         type="submit"
+    //         value={t("BUTTON_EDIT")}
+    //         className="post-form__submit-btn"
+    //         disabled={isSubmitting}
+    //       />
+    //     </div>
+    //   </form>
+    // </div>
   );
 }

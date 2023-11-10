@@ -6,9 +6,9 @@ import { PostProps } from "pages/home";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { db } from "firebaseApp";
-import PostHeader from "components/posts/Header";
-import CommentForm from "components/comments/CommentForm";
-import CommentBox, { CommentProps } from "components/comments/CommentBox";
+import ReplyForm from "components/reply/ReplyForm";
+import ReplyBox, { ReplyProps } from "components/reply/ReplyBox";
+import Header from "components/header";
 
 export default function PostDetail() {
   const params = useParams();
@@ -29,16 +29,16 @@ export default function PostDetail() {
 
   return (
     <div className="post">
-      <PostHeader />
+      <Header menu={"detail"} text={"TAB_MY"}/>
       {post ? (
         <>
-          <PostBox post={post} editPost={true} />
-          <CommentForm post={post} />
-          {post?.comments
+          <PostBox post={post} data={null} detailId={post.id} postType={"xweet"} detailPost={true} />
+          <ReplyForm post={post} replyModal={false} setReplyModal={false} />
+          {post?.replies
             ?.slice(0)
             ?.reverse()
-            ?.map((data: CommentProps, index: number) => (
-              <CommentBox data={data} key={index} post={post} />
+            ?.map((data: ReplyProps, index: number) => (
+              <ReplyBox data={data} key={index} post={post} />
             ))}
         </>
       ) : (

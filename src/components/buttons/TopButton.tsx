@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import { RiArrowUpSLine } from "react-icons/ri";
 import styled from "./TopButton.module.scss";
 import { throttle } from "lodash";
+import { useLocation } from "react-router-dom";
 
 export default function TopButton() {
   const [scrollY, setScrollY] = useState(0);
   const [topBtnStatus, setTopBtnStatus] = useState(false); // 버튼 상태
+  const navigate = useLocation();
 
   const handleFollow = throttle(() => {
     if (window.scrollY > 500) {
@@ -25,6 +27,10 @@ export default function TopButton() {
       window.removeEventListener("scroll", handleFollow);
     };
   }, [handleFollow]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [navigate.pathname]);
 
   const handleTop = () => {
     window.scrollTo({

@@ -28,7 +28,6 @@ export default function NotificationBox({
     // url로 이동
     navigate(url);
   };
-  
 
   const imgRef = useRef<any>();
   const nameRef = useRef<any>();
@@ -41,7 +40,7 @@ export default function NotificationBox({
   //     creatorInfo?.following.map((follow) => setFollowTime(follow.followAt));
   //   }
   // }, [creatorInfo?.following]);
-  
+
   const { timeToString } = useTimeToString();
 
   return (
@@ -62,7 +61,7 @@ export default function NotificationBox({
     <>
       <div className={styled.xweet}>
         <div className={styled.xweet__container}>
-          <Link to={`/profile`} className={styled.xweet__profile} ref={imgRef}>
+          <Link to={`/profile/${notification?.email}`} className={styled.xweet__profile} ref={imgRef}>
             <img
               src={user?.photoURL || PROFILE_DEFAULT_URL}
               alt="profileImg"
@@ -82,24 +81,18 @@ export default function NotificationBox({
             onClick={() => onClickNotification(notification?.url)}
           >
             <p>
-              <span className={styled.reXweet__name}>
-                {notification?.content}
+              <span ref={nameRef}>
+                @{notification?.displayName?.split("@")[0]}
               </span>
-              {/* <span ref={nameRef}>
-                  @{(user?.email || notification?.email)?.split("@")[0]}
+              님이
+              {tab === "reply" && (
+                <span className={styled.reXweet__name}>
+                  &nbsp;"{notification?.content}"
                 </span>
-                님이{" "}
-                {location.pathname.includes("rexweets") && (
-                  <span className={styled.reXweet__name}>
-                    "{noticeUser?.text ? noticeUser?.text : xweets?.text}"
-                  </span>
-                )}
-                {location.pathname.includes("replies") && (
-                  <span className={styled.reXweet__name}>"{xweets?.text}"</span>
-                )}
-                
-                {location.pathname.includes("followers") && null}
-                {text} */}
+              )}
+              {tab === "following"
+                ? " 회원님을 팔로우 했습니다."
+                : " 글에 답글을 달았습니다."}
             </p>
           </div>
           <div style={{ marginLeft: "auto" }} className={styled.reXweet__time}>

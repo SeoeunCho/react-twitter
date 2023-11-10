@@ -15,6 +15,7 @@ import { db } from "firebaseApp";
 import { Link } from "react-router-dom";
 import AuthContext from "context/AuthContext";
 import useTranslation from "hooks/useTranslation";
+import Header from "components/header";
 
 export interface PostProps {
   id: string;
@@ -25,7 +26,7 @@ export interface PostProps {
   profileUrl?: string;
   likes?: string[];
   likeCount?: number;
-  comments?: any;
+  replies?: any;
   hashTags?: string[];
   imageUrl?: string;
   displayName: string;
@@ -114,45 +115,37 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div>
-      <div>
-        <div className="main__category">
-          <div className="main_text">
-            <h2>{t("MENU_HOME")}</h2>
-          </div>
-        </div>
+    <>
+      <Header menu={"home"} text={'MENU_HOME'} />
 
-        <div className="tab__container">
-          <div className="main__container">
-            <nav className="categoryList">
-              <div
-                className="container sizeContainer"
-                onClick={() => {
-                  setActiveTab("all");
-                }}
-              >
-                <div
-                  className={`btnBox ${activeTab === "all" && "selectedBox"}`}
-                >
-                  {t("TAB_ALL")}
-                </div>
+      <div className="tab__container">
+        <div className="main__container">
+          <nav className="categoryList">
+            <div
+              className="container sizeContainer"
+              onClick={() => {
+                setActiveTab("all");
+              }}
+            >
+              <div className={`btnBox ${activeTab === "all" && "selectedBox"}`}>
+                {t("TAB_ALL")}
               </div>
+            </div>
+            <div
+              className="container sizeContainer"
+              onClick={() => {
+                setActiveTab("following");
+              }}
+            >
               <div
-                className="container sizeContainer"
-                onClick={() => {
-                  setActiveTab("following");
-                }}
+                className={`btnBox ${
+                  activeTab === "following" && "selectedBox"
+                }`}
               >
-                <div
-                  className={`btnBox ${
-                    activeTab === "following" && "selectedBox"
-                  }`}
-                >
-                  {t("TAB_FOLLOWING_ING")}
-                </div>
+                {t("TAB_FOLLOWING_ING")}
               </div>
-            </nav>
-          </div>
+            </div>
+          </nav>
         </div>
       </div>
 
@@ -160,7 +153,9 @@ export default function HomePage() {
         <>
           <PostForm />
           {posts?.length > 0 ? (
-            posts?.map((post) => <PostBox post={post} key={post.id} editPost={false} />)
+            posts?.map((post) => (
+              <PostBox post={post} data={null} detailId={post.id} key={post.id} postType={"xweet"} detailPost={false} />
+            ))
           ) : (
             <div className="noInfoBox">
               <div className="noInfo">
@@ -175,7 +170,9 @@ export default function HomePage() {
       {activeTab === "following" && (
         <div className="post">
           {followingPosts?.length > 0 ? (
-            followingPosts?.map((post) => <PostBox post={post} key={post.id} editPost={false} />)
+            followingPosts?.map((post) => (
+              <PostBox post={post} data={null} detailId={post.id} key={post.id} postType={"xweet"} detailPost={false} />
+            ))
           ) : (
             <div className="noInfoBox">
               <div className="noInfo">
@@ -186,6 +183,6 @@ export default function HomePage() {
           )}
         </div>
       )}
-    </div>
+    </>
   );
 }

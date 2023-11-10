@@ -1,3 +1,4 @@
+import Header from "components/header";
 import NotificationBox from "components/notifications/NotificationBox";
 import AuthContext from "context/AuthContext";
 import {
@@ -13,20 +14,23 @@ import { useContext, useEffect, useState } from "react";
 
 export interface NotificationProps {
   id: string;
-  uid: string;
-  url: string;
-  isRead: boolean;
   content: string;
   createdAt: number;
+  uid: string;
+  profileUrl: string;
+  isRead: boolean;
+  email: string;
+  url: string;
+  displayName: string;
 }
 
-type tabType = "following" | "comment";
+type tabType = "following" | "reply";
 
 export default function NotificationsPage() {
   const { user } = useContext(AuthContext);
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
   const [notiFollower, setNotiFollower] = useState<NotificationProps[]>([]);
-  const [notiComment, setNotiComment] = useState<NotificationProps[]>([]);
+  const [notiReply, setNotiReply] = useState<NotificationProps[]>([]);
   const [activeTab, setActiveTab] = useState<tabType>("following");
   const t = useTranslation();
 
@@ -52,21 +56,16 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     if (notifications?.length > 0) {
-      const followerArr = notifications.filter((noti) => noti.url === "#");
-      const commentArr = notifications.filter((noti) => noti.url !== "#");
+      const followerArr = notifications.filter((noti) => !noti.content);
+      const replyArr = notifications.filter((noti) => noti.content);
       setNotiFollower(followerArr);
-      setNotiComment(commentArr);
-      console.log("notifications", user, notifications, notiFollower, notiComment);
+      setNotiReply(replyArr);
     }
   }, [notifications]);
 
   return (
     <>
-      <div className="main__category">
-        <div className="main_text">
-          <h2>{t("MENU_NOTI")}</h2>
-        </div>
-      </div>
+      <Header menu={"notification"} text={"MENU_NOTI"} />
 
       <div className="tab__container">
         <div className="main__container">
@@ -82,20 +81,20 @@ export default function NotificationsPage() {
                   activeTab === "following" && "selectedBox"
                 }`}
               >
-                {t("TAB_FOLLOWING")}
+                {t("BUTTON_FOLLOW")}
               </div>
             </div>
 
             <div
               className="container sizeContainer"
               onClick={() => {
-                setActiveTab("comment");
+                setActiveTab("reply");
               }}
             >
               <div
-                className={`btnBox ${activeTab === "comment" && "selectedBox"}`}
+                className={`btnBox ${activeTab === "reply" && "selectedBox"}`}
               >
-                {t("TAB_COMMENT")}
+                {t("TAB_REPLY")}
               </div>
             </div>
           </nav>
@@ -108,9 +107,9 @@ export default function NotificationsPage() {
           <NotificationBox notification={noti} tab={activeTab} key={noti.id} />
         ))}
 
-      {activeTab === "comment" &&
-        notiComment?.length > 0 &&
-        notiComment?.map((noti) => (
+      {activeTab === "reply" &&
+        notiReply?.length > 0 &&
+        notiReply?.map((noti) => (
           <NotificationBox notification={noti} tab={activeTab} key={noti.id} />
         ))}
 
@@ -123,11 +122,11 @@ export default function NotificationsPage() {
         </div>
       )}
 
-      {activeTab === "comment" && notiComment?.length === 0 && (
+      {activeTab === "reply" && notiReply?.length === 0 && (
         <div className="noInfoBox">
           <div className="noInfo">
             <h2>{t("NO_POSTS")}</h2>
-            <p>{t("NO_NOTIFICATIONS_COMMENT")}</p>
+            <p>{t("NO_NOTIFICATIONS_REPLY")}</p>
           </div>
         </div>
       )}
@@ -139,15 +138,15 @@ export default function NotificationsPage() {
           </div>
         </div> */}
 
-      {/* {activeTab === "comment" && notiComment?.length > 0 ? (
-        notiComment?.map((noti) => (
+      {/* {activeTab === "reply" && notiReply?.length > 0 ? (
+        notiReply?.map((noti) => (
           <NotificationBox notification={noti} key={noti.id} />
         ))
       ) : (
         <div className="noInfoBox">
           <div className="noInfo">
             <h2>{t("NO_POSTS")}</h2>
-            <p>{t("NO_NOTIFICATIONS_COMMENT")}</p>
+            <p>{t("NO_NOTIFICATIONS_REPLY")}</p>
           </div>
         </div>
       )} */}
@@ -161,7 +160,7 @@ export default function NotificationsPage() {
       })} */}
 
       {/* NO_NOTIFICATIONS_FOLLOWING */}
-      {/* {activeTab === "comment" && notifications?.length > 0 ? (
+      {/* {activeTab === "reply" && notifications?.length > 0 ? (
         notifications?.map((noti) => (
           <NotificationBox notification={noti} key={noti.id} />
         ))
@@ -169,7 +168,7 @@ export default function NotificationsPage() {
         <div className="noInfoBox">
           <div className="noInfo">
             <h2>{t("NO_POSTS")}</h2>
-            <p>{t("NO_NOTIFICATIONS_COMMENT")}</p>
+            <p>{t("NO_NOTIFICATIONS_REPLY")}</p>
           </div>
         </div>
       )} */}

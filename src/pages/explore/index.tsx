@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import PostBox from "components/posts/PostBox";
 import AuthContext from "context/AuthContext";
 import {
@@ -13,7 +12,7 @@ import useTranslation from "hooks/useTranslation";
 import { PostProps } from "pages/home";
 import { useContext, useEffect, useState } from "react";
 
-export default function SearchPage() {
+export default function ExplorePage() {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [tagQuery, setTagQuery] = useState<string>("");
   const { user } = useContext(AuthContext);
@@ -22,6 +21,8 @@ export default function SearchPage() {
   const onChange = (e: any) => {
     setTagQuery(e?.target?.value.trim());
   };
+
+  console.log("user", user);
 
   useEffect(() => {
     if (user) {
@@ -46,20 +47,27 @@ export default function SearchPage() {
   return (
     <div className="home">
       <div className="home__top">
-        <div className="home__title">
-          <div className="home__title-text">{t("MENU_SEARCH")}</div>
-        </div>
-        <div className="home__search-div">
+        {/* <Header menu={"explore"} text={"MENU_EXPLORE"}/> */}
+        <div className="home__explore-div">
           <input
-            className="home__search"
-            placeholder={t("SEARCH_HASHTAGS")}
+            className="home__explore"
+            placeholder={t("EXPLORE_HASHTAGS")}
             onChange={onChange}
           />
         </div>
       </div>
       <div className="post">
         {posts?.length > 0 ? (
-          posts?.map((post) => <PostBox post={post} key={post.id} editPost={false} />)
+          posts?.map((post) => (
+            <PostBox
+              post={post}
+              data={null}
+              detailId={post.id}
+              key={post.id}
+              postType={"xweet"}
+              detailPost={false}
+            />
+          ))
         ) : (
           <div className="post__no-posts">
             <div className="post__text">{t("NO_POSTS")}</div>

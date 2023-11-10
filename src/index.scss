@@ -6,10 +6,10 @@
 :root {
   --mainColor: #4da0eb;
   --subColor: rgb(112, 188, 255);
-  // --btnBorder: #dadce0;
   --btnBorder: #a6d0f5;
   --btnLightBorder: #d2e3fc;
   --btnBgHover: #4472c4;
+  --btnBgDisabled: #4da1eb80;
   --gray: #dddddd;
   --grayBorder: #586571;
   --grayBg: #ececec;
@@ -19,19 +19,6 @@
   --border: #ebebeb;
   --placehoder: #9e9e9e;
   --placehoderLight: #bbbaba;
-  // --danger: #be4661;
-
-  --background: #1e293b;
-  --activeBg: #3c495f5f;
-  --backgroundLight: #263340;
-  // --border: #708090;
-  --primaryColor: #60a5fa;
-  --activeBorder: #3b82f6;
-  --grayText: #9ca3af;
-  // --danger: #dc2626;
-  --dangerDark: #dc26268e;
-  // --gray: #6b7280;
-  --grayDark: #4c515b;
 }
 
 // 전체 레이아웃
@@ -721,7 +708,7 @@ form {
 
   &__hashtags {
     padding: 16px;
-    border-bottom: 1px solid var(--border);
+    // border-bottom: 1px solid var(--border);
 
     &-outputs {
       display: flex;
@@ -732,12 +719,13 @@ form {
     }
 
     &-tag {
-      font-size: 14px;
-      border: 1px solid var(--primaryColor);
-      color: var(--primaryColor);
+      font-size: 12px;
+      border: 1px solid var(--mainColor);
+      color: var(--mainColor);
       border-radius: 10px;
-      padding: 2px 8px;
+      padding: 4px 8px;
       margin-right: 6px;
+      line-height: 12px;
       cursor: pointer;
 
       &:hover,
@@ -928,7 +916,7 @@ form {
         }
 
         &.post__likes,
-        &.post__comments {
+        &.post__replies {
           @extend .post__flex;
 
           &:hover,

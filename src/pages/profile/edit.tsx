@@ -1,4 +1,5 @@
-import PostHeader from "components/posts/Header";
+
+import Header from "components/header";
 import AuthContext from "context/AuthContext";
 import { updateProfile } from "firebase/auth";
 import {
@@ -31,8 +32,6 @@ export default function ProfileEdit() {
 
     setDisplayName(value);
   };
-
-  
 
   const onSubmit = async (e: any) => {
     let key = `${user?.uid}/${uuidv4()}`;
@@ -67,7 +66,7 @@ export default function ProfileEdit() {
         })
           .then(() => {
             toast.success(t("UPDATE_PROFILE_TOAST"));
-            navigate("/profile");
+            navigate(`/profile/${user?.email}`);
           })
           .catch((error) => {
             console.log(error);
@@ -108,7 +107,7 @@ export default function ProfileEdit() {
 
   return (
     <div className="post" onSubmit={onSubmit}>
-      <PostHeader />
+      <Header menu={"profileEdit"} text={"BUTTON_EDIT_PROFILE"}/>
       <form className="post-form">
         <div className="post-form__profile">
           <input

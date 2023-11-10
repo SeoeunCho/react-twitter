@@ -6,16 +6,15 @@ import PostEdit from "pages/posts/edit";
 import PostNew from "pages/posts/new";
 import ProfilePage from "pages/profile";
 import ProfileEdit from "pages/profile/edit";
-import SearchPage from "pages/search";
+import ExplorePage from "pages/explore";
 import AuthPage from "pages/auth";
 import TopButton from "../components/buttons/TopButton";
-// import LoginPage from "pages/users/login";
-// import SignupPage from "pages/users/signup";
 import { Route, Routes, Navigate } from "react-router-dom";
 // import AuthContext from "context/AuthContext";
 // import useTranslation from "hooks/useTranslation";
 
-import LeftMenu from "pages/menu";
+import LeftMenu from "pages/menu/LeftMenu";
+import RightMenu from "pages/menu/RightMenu";
 // import { useContext } from "react";
 
 interface RouterProps {
@@ -44,10 +43,11 @@ export default function Router({ isAuthenticated }: RouterProps) {
                 <Route path="/profile/:id" element={<ProfilePage />} />
                 <Route path="/profile/edit" element={<ProfileEdit />} />
                 <Route path="/notifications" element={<NotificationsPage />} />
-                <Route path="/search" element={<SearchPage />} />
+                <Route path="/explore" element={<ExplorePage />} />
                 <Route path="*" element={<Navigate replace to="/" />} />
               </Routes>
             </div>
+            <RightMenu />
           </div>
         </>
       ) : (

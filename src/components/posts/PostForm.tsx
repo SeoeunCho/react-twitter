@@ -1,29 +1,30 @@
 import { useContext, useRef, useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { FiImage } from "react-icons/fi";
-import { IoCloseSharp, IoImageOutline } from "react-icons/io5";
 import { db, storage } from "firebaseApp";
-import { toast } from "react-toastify";
-import AuthContext from "context/AuthContext";
 import { v4 as uuidv4 } from "uuid";
-import useTranslation from "hooks/useTranslation";
-import useEmojiModalOutClick from "../../hooks/useEmojiModalOutClick";
+import { toast } from "react-toastify";
+
+import { IoCloseSharp, IoImageOutline } from "react-icons/io5";
+import { GrEmoji } from "react-icons/gr";
+
+import Picker from "emoji-picker-react";
+import useEmojiModalOutClick from "hooks/useEmojiModalOutClick";
 import BarLoader from "components/loader/BarLoader";
 import styled from "./PostForm.module.scss";
-import { GrEmoji } from "react-icons/gr";
-import { RiHashtag } from "react-icons/ri";
-import Picker from "emoji-picker-react";
+
+import AuthContext from "context/AuthContext";
+import useTranslation from "hooks/useTranslation";
+
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
-export default function PostForm({ setXweetModal, xweetModal }: any) {
+export default function PostForm({ xweetModal, setXweetModal }: any) {
   const [content, setContent] = useState<string>("");
   const [hashTag, setHashTag] = useState<string>("");
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [imageFile, setImageFile] = useState<string | null>("");
   const [tags, setTags] = useState<string[]>([]);
   const [progressBarCount, setProgressBarCount] = useState<number>(0);
-  const [randomCount, setRandomCount] = useState<number>(1);
+  // const [randomCount, setRandomCount] = useState<number>(1);
   const [select, setSelect] = useState("");
   const fileInput = useRef<any>();
   const textRef = useRef<any>();
@@ -51,24 +52,25 @@ export default function PostForm({ setXweetModal, xweetModal }: any) {
   };
 
   const onSubmit = async (e: any) => {
-    setIsSubmitting(true);
-
+    e.preventDefault();
+    setProgressBarCount(0); // 프로그레스 바 초기화
+    let imageUrl = "";
+    //파일 경로 참조 만들기
     const key = `${user?.uid}/${uuidv4()}`;
     const storageRef = ref(storage, key);
-    e.preventDefault();
 
-    setProgressBarCount(0); // 프로그레스 바 초기화
-
+    // 입력 값 없을 시 업로드 X
     if (content !== "") {
-      // 이미지 먼저 업로드
-      let imageUrl = "";
+      // 이미지 있을 때만 첨부
       if (imageFile) {
+        //storage 참조 경로로 파일 업로드 하기
         const data = await uploadString(storageRef, imageFile, "data_url");
+
+        // storage 참조 경로에 있는 파일의 URL을 다운로드해서 imageUrl 변수에 넣어서 업데이트
         imageUrl = await getDownloadURL(data?.ref);
       }
 
       const addXweet = async () => {
-        setRandomCount((prev) => prev++);
         // 업로드된 이미지의 download url 업데이트
         await addDoc(collection(db, "posts"), {
           content: content,
@@ -81,12 +83,12 @@ export default function PostForm({ setXweetModal, xweetModal }: any) {
           displayName: user?.displayName,
         })
           .then(() => {
+            toast.success(t("UPDATE_POST_TOAST"));
             setTags([]);
             setHashTag("");
             setContent("");
-            toast.success(t("UPDATE_POST_TOAST"));
             setImageFile(null);
-            setIsSubmitting(false);
+            setSelect("");
             setProgressBarCount(0); // 프로그레스 바 초기화
             if (!xweetModal) {
               if (textRef.current) textRef.current.style.height = "52px";
@@ -190,6 +192,7 @@ export default function PostForm({ setXweetModal, xweetModal }: any) {
                 ref={textRef}
                 name="content"
                 id="content"
+                required
                 placeholder={t("POST_PLACEHOLDER")}
                 onChange={onChange}
                 onFocus={() => setSelect("text")}

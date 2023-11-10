@@ -4,17 +4,17 @@ const TRANSLATIONS = {
     ko: "홈",
     en: "Home",
   },
-  MENU_PROFILE: {
-    ko: "프로필",
-    en: "Profile",
-  },
-  MENU_SEARCH: {
+  MENU_EXPLORE: {
     ko: "탐색하기",
     en: "Explore",
   },
   MENU_NOTI: {
     ko: "알림",
     en: "Notifications",
+  },
+  MENU_PROFILE: {
+    ko: "프로필",
+    en: "Profile",
   },
   MENU_LOGOUT: {
     ko: "로그아웃",
@@ -50,9 +50,9 @@ const TRANSLATIONS = {
     ko: "프로필 수정",
     en: "Edit Profile",
   },
-  BUTTON_COMMENT: {
-    ko: "댓글 입력",
-    en: "Comment",
+  BUTTON_REPLY: {
+    ko: "답글",
+    en: "Reply",
   },
   BUTTON_TWEET: {
     ko: "트윗하기",
@@ -65,6 +65,22 @@ const TRANSLATIONS = {
   BUTTON_SIGNUP: {
     ko: "가입하기",
     en: "Sign up",
+  },
+
+  // reply
+  REPLY_PLACEHOLDER: {
+    ko: "내 답글을 트윗합니다.",
+    en: "Tweet your reply.",
+  },
+  REPLY_TO: {
+    ko: "님에게 보내는 답글",
+    en: "Replying to",
+  },
+
+  // action
+  ACTION_LIKES: {
+    ko: "마음에 들어요",
+    en: "Likes",
   },
 
   // post
@@ -93,15 +109,15 @@ const TRANSLATIONS = {
   },
   NO_POSTS_LIST: {
     ko: "타임라인이 비어있습니다. 지금 트윗해보세요.",
-    en: "No Posts Yet",
+    en: "Timeline is empty. Let's Tweet now.",
   },
   NO_POSTS_FLLOWING: {
     ko: "타임라인이 비어있습니다. 아직 아무도 팔로우하고 있지 않습니다.",
-    en: "No Posts Yet",
+    en: "Timeline is empty. You are not following anyone yet.",
   },
 
   // 검색
-  NO_SEARCH_LIST: {
+  NO_EXPLORE_LIST: {
     ko: "타임라인이 비어있습니다. 지금 트윗해보세요.",
     en: "No Posts Yet",
   },
@@ -111,16 +127,15 @@ const TRANSLATIONS = {
     ko: "누군가가 나를 팔로우를 하면 여기에 표시됩니다.",
     en: "No Notifications",
   },
-  NO_NOTIFICATIONS_COMMENT: {
-    ko: "누군가가 나의 게시글에 댓글을 달면 여기에 표시됩니다.",
+  NO_NOTIFICATIONS_REPLY: {
+    ko: "누군가가 나의 게시글에 답글을 달면 여기에 표시됩니다.",
     en: "No Notifications",
   },
-
   /* no post === end */
 
   // tabs
   TAB_FOLLOWING_ING: {
-    ko: "팔로잉 중",
+    ko: "팔로우 중",
     en: "Following",
   },
   TAB_FOLLOWING: {
@@ -129,7 +144,7 @@ const TRANSLATIONS = {
   },
   TAB_ALL: {
     ko: "전체",
-    en: "For You",
+    en: "For you",
   },
   TAB_LIKES: {
     ko: "좋아요",
@@ -137,17 +152,17 @@ const TRANSLATIONS = {
   },
   TAB_MY: {
     ko: "트윗",
-    en: "Tweets",
+    en: "Tweet",
   },
-  TAB_COMMENT: {
-    ko: "댓글",
-    en: "Comments",
+  TAB_REPLY: {
+    ko: "답글",
+    en: "Replies",
   },
 
-  // search
-  SEARCH_HASHTAGS: {
-    ko: "해시태그 검색",
-    en: "Search Hashtags",
+  // explore
+  EXPLORE_HASHTAGS: {
+    ko: "해시태그 탐색",
+    en: "Explore Hashtags",
   },
   // profile
   PROFILE_NAME: {
@@ -215,8 +230,8 @@ const TRANSLATIONS = {
 
   // toast
   SUBMIT_ERROR_TOAST: {
-    ko: "트윗할 내용을 입력해주세요.",
-    en: "Please enter what you want to tweet.",
+    ko: "내용을 입력해주세요.",
+    en: "Please enter text.",
   },
   SUCCESS_LOGIN_TOAST: {
     ko: "성공적으로 로그인 되었습니다.",
@@ -246,21 +261,25 @@ const TRANSLATIONS = {
     ko: "로그아웃 되었습니다.",
     en: "You are logged out.",
   },
-  UPDATE_COMMENT_TOAST: {
-    ko: "댓글을 생성했습니다.",
-    en: "You have created a comment.",
+  CHECK_LOGOUT_TOAST: {
+    ko: "로그아웃 하시겠습니까?",
+    en: "Do you want to log out?",
   },
-  DELETE_COMMENT_TOAST: {
-    ko: "댓글을 삭제했습니다.",
-    en: "Comment has been deleted.",
+  UPDATE_REPLY_TOAST: {
+    ko: "답글을 생성했습니다.",
+    en: "Reply completed.",
+  },
+  DELETE_REPLY_TOAST: {
+    ko: "답글을 삭제했습니다.",
+    en: "Reply deleted.",
   },
   DELETE_POST_TOAST: {
     ko: "게시글을 삭제했습니다.",
     en: "The post has been deleted.",
   },
   CHECK_DELETE_POST_TOAST: {
-    ko: "해당 게시글을 삭제하시겠습니까?",
-    en: "Would you like to delete this post?",
+    ko: "정말로 이 게시물을 삭제하시겠습니까?",
+    en: "Are you sure you want to delete this post?",
   },
   UPDATE_POST_TOAST: {
     ko: "게시글이 등록되었습니다.",

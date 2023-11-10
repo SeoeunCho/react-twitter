@@ -7,7 +7,7 @@
   box-sizing: border-box;
   outline: none;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.363);
-  background: #fff;
+  background: white;
 }
 
 /* X바 */
@@ -19,8 +19,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  border-bottom: 1px solid #ebebeb;
-  background-color: #fff;
+  border-bottom: 1px solid var(--border);
+  background-color: white;
   min-width: 600px;
   max-height: 90vh;
   border-radius: 16px 16px 0 0;

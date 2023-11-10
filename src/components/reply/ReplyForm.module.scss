@@ -1,4 +1,53 @@
-.postForm {
+/* 리플 */
+.xweet__reply {
+  display: none;
+  align-items: center;
+  margin-top: 12px;
+  height: 16px;
+  color: var(--grayBorder);
+}
+
+.select {
+  display: flex;
+  transition: all 0.2s;
+}
+
+.xweet__reply .xweet__replyIcon {
+  width: 64px;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 12px;
+}
+
+.xweet__reply svg {
+  width: 16px;
+  height: 16px;
+  transform: scaleX(-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xweet__reply .xweet__replyText {
+  display: flex;
+}
+
+.xweet__reply .xweet__replyText p {
+  font-size: 12px;
+}
+
+.xweet__reply .xweet__replyText p:first-child {
+  font-weight: 700;
+  color: var(--mainColor);
+  cursor: pointer;
+}
+
+.xweet__reply .xweet__replyText p:first-child:hover {
+  text-decoration: underline;
+}
+
+/* 입력 BOX */
+.replyForm {
   display: flex;
   position: relative;
   background-color: white;
@@ -7,11 +56,15 @@
   border-bottom: 1px solid var(--border);
 }
 
-.postForm.modalBorder {
+.replyForm.modalBorer {
   border-radius: 16px;
 }
 
-.postInput__container {
+.replyForm.modalBorder {
+  border-radius: 16px;
+}
+
+.replyInput__container {
   display: flex;
   align-items: center;
   width: 100%;
@@ -31,81 +84,29 @@
   box-sizing: border-box;
 }
 
-.postInput {
-  /* width: 100%; */
-
-  /* 해쉬태그 */
-  &__hashtags {
-    padding-top: 5px;
-    border-bottom: 1px solid var(--border);
-
-    &.focus input::placeholder {
-      opacity: 0.6;
-      transition: all 0.2s;
-    }
-
-    &_outputs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px 1px;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    &_tag {
-      font-size: 12px;
-      border: 1px solid var(--mainColor);
-      color: var(--mainColor);
-      border-radius: 10px;
-      padding: 4px 8px;
-      margin-right: 6px;
-      line-height: 12px;
-      cursor: pointer;
-
-      &:hover,
-      &:focus {
-        color: var(--mainColor);
-        border: 1px solid var(--mainColor);
-      }
-    }
-
-    &_input {
-      font-size: 14px;
-      padding-bottom: 5px;
-      padding-left: 5px;
-      color: var(--mainColor);
-
-      &::placeholder {
-        color: var(--subColor);
-      }
-
-      &:focus {
-        color: var(--mainColor);
-      }
-    }
-  }
+.replyInput {
 }
 
-.postInput__input {
+.replyInput__input {
   width: 100%;
-  // max-height: 100%;
-  // height: 52px;
-  max-height: 100px;
+  max-height: 100%;
+  height: 52px;
+  max-height: 80px;
   /* overflow: hidden; */
   box-sizing: border-box;
   outline: none;
   resize: none;
   border: none;
-  // border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   font-weight: 500;
   font-size: 20px;
-  // margin-bottom: 6px;
+  margin-bottom: 6px;
   font-size: 16px;
   line-height: 24px;
-  caret-color: var(--mainColor);
+  caret-color: #429170;
 }
 
-.postInput__input::placeholder {
+.replyInput__input::placeholder {
   font-weight: 400;
   color: var(--placehoder);
 }
@@ -115,16 +116,15 @@
   transition: all 0.2s;
 }
 
-.postInput__add {
+.replyInput__add {
   display: flex;
   align-items: center;
-  position: relative;
-  margin-top: 12px;
+  margin-top: 4px;
   margin-bottom: -6px;
 }
 
 /* 아이콘 공통 */
-.postInput__iconBox {
+.replyInput__iconBox {
   width: 34px;
   height: 34px;
   display: flex;
@@ -136,7 +136,7 @@
   transition: all 0.2s;
 }
 
-.postInput__icon {
+.replyInput__icon {
   width: 34px;
   height: 34px;
   display: flex;
@@ -147,7 +147,7 @@
   transition: all 0.2s;
 }
 
-.postInput__icon svg {
+.replyInput__icon svg {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -156,34 +156,35 @@
   color: var(--mainColor);
 }
 
-.postInput__icon:hover {
+.replyInput__icon:hover {
   background-color: var(--btnLightBorder);
 }
 
-.postInput__iconBox input {
-  opacity: 0;
-  display: none;
-}
-
 /* 배경 아이콘 */
-.postInput__image input[type="file"] {
+.replyInput__image input[type="file"] {
   display: hidden;
   width: 0px;
   height: 0px;
   opacity: 0;
 }
 
-.postInput__iconBox label {
+.replyInput__iconBox label {
   cursor: pointer;
+}
+
+.replyInput__iconBox input {
+  opacity: 0;
+  display: none;
 }
 
 /* 이모지 아이콘 */
 .emoji {
   position: absolute;
-  top: 15px;
-  left: 50px;
+  top: 90px;
+  left: 123px;
+  z-index: 2;
+  color: black;
   user-select: none;
-  z-index: 20;
 }
 
 .emoji__hidden {
@@ -194,7 +195,7 @@
   display: block;
 }
 
-.postInput__arrow {
+.replyInput__arrow {
   background-color: var(--mainColor);
   padding: 10px 16px;
   margin-left: auto;
@@ -207,19 +208,19 @@
   user-select: none;
 }
 
-.postInput__arrow:hover {
+.replyInput__arrow:hover {
   background-color: var(--btnBgHover);
   cursor: pointer;
 }
 
-.postInput__arrow:disabled {
+.replyInput__arrow:disabled {
   background-color: var(--btnBgDisabled);
   transition: all 0.3s;
   cursor: auto;
 }
 
 /* 이미지 */
-.postForm__attachment {
+.replyForm__attachment {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -230,18 +231,18 @@
   max-width: 400px;
 }
 
-.postForm__Image {
+.replyForm__Image {
   width: 100%;
   height: 100%;
 }
 
-.postForm__attachment img {
+.replyForm__attachment img {
   border-radius: 15px;
   width: 100%;
   height: 100%;
 }
 
-.postForm__clear {
+.replyForm__clear {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -257,15 +258,14 @@
   color: #fff;
 }
 
-.postForm__clear:hover {
+.replyForm__clear:hover {
 }
 
 @media screen and (max-width: 500px) {
   .xweet__profile {
-    display: none;
   }
 
-  .postInput__iconBox .postInput__icon.emoji__icon {
+  .replyInput__iconBox .replyInput__icon.emoji__icon {
     display: none;
   }
 }

@@ -12,6 +12,7 @@ import {
 import { db } from "firebaseApp";
 import useTranslation from "hooks/useTranslation";
 import { PostProps } from "pages/home";
+import { ReplyProps } from "components/reply/ReplyBox";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -23,7 +24,9 @@ interface UserProps {
   id: string;
 }
 
-export default function FollowingBox({ post }: FollowingProps) {
+export default function FollowingBox({
+  post,
+}: FollowingProps) {
   const { user } = useContext(AuthContext);
   const [postFollowers, setPostFollowers] = useState<any>([]);
   const t = useTranslation();
@@ -55,12 +58,14 @@ export default function FollowingBox({ post }: FollowingProps) {
 
         // 팔로잉 알림 생성
         await addDoc(collection(db, "notifications"), {
+          content: null,
           createdAt: Date.now(),
-          content: "",
-          url: "#",
-          isRead: false,
           uid: post?.uid,
-          displayName: user?.email || user?.displayName,
+          profileUrl: user?.photoURL,
+          isRead: false,
+          email: user?.email,
+          url: `/profile/${user?.email}`,
+          displayName: user?.email?.split("@")[0],
         });
 
         toast.success(t("FOLLOWING_TOAST"));
@@ -105,6 +110,8 @@ export default function FollowingBox({ post }: FollowingProps) {
       });
     }
   }, [post.uid]);
+
+  console.log("data", postFollowers);
 
   useEffect(() => {
     if (post.uid) getFollowers();
