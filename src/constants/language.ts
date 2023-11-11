@@ -176,8 +176,8 @@ const TRANSLATIONS = {
     en: "Happening now",
   },
   AUTH_LOGIN_TEXT: {
-    ko: "Xwitter 로그인하기",
-    en: "Sign in to Xwitter.",
+    ko: "트위터에 로그인하기",
+    en: "Sign in to Twitter.",
   },
   AUTH_SIGNUP_TEXT: {
     ko: "지금 가입하세요.",
@@ -200,7 +200,7 @@ const TRANSLATIONS = {
     en: "No Account?",
   },
   YES_ACCOUNT: {
-    ko: "이미 Xwitter에 가입하셨나요?",
+    ko: "이미 트위터에 가입하셨나요?",
     en: "Already have an account?",
   },
   LOGIN_WITH_GOOGLE: {
@@ -210,14 +210,6 @@ const TRANSLATIONS = {
   LOGIN_WITH_GITHUB: {
     ko: "Github 계정으로 로그인",
     en: "Sign in with Github",
-  },
-  SIGNUP_GOOGLE: {
-    ko: "Google 계정으로 가입하기",
-    en: "Sign up with Google",
-  },
-  SIGNUP_GITHUB: {
-    ko: "Github 계정으로 가입하기",
-    en: "Sign up with Github",
   },
   SIGNUP_LINK: {
     ko: "가입하기",

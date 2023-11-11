@@ -24,19 +24,19 @@ export interface NotificationProps {
   displayName: string;
 }
 
-type tabType = "following" | "reply";
+type tabType = "Following" | "reply";
 
 export default function NotificationsPage() {
   const { user } = useContext(AuthContext);
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
   const [notiFollower, setNotiFollower] = useState<NotificationProps[]>([]);
   const [notiReply, setNotiReply] = useState<NotificationProps[]>([]);
-  const [activeTab, setActiveTab] = useState<tabType>("following");
+  const [activeTab, setActiveTab] = useState<tabType>("Following");
   const t = useTranslation();
 
   useEffect(() => {
     if (user) {
-      let ref = collection(db, "notifications");
+      let ref = collection(db, "Notifications");
       let notificationQury = query(
         ref,
         where("uid", "==", user?.uid),
@@ -73,12 +73,12 @@ export default function NotificationsPage() {
             <div
               className="container sizeContainer"
               onClick={() => {
-                setActiveTab("following");
+                setActiveTab("Following");
               }}
             >
               <div
                 className={`btnBox ${
-                  activeTab === "following" && "selectedBox"
+                  activeTab === "Following" && "selectedBox"
                 }`}
               >
                 {t("BUTTON_FOLLOW")}
@@ -101,7 +101,7 @@ export default function NotificationsPage() {
         </div>
       </div>
 
-      {activeTab === "following" &&
+      {activeTab === "Following" &&
         notiFollower?.length > 0 &&
         notiFollower?.map((noti) => (
           <NotificationBox notification={noti} tab={activeTab} key={noti.id} />
@@ -113,7 +113,7 @@ export default function NotificationsPage() {
           <NotificationBox notification={noti} tab={activeTab} key={noti.id} />
         ))}
 
-      {activeTab === "following" && notiFollower?.length === 0 && (
+      {activeTab === "Following" && notiFollower?.length === 0 && (
         <div className="noInfoBox">
           <div className="noInfo">
             <h2>{t("NO_POSTS")}</h2>

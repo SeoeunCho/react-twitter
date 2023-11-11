@@ -17,21 +17,22 @@ export default function AuthPage() {
         <img src={authBg} alt="auth bg" />
       </div>
       <div className={styled.auth}>
-        <div className={styled.xwitter__logo}>
+        <div className={styled.twitter__logo}>
           <AiOutlineTwitter />
         </div>
-        <div className={styled.xwitter__notice}>
+        <div className={styled.twitter__notice}>
           <span>{t("AUTH_TEXT")}</span>
         </div>
         {newAccount ? (
-          <div className={styled.xwitter__info}>
+          <div className={styled.twitter__info}>
             <span>{t("AUTH_LOGIN_TEXT")}</span>
           </div>
         ) : (
-          <div className={styled.xwitter__info}>
+          <div className={styled.twitter__info}>
             <span>{t("AUTH_SIGNUP_TEXT")}</span>
           </div>
         )}
+
         <AuthForm newAccount={newAccount} />
 
         {newAccount ? (

@@ -10,12 +10,12 @@ import {
 import { db, storage } from "firebaseApp";
 import { PostProps } from "pages/home";
 import { useContext, useEffect, useRef, useState } from "react";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import {
-  FaHeart,
   FaRegComment,
+  FaHeart,
   FaRegHeart,
-  FaUserCircle,
+  FaBookmark,
+  FaRegBookmark,
 } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -26,27 +26,30 @@ import useTranslation from "hooks/useTranslation";
 // import usePostEditModalClick from "hooks/usePostEditModal";
 import styled from "./PostBox.module.scss";
 import { useTimeToString } from "hooks/useTimeToString";
-import { FiEdit, FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
+import { FiRepeat, FiMoreHorizontal, FiEdit, FiTrash2 } from "react-icons/fi";
 import { ReplyProps } from "components/reply/ReplyBox";
 import { languageState } from "atom";
 import { useRecoilState } from "recoil";
 import ReplyModal from "components/modal/ReplyModal";
-import EditXweetModal from "components/modal/EditXweetModal";
+import EditTweetModal from "components/modal/EditTweetModal";
+
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
-export default function PostBox({
-  post,
-  data,
-  detailId,
-  postType,
-  detailPost,
-}: {
+interface PostBoxProps {
   post: PostProps;
-  data: ReplyProps | null;
+  reply: ReplyProps | any;
   detailId: string;
   postType: string;
   detailPost: boolean;
-}) {
+}
+
+export default function PostBox({
+  post,
+  reply,
+  detailId,
+  postType,
+  detailPost,
+}: PostBoxProps) {
   const [creatorInfo, setCreatorInfo] = useState<any>({});
   const [EDModal, setEDModal] = useState<boolean>(false);
   const [editModal, setEditModal] = useState<boolean>(false);
@@ -64,7 +67,7 @@ export default function PostBox({
   const { timeToString } = useTimeToString();
 
   const toggleLike = async () => {
-    const postRef = doc(db, "posts", post.id);
+    const postRef = doc(db, "Posts", post.id);
 
     if (user?.uid && post?.likes?.includes(user?.uid)) {
       // 사용자가 좋아요를 미리 한 경우 -> 좋아요를 취소한다.
@@ -82,7 +85,7 @@ export default function PostBox({
   };
 
   const handleDelete = async () => {
-    if (postType === "xweet") {
+    if (postType === "tweet") {
       const confirm = window.confirm(t("CHECK_DELETE_POST_TOAST"));
       if (confirm) {
         // 스토리지 이미지 먼저 삭제
@@ -92,16 +95,16 @@ export default function PostBox({
           });
         }
 
-        await deleteDoc(doc(db, "posts", post.id));
+        await deleteDoc(doc(db, "Posts", post.id));
         toast.success(t("DELETE_POST_TOAST"));
         navigate("/");
       }
     } else {
       if (post) {
         try {
-          const postRef = doc(db, "posts", post?.id);
+          const postRef = doc(db, "Posts", post?.id);
           await updateDoc(postRef, {
-            replies: arrayRemove(data),
+            replies: arrayRemove(reply),
           });
 
           toast.success(t("DELETE_REPLY_TOAST"));
@@ -127,13 +130,13 @@ export default function PostBox({
   };
 
   //  map 처리 된 유저 정보들
-  useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "users", post.email), (doc) => {
-      setCreatorInfo(doc?.data());
-      // setLoading(true);
-    });
-    return () => unsubscribe();
-  }, [post.email]);
+  // useEffect(() => {
+  //   const unsubscribe = onSnapshot(doc(db, "Users", post.email), (doc) => {
+  //     setCreatorInfo(doc?.reply());
+  //     // setLoading(true);
+  //   });
+  //   return () => unsubscribe();
+  // }, [post.email]);
 
   // 수정,삭제 모달창 외부영역 클릭시 닫힘 처리
   useEffect(() => {
@@ -149,53 +152,37 @@ export default function PostBox({
 
   return (
     <>
-      <li className={`${styled.xweet} ${detailPost && styled.hoverPost}`}>
-        <div className={styled.xweet__wrapper}>
-          <div className={styled.xweet__container}>
+      <li className={`${styled.tweet} ${detailPost && styled.hoverPost}`}>
+        <div className={styled.tweet__wrapper}>
+          <div className={styled.tweet__container}>
             {/* 프로필 이미지 */}
             <Link
-              className={styled.xweet__profile}
+              className={styled.tweet__profile}
               to={
-                postType === "xweet"
+                postType === "tweet"
                   ? `/profile/${post?.email}`
-                  : `/profile/${data?.email}`
+                  : `/profile/${reply?.email}`
               }
             >
               {/* 트윗 프로필 이미지 */}
-              {postType === "xweet" &&
-                (post?.profileUrl ? (
-                  <img
-                    src={post?.profileUrl}
-                    alt="profileImg"
-                    loading="lazy"
-                    className={styled.profile__image}
-                  />
-                ) : (
-                  <img
-                    src={PROFILE_DEFAULT_URL}
-                    alt="profileImg"
-                    loading="lazy"
-                    className={styled.profile__image}
-                  />
-                ))}
+              {postType === "tweet" && (
+                <img
+                  src={post?.profileUrl || PROFILE_DEFAULT_URL}
+                  alt="profileImg"
+                  loading="lazy"
+                  className={styled.profile__image}
+                />
+              )}
 
               {/* 답글 프로필 이미지 */}
-              {postType === "reply" &&
-                (data?.profileUrl ? (
-                  <img
-                    src={data?.profileUrl}
-                    alt="profileImg"
-                    loading="lazy"
-                    className={styled.profile__image}
-                  />
-                ) : (
-                  <img
-                    src={PROFILE_DEFAULT_URL}
-                    alt="profileImg"
-                    loading="lazy"
-                    className={styled.profile__image}
-                  />
-                ))}
+              {postType === "reply" && (
+                <img
+                  src={reply?.profileUrl || PROFILE_DEFAULT_URL}
+                  alt="profileImg"
+                  loading="lazy"
+                  className={styled.profile__image}
+                />
+              )}
             </Link>
 
             {/* 유저 정보 */}
@@ -205,38 +192,39 @@ export default function PostBox({
                   <Link
                     type="button"
                     to={
-                      postType === "xweet"
+                      postType === "tweet"
                         ? `/profile/${post?.email}`
-                        : `/profile/${data?.email}`
+                        : `/profile/${reply?.email}`
                     }
                   >
-                    {postType === "xweet"
+                    {postType === "tweet"
                       ? post?.displayName || post?.email.split("@")[0]
-                      : data?.displayName || data?.email.split("@")[0]}
+                      : reply?.displayName || reply?.email.split("@")[0]}
                   </Link>
-                  {/* <FollowingBox post={post} /> */}
                 </div>
                 <div className={styled.userInfo__two}>
-                  {postType === "xweet" ? (
+                  {postType === "tweet" ? (
                     <p>@{post?.email ? post?.email.split("@")[0] : ""}</p>
                   ) : (
-                    <p>@{data?.email ? data?.email.split("@")[0] : ""}</p>
+                    <p>@{reply?.email ? reply?.email.split("@")[0] : ""}</p>
                   )}
 
                   <p style={{ margin: "0 4px" }}>·</p>
-                  <p className={styled.xweet__createdAt}>
-                    {postType === "xweet"
+                  <p className={styled.tweet__createdAt}>
+                    {postType === "tweet"
                       ? timeToString(post?.createdAt)
-                      : timeToString(data?.createdAt)}
+                      : timeToString(reply?.createdAt)}
                   </p>
                 </div>
               </div>
 
+              <FollowingBox reply={reply} post={post} postType={postType} />
+
               {/* 트윗 수정,삭제 버튼 */}
-              {postType === "xweet" && user?.uid === post?.uid && (
-                <div className={styled.xweet__edit} ref={editRef}>
+              {postType === "tweet" && user?.uid === post?.uid && (
+                <div className={styled.tweet__edit} ref={editRef}>
                   <div
-                    className={styled.xweet__editIcon}
+                    className={styled.tweet__editIcon}
                     onClick={toggleEDModal}
                   >
                     <FiMoreHorizontal />
@@ -264,16 +252,16 @@ export default function PostBox({
               )}
 
               {/* 답글 수정,삭제 버튼 */}
-              {postType === "reply" && user?.uid === data?.uid && (
-                <div className={styled.xweet__edit} ref={editRef}>
+              {postType === "reply" && user?.uid === reply?.uid && (
+                <div className={styled.tweet__edit} ref={editRef}>
                   <div
-                    className={styled.xweet__editIcon}
+                    className={styled.tweet__editIcon}
                     onClick={toggleEDModal}
                   >
                     <FiMoreHorizontal />
                     <div className={styled.horizontal__bg}></div>
                   </div>
-                  {EDModal && user?.uid === data?.uid && (
+                  {EDModal && user?.uid === reply?.uid && (
                     <div className={styled.container}>
                       <div
                         className={`${styled.btn} ${styled.updateBtn}`}
@@ -298,16 +286,16 @@ export default function PostBox({
 
           {/* 컨텐츠 */}
           <Link
-            to={postType === "xweet" ? `/posts/${post?.id}` : "/"}
-            className={`${styled.xweet__content} ${
+            to={postType === "tweet" ? `/posts/${post?.id}` : "/"}
+            className={`${styled.tweet__content} ${
               detailPost && styled.detailPost
             }`}
           >
             {/* {postType === "reply" && (
-              <div className={`${styled.xweet__reply} ${styled.select}`}>
+              <div className={`${styled.tweet__reply} ${styled.select}`}>
                 <Link
-                  className={styled.xweet__replyText}
-                  to={`/profile/${data?.email}`}
+                  className={styled.tweet__replyText}
+                  to={`/profile/${reply?.email}`}
                 >
                   {language[0] === "en" && <p>{t("REPLY_TO")}&nbsp;</p>}
                   <p>@{post.email?.split("@")[0]}</p>
@@ -316,16 +304,16 @@ export default function PostBox({
               </div>
             )} */}
 
-            <div className={styled.xweet__text}>
-              <h4>{postType === "xweet" ? post?.content : data?.reply}</h4>
-              {post?.hashTags?.length !== 0 && (
+            <div className={styled.tweet__text}>
+              <h4>{postType === "tweet" ? post?.content : reply?.content}</h4>
+              {postType === "tweet" && post?.hashTags?.length !== 0 && (
                 <div
-                  className={`${styled.xweet__text__hashtags} ${styled.focus}`}
+                  className={`${styled.tweet__text__hashtags} ${styled.focus}`}
                 >
-                  <span className={styled.xweet__text__hashtags_outputs}>
+                  <span className={styled.tweet__text__hashtags_outputs}>
                     {post?.hashTags?.map((tag, index) => (
                       <span
-                        className={styled.xweet__text__hashtags_tag}
+                        className={styled.tweet__text__hashtags_tag}
                         key={index}
                       >
                         #{tag}
@@ -337,23 +325,23 @@ export default function PostBox({
             </div>
 
             {/* 트윗 이미지 콘텐츠 */}
-            {postType === "xweet" && post?.imageUrl && (
-              <div className={styled.xweet__image}>
+            {postType === "tweet" && post?.imageUrl && (
+              <div className={styled.tweet__image}>
                 <img src={post?.imageUrl} alt="uploaded file" loading="lazy" />
               </div>
             )}
             {/* 답글 이미지 콘텐츠 */}
-            {postType === "reply" && data?.imageUrl && (
-              <div className={styled.xweet__image}>
-                <img src={data?.imageUrl} alt="uploaded file" loading="lazy" />
+            {postType === "reply" && reply?.imageUrl && (
+              <div className={styled.tweet__image}>
+                <img src={reply?.imageUrl} alt="uploaded file" loading="lazy" />
               </div>
             )}
           </Link>
         </div>
 
         {/* 트윗 액션버튼 바 */}
-        {!detailPost && postType === "xweet" && (
-          <nav className={styled.xweet__actions}>
+        {!detailPost && postType === "tweet" && (
+          <nav className={styled.tweet__actions}>
             <div className={`${styled.actionBox} ${styled.like}`}>
               <div className={styled.actions__icon} onClick={toggleLike}>
                 {user && post?.likes?.includes(user.uid) ? (
@@ -379,33 +367,67 @@ export default function PostBox({
               </div>
 
               <div className={styled.actions__text}>
-                <p>{post?.replies?.length || 0}</p>
+                <p>{reply?.length}</p>
+              </div>
+            </div>
+          </nav>
+        )}
+
+        {/* 답글 액션버튼 바 */}
+        {detailPost && postType === "reply" && (
+          <nav className={styled.tweet__actions}>
+            <div className={`${styled.actionBox} ${styled.like}`}>
+              <div className={styled.actions__icon} onClick={toggleLike}>
+                {user && reply?.likes?.includes(user.uid) ? (
+                  <FaHeart />
+                ) : (
+                  <FaRegHeart />
+                )}
+              </div>
+              <div className={styled.actions__text}>
+                <p>{reply?.likeCount || 0}</p>
+              </div>
+            </div>
+
+            <div className={`${styled.actionBox} ${styled.reply}`}>
+              {/* <Link to={`/posts/${post?.id}`}>
+                <div className={styled.actions__icon}>
+                  <FaRegComment />
+                </div>
+              </Link> */}
+
+              <div className={styled.actions__icon} onClick={toggleReplyModal}>
+                <FaRegComment />
+              </div>
+
+              <div className={styled.actions__text}>
+                <p>{reply?.length || 0}</p>
               </div>
             </div>
           </nav>
         )}
 
         {/* 디테일 액션버튼 바 */}
-        {detailPost && postType === "xweet" && (
-          <nav className={styled.xweet__actions_detail}>
-            {(post?.replies || post?.likes) && (
+        {detailPost && postType === "tweet" && (
+          <nav className={styled.tweet__actions_detail}>
+            {reply?.length !== 0 && post?.likes?.length !== 0 && (
               <div className={styled.actions__text}>
                 <div className={styled.reply__text}>
-                  <span>{post?.replies?.length}</span>
+                  <span>{reply?.length || 0}</span>
                   <span> {t("TAB_REPLY")}</span>
                 </div>
-                {/* // <div className={styled.rexweet__text}>
-                //   {post.rexweet?.length === 0 ? (
+                {/* // <div className={styled.retweet__text}>
+                //   {post.retweet?.length === 0 ? (
                 //     ""
                 //   ) : (
                 //     <>
-                //       <span>{xweetObj.rexweet?.length}</span>
+                //       <span>{tweetObj.retweet?.length}</span>
                 //       <span> 리트윗</span>
                 //     </>
                 //   )}
                 // </div> */}
                 <div className={styled.like__text}>
-                  <span>{post?.likes?.length}</span>
+                  <span>{post?.likes?.length || 0}</span>
                   <span> {t("ACTION_LIKES")}</span>
                 </div>
               </div>
@@ -420,9 +442,9 @@ export default function PostBox({
                 </div>
               </div>
               {/* <div
-                className={`${styled.rexweetBox} ${rexweet && styled.rexweet}`}
+                className={`${styled.retweetBox} ${retweet && styled.retweet}`}
               >
-                <div className={styled.actions__icon} onClick={toggleRexweet}>
+                <div className={styled.actions__icon} onClick={toggleRetweet}>
                   <FiRepeat />
                 </div>
               </div> */}
@@ -449,8 +471,9 @@ export default function PostBox({
         )}
       </li>
       {editModal && (
-        <EditXweetModal
+        <EditTweetModal
           detailId={detailId}
+          postType={postType}
           editModal={editModal}
           setEditModal={setEditModal}
         />

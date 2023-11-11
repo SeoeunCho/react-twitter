@@ -26,7 +26,7 @@ export default function ExplorePage() {
 
   useEffect(() => {
     if (user) {
-      let postsRef = collection(db, "posts");
+      let postsRef = collection(db, "Posts");
       let postsQuery = query(
         postsRef,
         where("hashTags", "array-contains-any", [tagQuery]),
@@ -61,10 +61,10 @@ export default function ExplorePage() {
           posts?.map((post) => (
             <PostBox
               post={post}
-              data={null}
+              reply={null}
               detailId={post.id}
               key={post.id}
-              postType={"xweet"}
+              postType={"tweet"}
               detailPost={false}
             />
           ))

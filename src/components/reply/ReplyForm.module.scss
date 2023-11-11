@@ -1,10 +1,10 @@
 /* 리플 */
-.xweet__reply {
+.tweet__reply {
   display: none;
   align-items: center;
   margin-top: 12px;
   height: 16px;
-  color: var(--grayBorder);
+  color: var(--grayDeepDark);
 }
 
 .select {
@@ -12,14 +12,14 @@
   transition: all 0.2s;
 }
 
-.xweet__reply .xweet__replyIcon {
+.tweet__reply .tweet__replyIcon {
   width: 64px;
   display: flex;
   justify-content: flex-end;
   margin-right: 12px;
 }
 
-.xweet__reply svg {
+.tweet__reply svg {
   width: 16px;
   height: 16px;
   transform: scaleX(-1);
@@ -28,21 +28,21 @@
   justify-content: center;
 }
 
-.xweet__reply .xweet__replyText {
+.tweet__reply .tweet__replyText {
   display: flex;
 }
 
-.xweet__reply .xweet__replyText p {
+.tweet__reply .tweet__replyText p {
   font-size: 12px;
 }
 
-.xweet__reply .xweet__replyText p:first-child {
+.tweet__reply .tweet__replyText p:first-child {
   font-weight: 700;
-  color: var(--mainColor);
+  color: var(--primary);
   cursor: pointer;
 }
 
-.xweet__reply .xweet__replyText p:first-child:hover {
+.tweet__reply .tweet__replyText p:first-child:hover {
   text-decoration: underline;
 }
 
@@ -53,11 +53,7 @@
   background-color: white;
   padding: 16px;
   box-sizing: border-box;
-  border-bottom: 1px solid var(--border);
-}
-
-.replyForm.modalBorer {
-  border-radius: 16px;
+  border-bottom: 1px solid var(--grayLight);
 }
 
 .replyForm.modalBorder {
@@ -70,7 +66,7 @@
   width: 100%;
 }
 
-.xweet__profile {
+.tweet__profile {
   margin-right: 12px;
   height: 100%;
 }
@@ -97,18 +93,18 @@
   outline: none;
   resize: none;
   border: none;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--grayLight);
   font-weight: 500;
   font-size: 20px;
   margin-bottom: 6px;
   font-size: 16px;
   line-height: 24px;
-  caret-color: #429170;
+  caret-color: var(--primary);
 }
 
 .replyInput__input::placeholder {
   font-weight: 400;
-  color: var(--placehoder);
+  color: var(--grayDark);
 }
 
 .focus textarea::placeholder {
@@ -153,11 +149,11 @@
   justify-content: center;
   width: 20px;
   height: 20px;
-  color: var(--mainColor);
+  color: var(--primary);
 }
 
 .replyInput__icon:hover {
-  background-color: var(--btnLightBorder);
+  background-color: var(--quaternary);
 }
 
 /* 배경 아이콘 */
@@ -196,7 +192,7 @@
 }
 
 .replyInput__arrow {
-  background-color: var(--mainColor);
+  background-color: var(--primary);
   padding: 10px 16px;
   margin-left: auto;
   text-align: center;
@@ -209,12 +205,12 @@
 }
 
 .replyInput__arrow:hover {
-  background-color: var(--btnBgHover);
+  background-color: var(--active);
   cursor: pointer;
 }
 
 .replyInput__arrow:disabled {
-  background-color: var(--btnBgDisabled);
+  background-color: var(--disabled);
   transition: all 0.3s;
   cursor: auto;
 }
@@ -255,14 +251,14 @@
   border-radius: 50%;
   font-size: 25px;
   background-color: #0f1419bf;
-  color: #fff;
+  color: white;
 }
 
 .replyForm__clear:hover {
 }
 
 @media screen and (max-width: 500px) {
-  .xweet__profile {
+  .tweet__profile {
   }
 
   .replyInput__iconBox .replyInput__icon.emoji__icon {

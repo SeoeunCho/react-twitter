@@ -2,9 +2,13 @@ import { BiCheck } from "react-icons/bi";
 import { IoMdExit } from "react-icons/io";
 import { GoTriangleDown } from "react-icons/go";
 import styled from "./LogoutModal.module.scss";
+import useTranslation from "hooks/useTranslation";
 
-export default function LogoutModal({ userInfo, onLogOutClick }: any) {
-  
+const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
+
+export default function LogoutModal({ user, onLogOutClick }: any) {
+  const t = useTranslation();
+
   return (
     <div className={styled.container__box}>
       <div className={styled.container}>
@@ -12,14 +16,14 @@ export default function LogoutModal({ userInfo, onLogOutClick }: any) {
           <div className={styled.leftBar__userInfo}>
             <div className={styled.userInfo__profile}>
               <img
-                src={userInfo.photoURL}
+                src={user.photoURL || PROFILE_DEFAULT_URL}
                 alt="profileImg"
                 className={styled.profile__image}
               />
             </div>
             <div className={styled.userInfo__name}>
-              <p>{userInfo.displayName}</p>
-              <p>@{userInfo?.email?.split("@")[0]}</p>
+              <p>{user.displayName || user?.email?.split("@")[0]}</p>
+              <p>@{user?.email?.split("@")[0]}</p>
             </div>
             <div className={styled.userInfo__etc}>
               <BiCheck />
@@ -33,11 +37,12 @@ export default function LogoutModal({ userInfo, onLogOutClick }: any) {
           <div className={styled.userInfo__etc}>
             <IoMdExit />
           </div>
-          <p>로그아웃</p>
+          <p>{t("MENU_LOGOUT")}</p>
         </div>
-      </div>
-      <div className={styled.box__triangle}>
-        <GoTriangleDown />
+        <div className={styled.box__triangle_none}></div>
+        <div className={styled.box__triangle}>
+          <GoTriangleDown />
+        </div>
       </div>
     </div>
   );

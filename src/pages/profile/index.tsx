@@ -37,7 +37,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (user) {
-      let postsRef = collection(db, "posts");
+      let postsRef = collection(db, "Posts");
       const myPostQuery = query(
         postsRef,
         where("uid", "==", user.uid),
@@ -124,7 +124,14 @@ export default function ProfilePage() {
           <div className="post">
             {myPosts?.length > 0 ? (
               myPosts?.map((post) => (
-                <PostBox post={post} data={null} detailId={post.id} key={post.id} postType={"xweet"} detailPost={false} />
+                <PostBox
+                  post={post}
+                  reply={null}
+                  detailId={post.id}
+                  key={post.id}
+                  postType={"tweet"}
+                  detailPost={false}
+                />
               ))
             ) : (
               <div className="post__no-posts">
@@ -138,7 +145,14 @@ export default function ProfilePage() {
           <div className="post">
             {likePosts?.length > 0 ? (
               likePosts?.map((post) => (
-                <PostBox post={post} data={null} detailId={post.id} key={post.id} postType={"xweet"} detailPost={false} />
+                <PostBox
+                  post={post}
+                  reply={null}
+                  detailId={post.id}
+                  key={post.id}
+                  postType={"tweet"}
+                  detailPost={false}
+                />
               ))
             ) : (
               <div className="post__no-posts">

@@ -9,9 +9,9 @@ import { getAuth, signOut } from "firebase/auth";
 import { app } from "firebaseApp";
 import { toast } from "react-toastify";
 
-import XweetModal from "components/modal/XweetModal";
+import TweetModal from "components/modal/TweetModal";
 import LogoutModal from "components/modal/LogoutModal";
-import useLogoutModalClick from "hooks/useLogoutModalClick";
+import useHandleOutsideClick from "hooks/useHandleOutsideClick";
 import styled from "./LeftMenu.module.scss";
 
 import useTranslation from "hooks/useTranslation";
@@ -20,17 +20,23 @@ import AuthContext from "context/AuthContext";
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
 export default function LeftMenu() {
+  const userLogoutRef = useRef<HTMLInputElement>(null);
   const [selected, setSelected] = useState<number>(1);
   const [size, setSize] = useState<number>(window.innerWidth);
   const [resize, setResize] = useState<boolean>(false);
-  const [xweetModal, setXweetModal] = useState<boolean>(false);
+  const [tweetModal, setTweetModal] = useState<boolean>(false);
+  const [userLogout, setUserLogout] = useState<boolean>(false);
 
   const { user } = useContext(AuthContext);
-  const userLogoutRef = useRef<any>();
-  const { userLogout, setUserLogout } = useLogoutModalClick(userLogoutRef);
 
   const location = useLocation();
   const t = useTranslation();
+
+  useHandleOutsideClick({
+    ref: userLogoutRef,
+    isModal: userLogout,
+    setIsModal: setUserLogout,
+  });
 
   const onSelect = (num: number) => {
     setSelected(num);
@@ -45,8 +51,8 @@ export default function LeftMenu() {
     }
   };
 
-  const toggleXweetModal = () => {
-    setXweetModal((prev) => !prev);
+  const toggleTweetModal = () => {
+    setTweetModal((prev) => !prev);
   };
 
   const toggleLogoutModal = () => {
@@ -59,12 +65,12 @@ export default function LeftMenu() {
     if (size < 500) {
       setResize(true);
       if (location.pathname.includes("bookmark")) {
-        // history.push("/profile/bookmarkxweets/" + userObj.email);
+        // history.push("/profile/bookmarktweets/" + userObj.email);
       }
     } else if (size > 500) {
       setResize(false);
       if (location.pathname.includes("bookmark")) {
-        // history.push("/bookmark/xweets");
+        // history.push("/bookmark/tweets");
       }
     }
 
@@ -86,7 +92,7 @@ export default function LeftMenu() {
       setSelected(3);
     } else if (location.pathname.includes(`/profile/${user?.email}`)) {
       setSelected(4);
-    } 
+    }
     // else if (location.pathname.includes("/bookmark")) {
     //   setSelected(5);
     // }
@@ -199,7 +205,7 @@ export default function LeftMenu() {
                 </li>
               </ul>
             </nav>
-            <div className={styled.leftMenu__xweet} onClick={toggleXweetModal}>
+            <div className={styled.leftMenu__tweet} onClick={toggleTweetModal}>
               <div>
                 <span>{t("BUTTON_TWEET")}</span>
                 <FaFeatherAlt />
@@ -208,7 +214,7 @@ export default function LeftMenu() {
           </div>
           <div style={{ position: "relative" }} ref={userLogoutRef}>
             {userLogout && (
-              <LogoutModal userInfo={user} onLogOutClick={onLogOutClick} />
+              <LogoutModal user={user} onLogOutClick={onLogOutClick} />
             )}
             <section className={styled.leftMenu__user}>
               <div
@@ -223,7 +229,7 @@ export default function LeftMenu() {
                   />
                 </div>
                 <div className={styled.userInfo__name}>
-                  <p>{user?.displayName}</p>
+                  <p>{user?.displayName || user?.email?.split("@")[0]}</p>
                   <p>@{user?.email?.split("@")[0]}</p>
                 </div>
                 <div className={styled.userInfo__etc}>
@@ -234,8 +240,8 @@ export default function LeftMenu() {
           </div>
         </div>
       </section>
-      {xweetModal && (
-        <XweetModal xweetModal={xweetModal} setXweetModal={setXweetModal} />
+      {tweetModal && (
+        <TweetModal tweetModal={tweetModal} setTweetModal={setTweetModal} />
       )}
     </>
   );

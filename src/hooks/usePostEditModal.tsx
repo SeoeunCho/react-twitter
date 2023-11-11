@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
 export default function usePostEditModalClick(etcRef: any) {
-  const [nweetEtc, setNweetEtc] = useState(false);
+  const [tweetEtc, setNweetEtc] = useState(false);
 
   useEffect(() => {
-    // nweetEct가 true면 return;으로 인해 함수 종료(렌더 후 클릭 시 에러 방지)
-    if (!nweetEtc) return;
+    // tweetEct가 true면 return;으로 인해 함수 종료(렌더 후 클릭 시 에러 방지)
+    if (!tweetEtc) return;
 
     const handleClick = (e: any) => {
       if (!etcRef.current.contains(e.target)) {
@@ -16,7 +16,7 @@ export default function usePostEditModalClick(etcRef: any) {
     };
     window.addEventListener("click", handleClick);
     return () => window.removeEventListener("click", handleClick);
-  }, [etcRef, nweetEtc]);
+  }, [etcRef, tweetEtc]);
 
-  return { nweetEtc, setNweetEtc };
+  return { tweetEtc, setNweetEtc };
 }

@@ -3,31 +3,46 @@ import PostBox from "components/posts/PostBox";
 
 export interface ReplyProps {
   id: string;
-  reply: string;
+  postId: string;
+  email: string;
+  content: string;
   createdAt: any;
   uid: string;
   profileUrl: string | null;
-  email: string;
+  likes?: string[];
+  likeCount?: number;
   imageUrl: string;
   displayName: string;
 }
 
 interface ReplyBoxProps {
-  data: ReplyProps;
+  reply: ReplyProps[];
   post: PostProps;
+  detailId: string;
+  postType: string;
+  detailPost: boolean;
 }
 
-export default function ReplyBox({ data, post }: ReplyBoxProps) {
+export default function ReplyBox({
+  reply,
+  post,
+  detailId,
+  postType,
+  detailPost,
+}: ReplyBoxProps) {
   return (
     <>
-      <PostBox
-        post={post}
-        data={data}
-        detailId={post.id}
-        key={data.uid}
-        postType={"reply"}
-        detailPost={true}
-      />
+      {reply &&
+        reply?.map((item: ReplyProps, index: number) => (
+          <PostBox
+            post={post}
+            reply={item}
+            detailId={item.id}
+            key={index}
+            postType={"reply"}
+            detailPost={true}
+          />
+        ))}
     </>
   );
 }

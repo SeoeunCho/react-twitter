@@ -13,8 +13,8 @@
     padding: 0 16px;
     width: 100%;
     height: 100vh;
-    background: #fff;
-    border-right: 1px solid #ebebeb;
+    background: white;
+    border-right: 1px solid var(--grayLight);
 
     /* 트위터 로고 */
     .leftMenu__logobox {
@@ -49,7 +49,7 @@
           justify-content: center;
           width: 24px;
           height: 24px;
-          color: var(--mainColor);
+          color: var(--primary);
         }
 
         &:hover::after {
@@ -88,7 +88,7 @@
             transition: all 0.3s;
 
             &:hover {
-              background-color: #e9eff1;
+              background-color: var(--grayLightSky);
             }
           }
         }
@@ -112,7 +112,7 @@
     }
 
     &:hover {
-      background-color: var(--btnLightBorder);
+      background-color: var(--grayLightSky);
     }
 
     .leftMenu__userInfo {
@@ -133,7 +133,7 @@
 
         p:last-child {
           font-size: 14px;
-          color: var(--btnBgHover);
+          color: var(--active);
         }
       }
 
@@ -168,7 +168,7 @@
 }
 
 /* 트윗하기 */
-.leftMenu__xweet {
+.leftMenu__tweet {
   display: flex;
   align-items: center;
   width: 100%;
@@ -186,8 +186,8 @@
     padding: 12px;
     min-width: 52px;
     min-height: 52px;
-    background: var(--mainColor);
-    box-shadow: 0px 5px 5px var(--btnLightBorder);
+    background: var(--primary);
+    box-shadow: 0px 5px 5px var(--quaternary);
     border-radius: 9999px;
     transition: all 0.2s;
     user-select: none;
@@ -196,7 +196,7 @@
     font-weight: bold;
 
     &:hover {
-      background: var(--btnBgHover);
+      background: var(--active);
     }
   }
 }
@@ -238,7 +238,7 @@
 
   .container .wrapper .leftMenu__logobox,
   .leftMenu__container ul li,
-  .leftMenu__xweet {
+  .leftMenu__tweet {
     justify-content: center;
   }
 
@@ -258,7 +258,7 @@
     }
   }
 
-  .leftMenu__xweet {
+  .leftMenu__tweet {
     span {
       display: none;
     }
@@ -290,7 +290,7 @@
     right: 0;
     bottom: 0;
     z-index: 10;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--grayLight);
 
     .wrapper {
       position: relative;
@@ -350,7 +350,7 @@
   }
 
   .container .wrapper .leftMenu__category .leftMenu__logobox,
-  .container .wrapper .leftMenu__category .leftMenu__xweet,
+  .container .wrapper .leftMenu__category .leftMenu__tweet,
   .container .wrapper .leftMenu__user {
     display: none;
   }

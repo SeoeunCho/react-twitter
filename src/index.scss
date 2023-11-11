@@ -4,21 +4,25 @@
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&family=Noto+Sans+KR:wght@100;300;400;500;700&family=Noto+Sans:wght@100;300;400;500;700&display=swap");
 
 :root {
-  --mainColor: #4da0eb;
-  --subColor: rgb(112, 188, 255);
-  --btnBorder: #a6d0f5;
-  --btnLightBorder: #d2e3fc;
-  --btnBgHover: #4472c4;
-  --btnBgDisabled: #4da1eb80;
+  --primary: #4da0eb;
+  --secondary: #70bcff;
+  --tertiary: #a6d0f5;
+  --quaternary: #d2e3fc;
+  --active: #4472c4;
+  --disabled: #4da1eb80;
+  --darkBlue: #536171;
+
   --gray: #dddddd;
-  --grayBorder: #586571;
-  --grayBg: #ececec;
-  --lightGray: rgb(239, 243, 244);
-  --lightGrayHover: rgb(230, 230, 230);
-  --danger: rgb(235, 0, 0);
-  --border: #ebebeb;
-  --placehoder: #9e9e9e;
-  --placehoderLight: #bbbaba;
+  --grayDarkLight: #bbbaba;
+  --grayDark: #9e9e9e;
+  --grayDeepDark: #586572;
+
+  --lightGrayHover: #e6e6e6;
+  --grayLight: #ececec;
+  --grayPale: #f6f6f6;
+  --grayLightSky: rgba(105, 145, 214, 0.12);
+
+  --red: #f9183d;
 }
 
 // 전체 레이아웃
@@ -65,6 +69,15 @@ form {
 
 /* 버튼 */
 .button {
+  padding: 0.2rem 0.8rem;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1.25rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
   &:disabled {
     opacity: 0.5;
   }
@@ -76,7 +89,7 @@ form {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--mainColor);
+  background: var(--primary);
   border-radius: 10px;
   background-clip: padding-box;
   border: 5px solid transparent;
@@ -99,7 +112,7 @@ form {
   flex: 1 1 auto;
   max-width: 600px;
   /* width: 100%; */
-  border-right: 1px solid var(--border);
+  border-right: 1px solid var(--grayLight);
   padding-bottom: 57px;
 }
 
@@ -112,7 +125,7 @@ form {
   align-items: center;
 
   .render__logo {
-    color: var(--btnBorder);
+    color: var(--tertiary);
     font-size: 80px;
   }
 }
@@ -133,7 +146,7 @@ form {
     z-index: 3;
     width: 100%;
     // height: 60px;
-    // border-bottom: 1px solid var(--border);
+    // border-bottom: 1px solid var(--grayLight);
     background-color: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(12px);
 
@@ -147,8 +160,8 @@ form {
       width: 100%;
       height: 53px;
       user-select: none;
-      background: #fff;
-      border-bottom: 1px solid var(--border);
+      background: white;
+      border-bottom: 1px solid var(--grayLight);
 
       .container {
         display: inline-block;
@@ -168,7 +181,7 @@ form {
       }
 
       .container .btnBox:hover {
-        background: var(--grayBg);
+        background: var(--grayLight);
       }
 
       .container .btnBox p {
@@ -193,7 +206,7 @@ form {
         bottom: 0;
         content: "";
         display: block;
-        background: var(--mainColor);
+        background: var(--primary);
       }
 
       @media screen and (max-width: 500px) {
@@ -226,7 +239,7 @@ form {
   height: 60px;
   font-size: 20px;
   font-weight: bold;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--grayLight);
   background-color: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   padding: 0 16px;
@@ -264,7 +277,7 @@ form {
     }
 
     &:hover::after {
-      background: var(--grayBg);
+      background: var(--grayLight);
     }
   }
 
@@ -296,7 +309,7 @@ form {
 
     &:hover {
       &::after {
-        background: var(--grayBg);
+        background: var(--grayLight);
       }
     }
   }
@@ -313,7 +326,7 @@ form {
   height: 60px;
   font-size: 20px;
   font-weight: bold;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid var(--grayLight);
   background-color: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   padding: 0 16px;
@@ -387,7 +400,7 @@ form {
       /* margin-top: 4px; */
       font-size: 13px;
       font-weight: 400;
-      color: #53716a;
+      color: var(--disabled);
     }
   }
 
@@ -442,157 +455,66 @@ form {
   }
 }
 
-/*이하 오리지널 삭제필요*/
+/* 정보 없을 때 */
+.noInfoBox {
+  word-break: keep-all;
 
-// $background: #1e293b;
-// $activeBg: #3c495f5f;
-// $white: #ffffff;
-// $backgroundLight: #263340;
-// $border: #708090;
-// $primaryColor: #60a5fa;
-// $activeBorder: #3b82f6;
-// $grayText: #9ca3af;
-// $danger: #dc2626;
-// $dangerDark: #dc26268e;
-// $gray: #6b7280;
-// $grayDark: #4c515b;
+  .noInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 400px;
+    margin: 32px auto;
+    // padding: 0 32px;
+    text-align: center;
+    letter-spacing: -0.5px;
 
-// $font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-//   "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-
-// * {
-//   background-color: var(--background);
-//   color: white;
-// }
-
-// body {
-//   margin: 0;
-//   font-family: $font;
-//   -webkit-font-smoothing: antialiased;
-//   -moz-osx-font-smoothing: grayscale;
-// }
-
-.layout {
-  max-width: 600px;
-  margin: 0 auto;
-  position: relative;
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  min-height: 100vh;
-}
-
-.button {
-  padding: 0.2rem 0.8rem;
-  border-radius: 999px;
-  font-size: 12px;
-  line-height: 1.25rem;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-
-  &:disabled {
-    opacity: 0.5;
-  }
-}
-
-.transparent {
-  background-color: transparent;
-  backdrop-filter: blur(10px);
-}
-
-.sticky {
-  width: 100%;
-  position: sticky;
-  max-width: 600px;
-  margin: 0 auto;
-  top: 0;
-}
-
-// footer
-.footer {
-  position: fixed;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 10;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: transparent;
-  color: white;
-
-  &__grid {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    background-color: transparent;
-
-    &--text {
-      background-color: transparent;
+    img {
+      margin: 16px 0 20px;
+      width: 300px;
     }
 
-    button {
-      border: none;
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      align-items: center;
+    h2 {
+      font-size: 31px;
+      font-weight: 700;
+      line-height: 40px;
+      margin-bottom: 12px;
+    }
+
+    p {
       font-size: 15px;
-      background-color: transparent;
-      padding: 16px 0px;
-      backdrop-filter: blur(10px);
+      line-height: 20px;
+      color: #536471;
+    }
+  }
+}
 
-      svg {
-        backdrop-filter: blur(10px);
-        background-color: transparent;
+@media screen and (max-width: 687px) {
+  .noInfoBox {
+    .noInfo {
+      width: 100%;
+
+      img {
+        margin: 10px 0 15px;
+      }
+
+      h2 {
+        font-size: 26px;
+        line-height: 35px;
       }
     }
   }
 }
 
-@include xsMobile {
-  .footer {
-    display: none;
-  }
-
-  .layout {
-    border: none;
-  }
-}
-
-@include mobile {
-  .footer {
-    &__grid {
-      &--text {
-        display: none;
-      }
-      button {
-        font-size: 20px;
-      }
-    }
-  }
-
-  .layout {
-    border: none;
-  }
-}
-
-@include tablet {
-  .footer {
-    &__grid {
-      &--text {
-        display: none;
-      }
-      button {
-        font-size: 24px;
-      }
-    }
-  }
-
-  .layout {
-    border: none;
-  }
-}
+//
+//
+//
+//
+//
+//
+/*이하 오리지널 삭제필요*/
+//
 
 // home 레이아웃
 .home {
@@ -612,14 +534,12 @@ form {
     font-weight: 600;
 
     &:focus {
-      border: 1px solid var(--primaryColor);
+      border: 1px solid var(--primary);
       background-color: var(--activeBg);
     }
   }
 
   &__top {
-    @extend .transparent;
-    @extend .sticky;
   }
 
   &__title {
@@ -646,7 +566,7 @@ form {
 
     &--active {
       font-weight: 700;
-      border-bottom: 2px solid var(--activeBorder);
+      border-bottom: 2px solid var(--activegrayLight);
     }
 
     &:hover,
@@ -689,11 +609,11 @@ form {
   &__clear-btn {
     @extend .button;
     padding: 0.2rem 0.8rem;
-    background-color: var(--danger);
+    background-color: var(--red);
 
     &:hover,
     &:focus {
-      background-color: var(--dangerDark);
+      background-color: var(--redDark);
     }
   }
 
@@ -708,7 +628,7 @@ form {
 
   &__hashtags {
     padding: 16px;
-    // border-bottom: 1px solid var(--border);
+    // border-bottom: 1px solid var(--grayLight);
 
     &-outputs {
       display: flex;
@@ -720,8 +640,8 @@ form {
 
     &-tag {
       font-size: 12px;
-      border: 1px solid var(--mainColor);
-      color: var(--mainColor);
+      border: 1px solid var(--primary);
+      color: var(--primary);
       border-radius: 10px;
       padding: 4px 8px;
       margin-right: 6px;
@@ -730,8 +650,8 @@ form {
 
       &:hover,
       &:focus {
-        color: var(--activeBorder);
-        border: 1px solid var(--activeBorder);
+        color: var(--activegrayLight);
+        border: 1px solid var(--activegrayLight);
       }
     }
   }
@@ -746,7 +666,7 @@ form {
     resize: none;
     outline: none;
     font-size: 20px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--grayLight);
 
     &::placeholder {
       // font-family: --font;
@@ -759,7 +679,7 @@ form {
     display: flex;
     padding: 0.75rem 1rem;
     justify-content: space-between;
-    // border-bottom: 1px solid var(--border);
+    // border-bottom: 1px solid var(--grayLight);
     align-items: center;
 
     .post-form__file {
@@ -778,7 +698,7 @@ form {
   &__submit-btn {
     @extend .button;
     padding: 0.5rem 1rem;
-    background-color: var(--primaryColor);
+    background-color: var(--primary);
   }
 }
 
@@ -831,7 +751,7 @@ form {
     background-color: var(--gray);
 
     &:hover {
-      background-color: var(--mainColor);
+      background-color: var(--primary);
       color: white;
     }
   }
@@ -840,12 +760,12 @@ form {
     display: inline-block;
     @extend .button;
     background-color: white;
-    border: 1px solid var(--btnBorder);
-    color: var(--mainColor);
+    border: 1px solid var(--tertiary);
+    color: var(--primary);
 
     &:hover {
-      background-color: var(--lightGray);
-      color: var(--mainColor);
+      background-color: var(--grayLightSky);
+      color: var(--primary);
     }
   }
 
@@ -857,7 +777,7 @@ form {
 
   &__box {
     padding: 10px 0px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--grayLight);
 
     a {
       text-decoration: none;
@@ -894,11 +814,11 @@ form {
         @extend .button;
 
         &.post__delete {
-          background-color: var(--danger);
+          background-color: var(--red);
 
           &:hover,
           &:focus {
-            background-color: var(--dangerDark);
+            background-color: var(--redDark);
           }
         }
 
@@ -911,7 +831,7 @@ form {
 
           &:hover,
           &:focus {
-            background-color: var(--grayDark);
+            background-color: var(--grayDeepDark);
           }
         }
 
@@ -925,103 +845,6 @@ form {
           }
         }
       }
-    }
-  }
-}
-
-// form 레이아웃
-.form {
-  margin: 0 auto;
-  max-width: 680px;
-  padding: 20px;
-
-  input {
-    height: 20px;
-    padding: 10px;
-    border-radius: 0.3rem;
-    border: 1px solid lightgray;
-    width: 96%;
-    max-width: 680px;
-  }
-
-  &__block {
-    margin-top: 20px;
-    width: 100%;
-  }
-
-  &__block--lg {
-    margin-top: 28px;
-    width: 100%;
-  }
-
-  label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 10px;
-    margin-top: 20px;
-  }
-
-  &__btn--submit {
-    @extend .button;
-    width: 100%;
-    height: 48px;
-    font-weight: 600;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    margin: 0 auto;
-    color: white;
-    background-color: var(--primaryColor);
-
-    &:hover,
-    &:focus {
-      background-color: var(--activeBorder);
-    }
-  }
-
-  // &__title {
-  //   text-align: center;
-  //   font-size: 24px;
-  //   font-weight: 700;
-  //   padding-bottom: 20px;
-  // }
-
-  &__link {
-    margin-left: 10px;
-    text-decoration: none;
-    color: var(--grayText);
-
-    &:hover,
-    &:focus {
-      color: var(--gray);
-    }
-  }
-
-  &__error {
-    color: red;
-  }
-
-  &__btn--google {
-    @extend .form__btn--submit;
-    background-color: white;
-    color: var(--activeBorder);
-
-    &:hover,
-    &:focus {
-      background-color: var(--activeBorder);
-      color: white;
-    }
-  }
-
-  &__btn--github {
-    @extend .form__btn--submit;
-    background-color: black;
-    color: white;
-
-    &:hover,
-    &:focus {
-      background-color: var(--activeBg);
-      color: white;
     }
   }
 }
@@ -1047,11 +870,11 @@ form {
 
   &__btn {
     @extend .button;
-    background-color: var(--primaryColor);
+    background-color: var(--primary);
 
     &:hover,
     &:focus {
-      background-color: var(--activeBorder);
+      background-color: var(--activegrayLight);
     }
 
     &--language {
@@ -1060,7 +883,7 @@ form {
 
       &:hover,
       &:focus {
-        background-color: var(--grayDark);
+        background-color: var(--grayDeepDark);
       }
     }
   }
@@ -1081,57 +904,5 @@ form {
     font-size: 14px;
     color: var(--grayText);
     margin-bottom: 4px;
-  }
-}
-
-/* 정보 없을 때 */
-.noInfoBox {
-  word-break: keep-all;
-
-  .noInfo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 400px;
-    margin: 32px auto;
-    // padding: 0 32px;
-    text-align: center;
-    letter-spacing: -0.5px;
-
-    img {
-      margin: 16px 0 20px;
-      width: 300px;
-    }
-
-    h2 {
-      font-size: 31px;
-      font-weight: 700;
-      line-height: 40px;
-      margin-bottom: 12px;
-    }
-
-    p {
-      font-size: 15px;
-      line-height: 20px;
-      color: #536471;
-    }
-  }
-}
-
-@media screen and (max-width: 687px) {
-  .noInfoBox {
-    .noInfo {
-      width: 100%;
-
-      img {
-        margin: 10px 0 15px;
-      }
-
-      h2 {
-        font-size: 26px;
-        line-height: 35px;
-      }
-    }
   }
 }

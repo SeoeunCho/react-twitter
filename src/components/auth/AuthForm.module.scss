@@ -14,7 +14,7 @@
   height: 100%;
   padding: 10px;
   border-radius: 9999px;
-  border: 1px solid var(--btnBorder);
+  border: 1px solid var(--tertiary);
   background-color: white;
   margin-bottom: 10px;
   font-size: 12px;
@@ -37,27 +37,27 @@
 .authSubmit {
   cursor: pointer;
   height: 50px;
-  color: #fff;
-  background: var(--mainColor);
+  color: white;
+  background: var(--primary);
 }
 
 .authSubmit:hover {
-  background: var(--btnBgHover);
+  background: var(--active);
 }
 
 .authError {
   max-width: 400px;
   text-align: center;
   font-size: 14px;
-  color: var(--danger);
+  color: var(--red);
   letter-spacing: -0.5px;
   margin: 10px 0 20px;
 }
 
 .container .wrapper .authInput.select {
-  border: 1px solid var(--mainColor);
-  caret-color: var(--mainColor);
-  box-shadow: var(--mainColor) 0px 0px 0px 1px;
+  border: 1px solid var(--primary);
+  caret-color: var(--primary);
+  box-shadow: var(--primary) 0px 0px 0px 1px;
 }
 
 .separator {
@@ -75,7 +75,7 @@
     position: absolute;
     top: 8px;
     left: 0;
-    background-color: var(--lightGray);
+    background-color: var(--grayLightSky);
     height: 1px;
     width: 45%;
   }
@@ -84,7 +84,7 @@
     position: absolute;
     top: 8px;
     right: 0;
-    background-color: var(--lightGray);
+    background-color: var(--grayLightSky);
     height: 1px;
     width: 45%;
   }
@@ -97,6 +97,7 @@
   width: 100%;
   max-width: 400px;
   gap: 12px;
+  margin-bottom: 48px
 }
 
 .authBtn {
@@ -107,8 +108,7 @@
   text-align: center;
   width: 195px;
   background-color: white;
-  border: 1px solid var(--btnLightBorder);
-  margin-bottom: 48px;
+  border: 1px solid var(--quaternary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -116,7 +116,7 @@
 
   &:hover,
   &:focus {
-    border: 1px solid var(--btnBorder);
+    border: 1px solid var(--tertiary);
     background-color: rgba(66, 133, 244, 0.04);
   }
 }

@@ -1,4 +1,4 @@
-import styled from "./XweetModal.module.scss";
+import styled from "./TweetModal.module.scss";
 import Modal from "@mui/material/Modal";
 import { GrClose } from "react-icons/gr";
 import ReplyForm, { ReplyPropsBox } from "components/reply/ReplyForm";

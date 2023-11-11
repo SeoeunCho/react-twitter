@@ -1,31 +1,44 @@
-import { useContext, useRef, useState } from "react";
-import { collection, addDoc, doc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db, storage } from "firebaseApp";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadString,
+} from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
-
-import { IoCloseSharp, IoImageOutline } from "react-icons/io5";
-import { GrEmoji } from "react-icons/gr";
+import { PostProps } from "pages/home";
+import { EditFormProps } from "components/posts/PostEditForm";
 
 import Picker from "emoji-picker-react";
 import useEmojiModalOutClick from "hooks/useEmojiModalOutClick";
 import BarLoader from "components/loader/BarLoader";
-import styled from "./PostForm.module.scss";
+import styled from "../posts/PostForm.module.scss";
 
+import { GrEmoji } from "react-icons/gr";
+import { IoCloseSharp, IoImageOutline } from "react-icons/io5";
+
+import { useNavigate, useParams } from "react-router-dom";
 import AuthContext from "context/AuthContext";
 import useTranslation from "hooks/useTranslation";
 
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
-export default function PostForm({ tweetModal, setTweetModal }: any) {
+export default function ReplyEditForm({
+  detailId,
+  editModal,
+  setEditModal,
+}: EditFormProps) {
+  const [post, setPost] = useState<PostProps | null>(null);
   const [content, setContent] = useState<string>("");
   const [hashTag, setHashTag] = useState<string>("");
-  const [imageFile, setImageFile] = useState<string | null>("");
+  const [imageFile, setImageFile] = useState<string | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [progressBarCount, setProgressBarCount] = useState<number>(0);
-  // const [randomCount, setRandomCount] = useState<number>(1);
-  const [select, setSelect] = useState<string>("");
+
+  const [select, setSelect] = useState("");
   const fileInput = useRef<any>();
   const textRef = useRef<any>();
   const emojiRef = useRef<any>();
@@ -51,57 +64,71 @@ export default function PostForm({ tweetModal, setTweetModal }: any) {
     };
   };
 
+  console.log("post", post);
+
+  const getPost = useCallback(async () => {
+    if (detailId) {
+      const docRef = doc(db, "Posts", detailId);
+      const docSnap = await getDoc(docRef);
+      setPost({ ...(docSnap?.data() as PostProps), id: docSnap.id });
+      setContent(docSnap?.data()?.content);
+      setTags(docSnap?.data()?.hashTags);
+      setImageFile(docSnap?.data()?.imageUrl);
+    }
+  }, [detailId]);
+
   const onSubmit = async (e: any) => {
     e.preventDefault();
     setProgressBarCount(0); // 프로그레스 바 초기화
-    let imageUrl = "";
+
     //파일 경로 참조 만들기
     const key = `${user?.uid}/${uuidv4()}`;
     const storageRef = ref(storage, key);
 
     // 입력 값 없을 시 업로드 X
     if (content !== "") {
-      // 이미지 있을 때만 첨부
-      if (imageFile) {
-        //storage 참조 경로로 파일 업로드 하기
-        const data = await uploadString(storageRef, imageFile, "data_url");
-
-        // storage 참조 경로에 있는 파일의 URL을 다운로드해서 imageUrl 변수에 넣어서 업데이트
-        imageUrl = await getDownloadURL(data?.ref);
-      }
-
-      const addTweet = async () => {
-        // 업로드된 이미지의 download url 업데이트
-        await addDoc(collection(db, "Posts"), {
-          email: user?.email,
-          content: content,
-          createdAt: Date.now(),
-          uid: user?.uid,
-          profileUrl: user?.photoURL,
-          hashTags: tags,
-          imageUrl: imageUrl,
-          displayName: user?.displayName || user?.email?.split("@")[0],
-        })
-          .then(() => {
-            toast.success(t("UPDATE_POST_TOAST"));
-            setTags([]);
-            setHashTag("");
-            setContent("");
-            setSelect("");
-            setImageFile(null);
-            setProgressBarCount(0); // 프로그레스 바 초기화
-            if (!tweetModal) {
-              if (textRef.current) textRef.current.style.height = "52px";
-            } else {
-              setTweetModal(false);
+      const editPost = async () => {
+        try {
+          if (post) {
+            // 기존 사진 지우고 새로운 사진 업로드
+            if (post?.imageUrl) {
+              let imageRef = ref(storage, post?.imageUrl);
+              await deleteObject(imageRef).catch((error) => {
+                console.log(error);
+              });
             }
-          })
-          .catch((e: any) => {
-            // 에러 처리
-            console.log(e);
-            setProgressBarCount(0); // 프로그레스 바 초기화
-            clearInterval(interval);
-          });
+
+            // 새로운 파일 있다면 업로드
+            let imageUrl = "";
+
+            if (imageFile) {
+              console.log("imageFile", imageFile, "imageFile", imageUrl);
+              const data = await uploadString(
+                storageRef,
+                imageFile,
+                "data_url"
+              );
+              imageUrl = await getDownloadURL(data?.ref);
+            }
+
+            const postRef = doc(db, "Posts", post?.id);
+            await updateDoc(postRef, {
+              content: content,
+              hashTags: tags,
+              imageUrl: imageUrl,
+            });
+            toast.success(t("EDIT_POST_TOAST"));
+            // setImageFile(null);
+          }
+
+          if (!editModal) {
+            if (textRef.current) textRef.current.style.height = "52px";
+          } else {
+            setEditModal(false);
+          }
+        } catch (e: any) {
+          console.log("form error", e);
+        }
       };
 
       let start = 0;
@@ -111,11 +138,14 @@ export default function PostForm({ tweetModal, setTweetModal }: any) {
           start++; // progress 증가
         }
         if (start === 100) {
-          addTweet().then(() => {
-            clearInterval(interval);
-          });
+          editPost();
+          return;
         }
       });
+
+      return () => {
+        clearInterval(interval);
+      };
     } else {
       toast.error(t("SUBMIT_ERROR_TOAST"));
     }
@@ -153,8 +183,7 @@ export default function PostForm({ tweetModal, setTweetModal }: any) {
   };
 
   const handleDeleteImage = () => {
-    setImageFile("");
-    fileInput.current.value = ""; // 취소 시 파일 문구 없애기
+    setImageFile(null);
   };
 
   const onEmojiClick = (event: any) => {
@@ -165,10 +194,14 @@ export default function PostForm({ tweetModal, setTweetModal }: any) {
     setContent(textEmoji);
   };
 
+  useEffect(() => {
+    if (detailId) getPost();
+  }, [getPost, detailId]);
+
   return (
     <>
       {progressBarCount !== 0 && <BarLoader count={progressBarCount} />}
-      <div className={`${styled.postForm} ${tweetModal && styled.modalBorder}`}>
+      <div className={`${styled.postForm} ${editModal && styled.modalBorder}`}>
         <div className={styled.postInput__container}>
           <div className={styled.tweet__profile}>
             {user && (
@@ -253,7 +286,7 @@ export default function PostForm({ tweetModal, setTweetModal }: any) {
             <div className={styled.postInput__add}>
               <div className={styled.postInput__iconBox}>
                 <label
-                  htmlFor={tweetModal ? "modal-attach-file" : "attach-file"}
+                  htmlFor={editModal ? "modal-attach-file" : "attach-file"}
                   className={styled.postInput__label}
                 >
                   <div className={styled.postInput__icon}>
@@ -262,7 +295,7 @@ export default function PostForm({ tweetModal, setTweetModal }: any) {
                 </label>
                 <input
                   ref={fileInput}
-                  id={tweetModal ? "modal-attach-file" : "attach-file"}
+                  id={editModal ? "modal-attach-file" : "attach-file"}
                   type="file"
                   accept="image/*"
                   onChange={handleFileUpload}
@@ -291,7 +324,7 @@ export default function PostForm({ tweetModal, setTweetModal }: any) {
               </div>
               <input
                 type="submit"
-                value={t("BUTTON_TWEET")}
+                value={t("BUTTON_EDIT")}
                 className={styled.postInput__arrow}
                 disabled={content === "" && imageFile === ""}
               />

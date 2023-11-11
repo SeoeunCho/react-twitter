@@ -1,4 +1,4 @@
-.xweet {
+.tweet {
   background: white;
   position: relative;
   display: flex;
@@ -6,7 +6,7 @@
   justify-content: center;
   flex: 1 1 auto;
   color: rgba(0, 0, 0, 0.8);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--grayLight);
 
   &:hover {
     background: #ececec70;
@@ -20,28 +20,28 @@
   }
 }
 
-.xweet .xweet__wrapper {
+.tweet .tweet__wrapper {
   // cursor: pointer;
 }
 
 /* 리트윗 */
-.xweet__reXweet {
+.tweet__reTweet {
   display: flex;
   align-items: center;
   margin: 8px 0 -8px 0;
   height: 16px;
   font-weight: 500;
-  color: #53716a;
+  color: var(--darkBlue);
 }
 
-.xweet__reXweet .xweet__reXweetIcon {
+.tweet__reTweet .tweet__reTweetIcon {
   width: 64px;
   display: flex;
   justify-content: flex-end;
   margin-right: 12px;
 }
 
-.xweet__reXweet svg {
+.tweet__reTweet svg {
   width: 16px;
   height: 16px;
   transform: rotate(90deg);
@@ -50,18 +50,18 @@
   justify-content: center;
 }
 
-.xweet__reXweet p {
+.tweet__reTweet p {
   font-size: 12px;
 }
 
 /* 리플 */
-.xweet__reply {
+.tweet__reply {
   display: none;
   margin: 8px 0 -8px 0;
   padding: 0 16px;
   align-items: center;
   height: 16px;
-  color: var(--grayBorder);
+  color: var(--grayDeepDark);
 }
 
 .select {
@@ -69,32 +69,32 @@
   transition: all 0.2s;
 }
 
-.xweet__reply .xweet__replyText {
+.tweet__reply .tweet__replyText {
   display: flex;
 }
 
-.xweet__reply .xweet__replyText p {
+.tweet__reply .tweet__replyText p {
   font-size: 12px;
 }
 
-.xweet__reply .xweet__replyText p:first-child {
+.tweet__reply .tweet__replyText p:first-child {
   font-weight: 700;
-  color: var(--mainColor);
+  color: var(--primary);
   cursor: pointer;
 }
 
-.xweet__reply .xweet__replyText p:first-child:hover {
+.tweet__reply .tweet__replyText p:first-child:hover {
   text-decoration: underline;
 }
 
 /* 트윗 내용 */
-.xweet__container {
+.tweet__container {
   width: 100%;
   display: flex;
   padding: 16px 16px 0;
 }
 
-.xweet__profile {
+.tweet__profile {
   margin-right: 12px;
   height: 100%;
 }
@@ -151,16 +151,16 @@
 .userInfo .userInfo__name .userInfo__two {
   font-size: 14px;
   display: flex;
-  color: var(--grayBorder);
+  color: var(--grayDeepDark);
   align-items: baseline;
 }
 
-.xweet__createdAt {
+.tweet__createdAt {
   font-size: 12px;
 }
 
 /* 컨텐츠 */
-.xweet__content {
+.tweet__content {
   display: block;
   // cursor: pointer;
 
@@ -168,7 +168,7 @@
     cursor: auto;
   }
 
-  .xweet__text {
+  .tweet__text {
     /* 텍스트 */
     h4 {
       margin-bottom: 10px;
@@ -193,8 +193,8 @@
 
       &_tag {
         font-size: 12px;
-        border: 1px solid var(--mainColor);
-        color: var(--mainColor);
+        border: 1px solid var(--primary);
+        color: var(--primary);
         border-radius: 10px;
         padding: 4px 8px;
         margin-right: 6px;
@@ -203,8 +203,8 @@
 
         &:hover,
         &:focus {
-          color: var(--mainColor);
-          border: 1px solid var(--mainColor);
+          color: var(--primary);
+          border: 1px solid var(--primary);
         }
       }
 
@@ -212,14 +212,15 @@
         font-size: 14px;
         padding-bottom: 5px;
         padding-left: 5px;
-        color: var(--mainColor);
+        color: var(--primary);
+        width: 100%;
 
         &::placeholder {
-          color: var(--subColor);
+          color: var(--secondary);
         }
 
         &:focus {
-          color: var(--mainColor);
+          color: var(--primary);
         }
       }
     }
@@ -227,7 +228,7 @@
 }
 
 /* 텍스트 */
-.xweet__text {
+.tweet__text {
   font-size: 14px;
   padding: 0 16px;
   margin: 12px 0;
@@ -238,7 +239,7 @@
 }
 
 /* 이미지 */
-.xweet__image {
+.tweet__image {
   // cursor: pointer;
   width: 100%;
   height: 100%;
@@ -248,13 +249,13 @@
   margin-bottom: 16px;
 }
 
-.xweet__image img {
+.tweet__image img {
   width: 100%;
   height: 100%;
 }
 
 /* 수정 창 */
-.xweet__edit {
+.tweet__edit {
   .container {
     position: absolute;
     top: 10px;
@@ -280,7 +281,7 @@
   }
 
   .container .updateBtn {
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--grayLight);
   }
 
   .container .deleteBtn {
@@ -293,7 +294,7 @@
   }
 }
 
-.xweet__editIcon {
+.tweet__editIcon {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -310,7 +311,7 @@
   background: transparent;
 }
 
-.xweet__editIcon:hover .horizontal__bg {
+.tweet__editIcon:hover .horizontal__bg {
   display: block;
   position: absolute;
   width: 34px;
@@ -318,7 +319,7 @@
   background-color: rgba(51, 114, 88, 0.1);
 }
 
-.xweet__editIcon svg {
+.tweet__editIcon svg {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -326,7 +327,7 @@
 }
 
 /* 트윗 액션 바 ==== start */
-.xweet .xweet__actions {
+.tweet .tweet__actions {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
@@ -338,21 +339,21 @@
 }
 
 /* 트윗 액션 아이콘 */
-.xweet .xweet__actions .actionBox {
+.tweet .tweet__actions .actionBox {
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
 }
 
-.xweet .xweet__actions .actionBox .actions__icon {
+.tweet .tweet__actions .actionBox .actions__icon {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.xweet .xweet__actions .actionBox .actions__icon::after {
+.tweet .tweet__actions .actionBox .actions__icon::after {
   display: block;
   content: "";
   width: 34px;
@@ -363,11 +364,11 @@
   transition: all 0.2s;
 }
 
-.xweet .xweet__actions .actionBox:hover .actions__icon::after {
+.tweet .tweet__actions .actionBox:hover .actions__icon::after {
   background-color: #7ad3ae34;
 }
 
-.xweet .xweet__actions .actionBox .actions__icon svg {
+.tweet .tweet__actions .actionBox .actions__icon svg {
   width: 16px;
   height: 16px;
   display: flex;
@@ -377,27 +378,27 @@
 }
 
 /* 댓글 */
-.xweet .xweet__actions .actionBox.reply .actions__icon svg {
+.tweet .tweet__actions .actionBox.reply .actions__icon svg {
 }
 
-.xweet .xweet__actions .actionBox.reply:hover .actions__icon svg {
-  color: var(--mainColor);
+.tweet .tweet__actions .actionBox.reply:hover .actions__icon svg {
+  color: var(--primary);
 }
 
 /* 좋아요 */
-.xweet .xweet__actions .actionBox:nth-child(1):hover,
-.xweet .xweet__actions .actionBox:nth-child(1):hover .actions__icon svg,
-.xweet .xweet__actions .actionBox:nth-child(1).like .actions__icon svg,
-.xweet .xweet__actions .actionBox:nth-child(1).like:hover {
+.tweet .tweet__actions .actionBox:nth-child(1):hover,
+.tweet .tweet__actions .actionBox:nth-child(1):hover .actions__icon svg,
+.tweet .tweet__actions .actionBox:nth-child(1).like .actions__icon svg,
+.tweet .tweet__actions .actionBox:nth-child(1).like:hover {
   color: #f9183d;
 }
 
-.xweet .xweet__actions .actionBox:nth-child(1):hover .actions__icon::after {
+.tweet .tweet__actions .actionBox:nth-child(1):hover .actions__icon::after {
   background-color: #f918801a;
 }
 
 /* 트윗 액션 숫자 */
-.xweet .xweet__actions .actionBox .actions__text {
+.tweet .tweet__actions .actionBox .actions__text {
   max-width: 70px;
   white-space: nowrap;
   overflow: hidden;
@@ -407,47 +408,47 @@
   text-overflow: ellipsis;
 }
 
-.xweet .xweet__actions .actionBox p {
+.tweet .tweet__actions .actionBox p {
   padding: 0 12px;
   font-size: 12px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #53716a;
+  color: var(--darkBlue);
 }
 
 /* 좋아요 숫자 */
-.xweet .xweet__actions .actionBox.like p {
+.tweet .tweet__actions .actionBox.like p {
   color: #f9183d;
 }
 /* 트윗 액션 바 ==== end */
 
 /* 디테일 액션 바 ==== start */
-.xweet .xweet__actions_detail {
+.tweet .tweet__actions_detail {
   max-width: 100%;
   overflow: hidden;
   padding: 0 16px 0;
 }
 
-.xweet .xweet__actions_detail .actionBox {
+.tweet .tweet__actions_detail .actionBox {
   display: flex;
   justify-content: space-around;
   align-items: center;
   cursor: pointer;
-  border-top: 1px solid #ebebeb;
-  // border-bottom: 1px solid #ebebeb;
+  border-top: 1px solid var(--grayLight);
+  // border-bottom: 1px solid var(--grayLight);
   height: 48px;
 }
 
 /* 디테일 액션 아이콘 */
-.xweet .xweet__actions_detail .actionBox div .actions__icon {
+.tweet .tweet__actions_detail .actionBox div .actions__icon {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.xweet .xweet__actions_detail .actionBox div .actions__icon::after {
+.tweet .tweet__actions_detail .actionBox div .actions__icon::after {
   display: block;
   content: "";
   width: 38.5px;
@@ -458,11 +459,11 @@
   transition: all 0.2s;
 }
 
-.xweet .xweet__actions_detail .actionBox div:hover .actions__icon::after {
+.tweet .tweet__actions_detail .actionBox div:hover .actions__icon::after {
   background-color: #7ad3ae34;
 }
 
-.xweet .xweet__actions_detail .actionBox .actions__icon svg {
+.tweet .tweet__actions_detail .actionBox .actions__icon svg {
   width: 20px;
   height: 20px;
   display: flex;
@@ -472,46 +473,46 @@
 }
 
 /* 댓글 */
-.xweet .xweet__actions_detail .actionBox .reply:hover .actions__icon svg {
-  color: #429170;
+.tweet .tweet__actions_detail .actionBox .reply:hover .actions__icon svg {
+  color: var(--primary);
 }
 
 /* 좋아요 */
-.xweet .xweet__actions_detail .actionBox .likeBox:hover .actions__icon svg,
-.xweet .xweet__actions_detail .actionBox .like .actions__icon svg {
+.tweet .tweet__actions_detail .actionBox .likeBox:hover .actions__icon svg,
+.tweet .tweet__actions_detail .actionBox .like .actions__icon svg {
   color: #f9183d;
 }
 
-.xweet .xweet__actions_detail .actionBox .likeBox:hover .actions__icon::after {
+.tweet .tweet__actions_detail .actionBox .likeBox:hover .actions__icon::after {
   background-color: #f918801a;
 }
 
 /* 북마크 */
-.xweet .xweet__actions_detail .actionBox .bookmark,
-.xweet .xweet__actions_detail .actionBox .bookmark .actions__icon svg,
-.xweet .xweet__actions_detail .actionBox .bookmarkBox:hover .actions__icon svg {
-  color: #429170;
+.tweet .tweet__actions_detail .actionBox .bookmark,
+.tweet .tweet__actions_detail .actionBox .bookmark .actions__icon svg,
+.tweet .tweet__actions_detail .actionBox .bookmarkBox:hover .actions__icon svg {
+  color: var(--primary);
 }
 
 /* 리트윗 */
-.xweet .xweet__actions_detail .actionBox div:nth-child(2) .actions__icon svg {
+.tweet .tweet__actions_detail .actionBox div:nth-child(2) .actions__icon svg {
   transform: rotate(90deg);
 }
 
-.xweet .xweet__actions_detail .actionBox .rexweetBox:hover .actions__icon svg,
-.xweet .xweet__actions_detail .actionBox .rexweet .actions__icon svg {
+.tweet .tweet__actions_detail .actionBox .retweetBox:hover .actions__icon svg,
+.tweet .tweet__actions_detail .actionBox .retweet .actions__icon svg {
   color: #1d9bf0;
 }
-.xweet
-  .xweet__actions_detail
+.tweet
+  .tweet__actions_detail
   .actionBox
-  .rexweetBox:hover
+  .retweetBox:hover
   .actions__icon::after {
   background: #1d9bf01a;
 }
 
 /* 디테일 액션 숫자 */
-.xweet .xweet__actions_detail .actions__text {
+.tweet .tweet__actions_detail .actions__text {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -519,10 +520,10 @@
   align-items: center;
   height: 53px;
   padding: 16px 0px;
-  border-top: 1px solid #ebebeb;
+  border-top: 1px solid var(--grayLight);
 }
 
-.xweet .xweet__actions_detail .actions__text span {
+.tweet .tweet__actions_detail .actions__text span {
   font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
@@ -530,13 +531,13 @@
   letter-spacing: -0.5px;
 }
 
-.xweet .xweet__actions_detail .actions__text span:first-child {
+.tweet .tweet__actions_detail .actions__text span:first-child {
   font-weight: 700;
   color: #0f1419;
 }
 
-.xweet .xweet__actions_detail .actions__text span:last-child {
+.tweet .tweet__actions_detail .actions__text span:last-child {
   margin-right: 20px;
-  color: #53716a;
+  color: var(--darkBlue);
 }
 /* 디테일 액션 바 ==== end */

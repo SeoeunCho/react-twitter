@@ -16,32 +16,27 @@ import useEmojiModalOutClick from "hooks/useEmojiModalOutClick";
 import BarLoader from "components/loader/BarLoader";
 import styled from "./PostForm.module.scss";
 
-import { FiImage } from "react-icons/fi";
-import { BsReplyFill } from "react-icons/bs";
 import { GrEmoji } from "react-icons/gr";
 import { IoCloseSharp, IoImageOutline } from "react-icons/io5";
 
 import { useNavigate, useParams } from "react-router-dom";
-import { languageState } from "atom";
-import { useRecoilState } from "recoil";
-
 import AuthContext from "context/AuthContext";
 import useTranslation from "hooks/useTranslation";
 
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
+export interface EditFormProps {
+  detailId: string;
+  editModal: boolean;
+  setEditModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export default function PostEditForm({
   detailId,
   editModal,
   setEditModal,
-}: {
-  detailId: string;
-  editModal: boolean;
-  setEditModal: any;
-}) {
-  const params = useParams();
+}: EditFormProps) {
   const [post, setPost] = useState<PostProps | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [content, setContent] = useState<string>("");
   const [hashTag, setHashTag] = useState<string>("");
   const [imageFile, setImageFile] = useState<string | null>(null);
@@ -58,7 +53,6 @@ export default function PostEditForm({
 
   const { user } = useContext(AuthContext);
   const t = useTranslation();
-  const navigate = useNavigate();
 
   const handleFileUpload = (e: any) => {
     const {
@@ -77,7 +71,7 @@ export default function PostEditForm({
 
   const getPost = useCallback(async () => {
     if (detailId) {
-      const docRef = doc(db, "posts", detailId);
+      const docRef = doc(db, "Posts", detailId);
       const docSnap = await getDoc(docRef);
       setPost({ ...(docSnap?.data() as PostProps), id: docSnap.id });
       setContent(docSnap?.data()?.content);
@@ -120,15 +114,14 @@ export default function PostEditForm({
               imageUrl = await getDownloadURL(data?.ref);
             }
 
-            const postRef = doc(db, "posts", post?.id);
+            const postRef = doc(db, "Posts", post?.id);
             await updateDoc(postRef, {
               content: content,
               hashTags: tags,
               imageUrl: imageUrl,
             });
             toast.success(t("EDIT_POST_TOAST"));
-            setImageFile(null);
-            setIsSubmitting(false);
+            // setImageFile(null);
           }
 
           if (!editModal) {
@@ -213,7 +206,7 @@ export default function PostEditForm({
       {progressBarCount !== 0 && <BarLoader count={progressBarCount} />}
       <div className={`${styled.postForm} ${editModal && styled.modalBorder}`}>
         <div className={styled.postInput__container}>
-          <div className={styled.xweet__profile}>
+          <div className={styled.tweet__profile}>
             {user && (
               <img
                 src={user?.photoURL || PROFILE_DEFAULT_URL}
@@ -343,82 +336,5 @@ export default function PostEditForm({
         </div>
       </div>
     </>
-
-    // <div className="post">
-    //   <Header menu={"postEdit"} text={"BUTTON_EDIT"} />
-    //   <form className="post-form" onSubmit={onSubmit}>
-    //     <textarea
-    //       className="post-form__textarea"
-    //       required
-    //       name="content"
-    //       id="content"
-    //       placeholder={t("POST_PLACEHOLDER")}
-    //       onChange={onChange}
-    //       value={content}
-    //     />
-    //     <div className="post-form__hashtags">
-    //       {tags.length !== 0 ? (
-    //         <span className="post-form__hashtags-outputs">
-    //           {tags?.map((tag, index) => (
-    //             <span
-    //               className="post-form__hashtags-tag"
-    //               key={index}
-    //               onClick={() => removeTag(tag)}
-    //             >
-    //               #{tag}
-    //             </span>
-    //           ))}
-    //         </span>
-    //       ) : null}
-    //       <input
-    //         className="post-form__input"
-    //         name="hashtag"
-    //         id="hashtag"
-    //         placeholder={t("POST_HASHTAG")}
-    //         onChange={onChangeHashTag}
-    //         onKeyUp={handleKeyUp}
-    //         value={hashTag}
-    //       />
-    //     </div>
-    //     <div className="post-form__submit-area">
-    //       <div className="post-form__image-area">
-    //         <label htmlFor="file-input" className="post-form__file">
-    //           <FiImage className="port-form__file-icon" />
-    //         </label>
-    //         <input
-    //           type="file"
-    //           name="file-input"
-    //           id="file-input"
-    //           accept="image/*"
-    //           onChange={handleFileUpload}
-    //           className="hidden"
-    //         />
-    //         {imageFile && (
-    //           <div className="post-form__attachment">
-    //             <img
-    //               src={imageFile}
-    //               alt="attachment"
-    //               width={100}
-    //               height={100}
-    //             />
-    //             <button
-    //               className="post-form__clear-btn"
-    //               type="button"
-    //               onClick={handleDeleteImage}
-    //             >
-    //               {t("BUTTON_DELETE")}
-    //             </button>
-    //           </div>
-    //         )}
-    //       </div>
-    //       <input
-    //         type="submit"
-    //         value={t("BUTTON_EDIT")}
-    //         className="post-form__submit-btn"
-    //         disabled={isSubmitting}
-    //       />
-    //     </div>
-    //   </form>
-    // </div>
   );
 }

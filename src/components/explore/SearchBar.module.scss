@@ -1,0 +1,61 @@
+/* 검색창 */
+.container .searchbox {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  z-index: 50;
+  position: relative;
+}
+
+.container .searchbox .search {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  padding: 0 6px;
+  background: var(--grayLightSky);
+  border-radius: 9999px;
+
+  border: 1px solid transparent;
+}
+
+.container .searchbox .search__bar {
+  font-size: 14px;
+}
+
+.container .searchbox .search__bar::placeholder {
+  color: var(--grayDark);
+  user-select: none;
+}
+
+.container .searchbox .search__focus {
+  border: 1px solid var(--primary);
+  background: white;
+}
+
+.container .searchbox .search__focus .search__bar::placeholder {
+  opacity: 0.4;
+  transition: all 0.2s;
+}
+
+.container .searchbox .search .search__focusIcon {
+  color: var(--primary);
+}
+
+.container .search .search__icon {
+  font-size: 20px;
+  margin: 0 8px;
+  color: #919191;
+}
+
+.container .searchbox .search__bar {
+  caret-color: var(--primary);
+  margin-left: 6px;
+}
+
+@media screen and (max-width: 500px) {
+  .container .searchbox .search {
+    height: 32px;
+  }
+}

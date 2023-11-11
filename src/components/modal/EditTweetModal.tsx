@@ -1,14 +1,19 @@
-import styled from "./XweetModal.module.scss";
+import styled from "./TweetModal.module.scss";
 import Modal from "@mui/material/Modal";
 import PostEditForm from "components/posts/PostEditForm";
+import ReplyEditForm from "components/reply/ReplyEditForm";
 import { GrClose } from "react-icons/gr";
 
-export default function EditXweetModal({
+
+
+export default function EditTweetModal({
   detailId,
+  postType,
   editModal,
   setEditModal,
 }: {
   detailId: string;
+  postType: string;
   editModal: boolean;
   setEditModal: any;
 }) {
@@ -26,7 +31,20 @@ export default function EditXweetModal({
           </div>
         </div>
         <div className={styled.editInput__container}>
-          <PostEditForm detailId={detailId} editModal={editModal} setEditModal={setEditModal} />
+          {postType === "tweet" && (
+            <PostEditForm
+              detailId={detailId}
+              editModal={editModal}
+              setEditModal={setEditModal}
+            />
+          )}
+          {postType === "reply" && (
+            <ReplyEditForm
+              detailId={detailId}
+              editModal={editModal}
+              setEditModal={setEditModal}
+            />
+          )}
         </div>
       </div>
     </Modal>

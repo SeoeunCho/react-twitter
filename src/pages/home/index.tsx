@@ -9,6 +9,10 @@ import {
   orderBy,
   doc,
   where,
+  getDocs,
+  updateDoc,
+  arrayUnion,
+  getDoc,
 } from "firebase/firestore";
 
 import { db } from "firebaseApp";
@@ -16,6 +20,7 @@ import { Link } from "react-router-dom";
 import AuthContext from "context/AuthContext";
 import useTranslation from "hooks/useTranslation";
 import Header from "components/header";
+import { ReplyProps } from "components/reply/ReplyBox";
 
 export interface PostProps {
   id: string;
@@ -26,7 +31,6 @@ export interface PostProps {
   profileUrl?: string;
   likes?: string[];
   likeCount?: number;
-  replies?: any;
   hashTags?: string[];
   imageUrl?: string;
   displayName: string;
@@ -36,14 +40,15 @@ interface UserProps {
   id: string;
 }
 
-type tabType = "all" | "following";
+type tabType = "all" | "Following";
 
 export default function HomePage() {
-  const [posts, setPosts] = useState<PostProps[]>([]);
+  const [posts, setPosts] = useState<any>([]);
+  const [replies, setReplies] = useState<ReplyProps[] | null>(null);
   const [followingPosts, setFollowingPosts] = useState<PostProps[]>([]);
   const [followingIds, setFollowingIds] = useState<string[]>([""]);
   const [activeTab, setActiveTab] = useState<tabType>("all");
-  const [reXweets, setReXweets] = useState([]);
+  const [reTweets, setReTweets] = useState([]);
 
   const { user } = useContext(AuthContext);
   const t = useTranslation();
@@ -51,7 +56,7 @@ export default function HomePage() {
   // 실시간 동기화로 user의 팔로잉 id 배열 가져오기
   const getFollowingIds = useCallback(async () => {
     if (user?.uid) {
-      const ref = doc(db, "following", user?.uid);
+      const ref = doc(db, "Following", user?.uid);
       onSnapshot(ref, (doc) => {
         setFollowingIds([""]);
         doc
@@ -67,14 +72,9 @@ export default function HomePage() {
 
   useEffect(() => {
     if (user) {
-      let postsRef = collection(db, "posts");
+      // Posts 컬렉션 출력
+      let postsRef = collection(db, "Posts");
       let postsQuery = query(postsRef, orderBy("createdAt", "desc"));
-      let followingQuery = query(
-        postsRef,
-        where("uid", "in", followingIds),
-        orderBy("createdAt", "desc") // asc(오름차순), desc(내림차순)
-      );
-
       onSnapshot(postsQuery, (snapShot) => {
         let dataObj = snapShot.docs.map((doc) => ({
           ...doc.data(),
@@ -83,6 +83,23 @@ export default function HomePage() {
         setPosts(dataObj as PostProps[]);
       });
 
+      // Replies 컬렉션 출력
+      let repliesRef = collection(db, "Replies");
+      let repliesQuery = query(repliesRef, orderBy("createdAt", "desc"));
+      onSnapshot(repliesQuery, (snapShot) => {
+        let dataObj = snapShot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc?.id,
+        }));
+        setReplies(dataObj as ReplyProps[]);
+      });
+
+      // Following 컬렉션 출력
+      let followingQuery = query(
+        postsRef,
+        where("uid", "in", followingIds),
+        orderBy("createdAt", "desc") // asc(오름차순), desc(내림차순)
+      );
       onSnapshot(followingQuery, (snapShot) => {
         let dataObj = snapShot.docs.map((doc) => ({
           ...doc.data(),
@@ -91,7 +108,7 @@ export default function HomePage() {
         setFollowingPosts(dataObj as PostProps[]);
       });
     }
-  }, [followingIds, user]);
+  }, [followingIds, replies, user]);
 
   useEffect(() => {
     if (user?.uid) getFollowingIds();
@@ -99,16 +116,16 @@ export default function HomePage() {
 
   // 리트윗 정보
   useEffect(() => {
-    const q = query(collection(db, "reXweets"));
+    const q = query(collection(db, "ReTweets"));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const reXweetArray = snapshot.docs.map((doc) => ({
+      const reTweetArray = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      // console.log("reXweetArray", reXweetArray);
+      // console.log("reTweetArray", reTweetArray);
 
-      // setReXweets(reXweetArray);
+      // setReTweets(reTweetArray);
     });
 
     return () => unsubscribe();
@@ -116,7 +133,7 @@ export default function HomePage() {
 
   return (
     <>
-      <Header menu={"home"} text={'MENU_HOME'} />
+      <Header menu={"home"} text={"MENU_HOME"} />
 
       <div className="tab__container">
         <div className="main__container">
@@ -134,12 +151,12 @@ export default function HomePage() {
             <div
               className="container sizeContainer"
               onClick={() => {
-                setActiveTab("following");
+                setActiveTab("Following");
               }}
             >
               <div
                 className={`btnBox ${
-                  activeTab === "following" && "selectedBox"
+                  activeTab === "Following" && "selectedBox"
                 }`}
               >
                 {t("TAB_FOLLOWING_ING")}
@@ -153,8 +170,15 @@ export default function HomePage() {
         <>
           <PostForm />
           {posts?.length > 0 ? (
-            posts?.map((post) => (
-              <PostBox post={post} data={null} detailId={post.id} key={post.id} postType={"xweet"} detailPost={false} />
+            posts?.map((post: PostProps) => (
+              <PostBox
+                post={post}
+                reply={replies?.filter((reply) => post.id === reply.postId)}
+                detailId={post.id}
+                key={post.id}
+                postType={"tweet"}
+                detailPost={false}
+              />
             ))
           ) : (
             <div className="noInfoBox">
@@ -167,11 +191,18 @@ export default function HomePage() {
         </>
       )}
 
-      {activeTab === "following" && (
+      {activeTab === "Following" && (
         <div className="post">
           {followingPosts?.length > 0 ? (
             followingPosts?.map((post) => (
-              <PostBox post={post} data={null} detailId={post.id} key={post.id} postType={"xweet"} detailPost={false} />
+              <PostBox
+                post={post}
+                reply={null}
+                detailId={post.id}
+                key={post.id}
+                postType={"tweet"}
+                detailPost={false}
+              />
             ))
           ) : (
             <div className="noInfoBox">

@@ -20,7 +20,7 @@ export default function NotificationBox({
 
   const onClickNotification = async (url: string) => {
     // isRead 업데이트
-    const ref = doc(db, "notifications", notification.id);
+    const ref = doc(db, "Notifications", notification.id);
     await updateDoc(ref, {
       isRead: true,
     });
@@ -59,9 +59,13 @@ export default function NotificationBox({
     // </div>
 
     <>
-      <div className={styled.xweet}>
-        <div className={styled.xweet__container}>
-          <Link to={`/profile/${notification?.email}`} className={styled.xweet__profile} ref={imgRef}>
+      <div className={styled.tweet}>
+        <div className={styled.tweet__container}>
+          <Link
+            to={`/profile/${notification?.email}`}
+            className={styled.tweet__profile}
+            ref={imgRef}
+          >
             <img
               src={user?.photoURL || PROFILE_DEFAULT_URL}
               alt="profileImg"
@@ -69,15 +73,15 @@ export default function NotificationBox({
             />
           </Link>
           {/* <Link
-            className={styled.xweet__contents}
+            className={styled.tweet__contents}
             to={
               location.pathname.includes("followers")
-                ? `/profile/myxweets/${notification?.email}`
-                : `/xweet/${notification?.parent}`
+                ? `/profile/mytweets/${notification?.email}`
+                : `/tweet/${notification?.parent}`
             }
           > */}
           <div
-            className={styled.reXweetBox}
+            className={styled.reTweetBox}
             onClick={() => onClickNotification(notification?.url)}
           >
             <p>
@@ -86,18 +90,18 @@ export default function NotificationBox({
               </span>
               님이
               {tab === "reply" && (
-                <span className={styled.reXweet__name}>
+                <span className={styled.reTweet__name}>
                   &nbsp;"{notification?.content}"
                 </span>
               )}
-              {tab === "following"
+              {tab === "Following"
                 ? " 회원님을 팔로우 했습니다."
                 : " 글에 답글을 달았습니다."}
             </p>
           </div>
-          <div style={{ marginLeft: "auto" }} className={styled.reXweet__time}>
-            {/* {location.pathname.includes("rexweets") && (
-                <p>{timeToString(noticeUser?.reXweetAt)}</p>
+          <div style={{ marginLeft: "auto" }} className={styled.reTweet__time}>
+            {/* {location.pathname.includes("retweets") && (
+                <p>{timeToString(noticeUser?.reTweetAt)}</p>
               )}
               {location.pathname.includes("replies") && (
                 <p>{timeToString(noticeUser?.createdAt)}</p>

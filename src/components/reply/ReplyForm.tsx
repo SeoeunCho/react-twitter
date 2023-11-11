@@ -5,6 +5,7 @@ import {
   arrayUnion,
   collection,
   doc,
+  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
@@ -35,11 +36,15 @@ export interface ReplyPropsBox {
   setReplyModal: any;
 }
 
-export default function ReplyForm({ post, replyModal, setReplyModal }: ReplyPropsBox) {
+export default function ReplyForm({
+  post,
+  replyModal,
+  setReplyModal,
+}: ReplyPropsBox) {
   const [reply, setReply] = useState<string>("");
   const [progressBarCount, setProgressBarCount] = useState<number>(0);
   const [imageFile, setImageFile] = useState<string | null>("");
-  const [select, setSelect] = useState("");
+  const [select, setSelect] = useState<boolean>(false);
   const fileInput = useRef<any>();
   const textRef = useRef<any>();
   const emojiRef = useRef<any>();
@@ -91,27 +96,31 @@ export default function ReplyForm({ post, replyModal, setReplyModal }: ReplyProp
           imageUrl = await getDownloadURL(data?.ref);
         }
 
-        const postRef = doc(db, "posts", post?.id);
-
         const replyObj = {
-          reply: reply,
+          postId: post?.id,
+          email: user?.email,
+          content: reply,
           createdAt: Date.now(),
           uid: user?.uid,
           profileUrl: user?.photoURL,
-          email: user?.email,
           imageUrl: imageUrl,
-          displayName: user?.displayName,
+          displayName: user?.displayName || user?.email?.split("@")[0],
         };
 
+        /* 하위 컬렉션 생성하기
+        const postRef = doc(collection(db, "Posts", post?.id, "Replies"));
+        setDoc(postRef, replyObj)*/
+
+        /** 답글 컬렉션 생성 */
         const addReply = async () => {
-          await updateDoc(postRef, {
-            replies: arrayUnion(replyObj),
-          })
+          await addDoc(collection(db, "Replies"), replyObj)
             .then(() => {
               toast.success(t("UPDATE_REPLY_TOAST"));
               setReply("");
+              setSelect(false);
               setImageFile(null);
               setProgressBarCount(0); // 프로그레스 바 초기화
+
               if (!replyModal) {
                 textRef.current.style.height = "52px";
               } else {
@@ -127,7 +136,7 @@ export default function ReplyForm({ post, replyModal, setReplyModal }: ReplyProp
 
           // 답글 생성 알림 만들기
           if (user?.uid !== post?.uid) {
-            await addDoc(collection(db, "notifications"), {
+            await addDoc(collection(db, "Notifications"), {
               content: truncate(post?.content),
               createdAt: Date.now(),
               uid: post?.uid,
@@ -135,7 +144,7 @@ export default function ReplyForm({ post, replyModal, setReplyModal }: ReplyProp
               isRead: false,
               email: user?.email,
               url: `/posts/${post?.id}`,
-              displayName: user?.email?.split("@")[0],
+              displayName: user?.displayName || user?.email?.split("@")[0],
             });
           }
         };
@@ -186,21 +195,17 @@ export default function ReplyForm({ post, replyModal, setReplyModal }: ReplyProp
       event.emoji +
       reply.slice(textRef.current?.selectionEnd, reply.length);
     setReply(textEmoji);
-    setSelect("text");
+    setSelect(true);
   };
 
   return (
     <>
       {progressBarCount !== 0 && <BarLoader count={progressBarCount} />}
-      <div
-        className={`${styled.xweet__reply} ${
-          select === "text" && styled.select
-        } `}
-      >
-        <div className={styled.xweet__replyIcon}>
+      <div className={`${styled.tweet__reply} ${select && styled.select} `}>
+        <div className={styled.tweet__replyIcon}>
           <BsReplyFill />
         </div>
-        <div className={styled.xweet__replyText}>
+        <div className={styled.tweet__replyText}>
           {language[0] === "en" && <p>{t("REPLY_TO")}&nbsp;</p>}
           <p onClick={goPage}>@{post.email?.split("@")[0]}</p>
           {language[0] === "ko" && <p>&nbsp;{t("REPLY_TO")}</p>}
@@ -210,7 +215,7 @@ export default function ReplyForm({ post, replyModal, setReplyModal }: ReplyProp
         className={`${styled.replyForm} ${replyModal && styled.modalBorder}`}
       >
         <div className={styled.replyInput__container}>
-          <div className={styled.xweet__profile}>
+          <div className={styled.tweet__profile}>
             <img
               src={user?.photoURL || PROFILE_DEFAULT_URL}
               alt="profileImg"
@@ -220,7 +225,7 @@ export default function ReplyForm({ post, replyModal, setReplyModal }: ReplyProp
           <form onSubmit={onSubmit} className={styled.replyInput}>
             <div
               className={`${styled.replyForm__content} ${
-                select === "text" && styled.focus
+                select && styled.focus
               }`}
             >
               <textarea
@@ -232,7 +237,7 @@ export default function ReplyForm({ post, replyModal, setReplyModal }: ReplyProp
                 id="reply"
                 required
                 onChange={onChange}
-                onFocus={() => setSelect("text")}
+                onFocus={() => setSelect(true)}
                 maxLength={280}
                 placeholder={t("REPLY_PLACEHOLDER")}
               />
