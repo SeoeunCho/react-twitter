@@ -1,9 +1,14 @@
 import styled from "../modal/TweetModal.module.scss";
 import Modal from "@mui/material/Modal";
-import PostForm from "components/posts/PostForm";
+import TweetForm from "components/tweets/TweetForm";
 import { GrClose } from "react-icons/gr";
 
-export default function TweetModal({ tweetModal, setTweetModal }: any) {
+export default function TweetModal({
+  tweetModal,
+  userObj,
+  setTweetModal,
+  toggleTweetModal,
+}: any) {
   return (
     <Modal
       open={tweetModal}
@@ -18,7 +23,7 @@ export default function TweetModal({ tweetModal, setTweetModal }: any) {
           </div>
         </div>
         <div className={styled.editInput__container}>
-          <PostForm tweetModal={tweetModal} setTweetModal={setTweetModal} />
+          <TweetForm userObj={userObj} tweetModal={tweetModal} setTweetModal={setTweetModal} />
         </div>
       </div>
     </Modal>

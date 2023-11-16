@@ -1,10 +1,10 @@
-// import RecommendUser from "../components/recommendUser/RecommendUser";
-import SearchBar from "components/explore/SearchBar";
+import RecommendUser from "components/recommendUser/RecommendUser";
+import SearchBar from "components/searchBar/SearchBar";
 import styled from "./RightMenu.module.scss";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-export default function RightMenu() {
+export default function RightMenu({ userObj }: any) {
   const location = useLocation();
   const [hiddenSearch, setHiddenSearch] = useState(false);
 
@@ -17,8 +17,8 @@ export default function RightMenu() {
 
   return (
     <article className={styled.container}>
-      {!hiddenSearch && <SearchBar />}
-      {/* <RecommendUser /> */}
+      {!hiddenSearch && <SearchBar userObj={userObj} />}
+      <RecommendUser />
     </article>
   );
 }

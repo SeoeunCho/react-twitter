@@ -1,0 +1,61 @@
+/* 탭 메뉴 */
+.tab__container {
+  // display: inline-block;
+  width: 100%;
+  height: 100%;
+  font-size: 15px;
+}
+
+.tab__container .btnBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.tab__container .btnBox:hover {
+  background: var(--grayLight);
+}
+
+.tab__container .btnBox p {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: keep-all;
+  padding: 0 6px;
+  line-height: 18px;
+}
+
+.tab__container .selectedBox {
+  font-weight: 700;
+}
+
+.tab__container .selectedBox::after {
+  position: absolute;
+  width: 50%;
+  height: 4px;
+  border-radius: 9999px;
+  bottom: 0;
+  content: "";
+  display: block;
+  background: var(--primary);
+}
+
+@media screen and (max-width: 500px) {
+  .tab__container.sizeContainer {
+    width: auto;
+    flex: 1 1 auto;
+  }
+
+  .tab__container .btnBox p {
+    font-size: 14px;
+  }
+
+  .tab__container.sizeContainer .selectedBox::after {
+    width: 50%;
+  }
+}

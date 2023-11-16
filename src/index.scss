@@ -1,4 +1,4 @@
-@import "./utils.scss";
+// @import "./utils.scss";
 @import "https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css";
 
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&family=Noto+Sans+KR:wght@100;300;400;500;700&family=Noto+Sans:wght@100;300;400;500;700&display=swap");
@@ -7,7 +7,7 @@
   --primary: #4da0eb;
   --secondary: #70bcff;
   --tertiary: #a6d0f5;
-  --quaternary: #d2e3fc;
+  --quaternary: #bcd0eb;
   --active: #4472c4;
   --disabled: #4da1eb80;
   --darkBlue: #536171;
@@ -18,9 +18,12 @@
   --grayDeepDark: #586572;
 
   --lightGrayHover: #e6e6e6;
-  --grayLight: #ececec;
+  --grayLight: #ebebeb;
   --grayPale: #f6f6f6;
-  --grayLightSky: rgba(105, 145, 214, 0.12);
+  --grayLightSky: rgba(90, 173, 212, 0.12);
+
+  --followPrimary: #3b5d90;
+  --followSecondary: #3b5d90;
 
   --red: #f9183d;
 }
@@ -136,8 +139,8 @@ form {
   }
 }
 
-/* 탭 메뉴 */
-.tab__container {
+/* 탭 메뉴 (카테고리) */
+.menu_container {
   position: relative;
 
   .main__container {
@@ -145,85 +148,86 @@ form {
     top: 0;
     z-index: 3;
     width: 100%;
-    // height: 60px;
-    // border-bottom: 1px solid var(--grayLight);
+    height: 60px;
+    border-bottom: 1px solid #ebebeb;
     background-color: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(12px);
 
     .main__category {
       padding: 0 16px;
     }
+  }
+}
 
-    /* 카테고리 버튼 */
-    .categoryList {
-      display: flex;
-      width: 100%;
-      height: 53px;
-      user-select: none;
-      background: white;
-      border-bottom: 1px solid var(--grayLight);
+.main__container .categoryList {
+  display: flex;
+  width: 100%;
+  height: 53px;
+  user-select: none;
+  background: white;
+  border-bottom: 1px solid var(--grayLight);
+}
 
-      .container {
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        font-size: 15px;
-      }
+/* 탭 메뉴 */ // 아래 삭제해도 됨!!!!
+/* 카테고리 버튼 */
+.tab_container {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  font-size: 15px;
+}
 
-      .container .btnBox {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        text-align: center;
-        cursor: pointer;
-        position: relative;
-      }
+.tab_container .btnBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
 
-      .container .btnBox:hover {
-        background: var(--grayLight);
-      }
+.tab_container .btnBox:hover {
+  background: var(--grayLight);
+}
 
-      .container .btnBox p {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        word-break: keep-all;
-        padding: 0 6px;
-        line-height: 18px;
-      }
+.tab_container .btnBox p {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: keep-all;
+  padding: 0 6px;
+  line-height: 18px;
+}
 
-      .container .selectedBox {
-        font-weight: 700;
-      }
+.tab_container .selectedBox {
+  font-weight: 700;
+}
 
-      .container .selectedBox::after {
-        position: absolute;
-        width: 50%;
-        height: 4px;
-        border-radius: 9999px;
-        bottom: 0;
-        content: "";
-        display: block;
-        background: var(--primary);
-      }
+.tab_container .selectedBox::after {
+  position: absolute;
+  width: 50%;
+  height: 4px;
+  border-radius: 9999px;
+  bottom: 0;
+  content: "";
+  display: block;
+  background: var(--primary);
+}
 
-      @media screen and (max-width: 500px) {
-        .container.sizeContainer {
-          width: auto;
-          flex: 1 1 auto;
-        }
+@media screen and (max-width: 500px) {
+  .tab_container.sizeContainer {
+    width: auto;
+    flex: 1 1 auto;
+  }
 
-        .container .btnBox p {
-          font-size: 14px;
-        }
+  .tab_container .btnBox p {
+    font-size: 14px;
+  }
 
-        .container.sizeContainer .selectedBox::after {
-          width: 50%;
-        }
-      }
-    }
+  .tab_container.sizeContainer .selectedBox::after {
+    width: 50%;
   }
 }
 
@@ -281,38 +285,38 @@ form {
     }
   }
 
-  .effect_icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* cursor: pointer; */
-    position: relative;
+  // .effect_icon {
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   /* cursor: pointer; */
+  //   position: relative;
 
-    &::after {
-      display: block;
-      content: "";
-      position: absolute;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      z-index: -1;
-      transition: all 0.2s;
-    }
+  //   &::after {
+  //     display: block;
+  //     content: "";
+  //     position: absolute;
+  //     width: 34px;
+  //     height: 34px;
+  //     border-radius: 50%;
+  //     z-index: -1;
+  //     transition: all 0.2s;
+  //   }
 
-    svg {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 20px;
-      height: 20px;
-    }
+  //   svg {
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: center;
+  //     width: 20px;
+  //     height: 20px;
+  //   }
 
-    &:hover {
-      &::after {
-        background: var(--grayLight);
-      }
-    }
-  }
+  //   &:hover {
+  //     &::after {
+  //       background: var(--grayLight);
+  //     }
+  //   }
+  // }
 }
 
 /* 나머지 카테고리 (상단 닉네임) */
@@ -507,6 +511,33 @@ form {
   }
 }
 
+.loader {
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border: 5px solid var(--primary);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  z-index: 999999;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 //
 //
 //
@@ -524,7 +555,7 @@ form {
   }
 
   &__search {
-    @extend .post-form__input;
+    @extend .tweet-form__input;
     background-color: var(--backgroundLight);
     border-radius: 20px;
     margin-bottom: 20px;
@@ -576,11 +607,11 @@ form {
   }
 }
 
-.post-form {
+.tweet-form {
   &__profile {
     padding: 16px;
 
-    .post-form__input {
+    .tweet-form__input {
       border-bottom: 1px solid var(--gray);
       padding: 8px 2px;
       font-size: 16px;
@@ -682,7 +713,7 @@ form {
     // border-bottom: 1px solid var(--grayLight);
     align-items: center;
 
-    .post-form__file {
+    .tweet-form__file {
       display: flex;
       padding: 0 1rem;
       flex-direction: column;
@@ -702,8 +733,8 @@ form {
   }
 }
 
-// Post 레이아웃
-.post {
+// Tweet 레이아웃
+.tweet {
   &__image-div {
     padding: 16px;
   }
@@ -721,10 +752,10 @@ form {
     }
   }
 
-  &__no-posts {
+  &__no-tweets {
     padding: 16px;
 
-    .post__text {
+    .tweet__text {
       font-size: 14px;
       border: 1px solid var(--gray);
       padding: 16px;
@@ -813,7 +844,7 @@ form {
       button {
         @extend .button;
 
-        &.post__delete {
+        &.tweet__delete {
           background-color: var(--red);
 
           &:hover,
@@ -822,7 +853,7 @@ form {
           }
         }
 
-        &.post__edit {
+        &.tweet__edit {
           background-color: var(--gray);
 
           a {
@@ -835,9 +866,9 @@ form {
           }
         }
 
-        &.post__likes,
-        &.post__replies {
-          @extend .post__flex;
+        &.tweet__likes,
+        &.tweet__replies {
+          @extend .tweet__flex;
 
           &:hover,
           &:focus {

@@ -7,7 +7,7 @@ interface AuthProps {
 }
 
 const AuthContext = createContext({
-  user: null as User | null,
+  user: null as User | null
 });
 
 export const AuthContextProvider = ({ children }: AuthProps) => {
@@ -25,7 +25,9 @@ export const AuthContextProvider = ({ children }: AuthProps) => {
   }, [auth]);
 
   return (
-    <AuthContext.Provider value={{ user: currentUser }}>
+    <AuthContext.Provider
+      value={{ user: currentUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

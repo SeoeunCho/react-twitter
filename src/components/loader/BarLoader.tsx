@@ -1,7 +1,7 @@
-import styled from "./Loading.module.scss";
+import styled from "./BarLoader.module.scss";
 
 interface CountProps {
-  count: number;
+  count?: number;
 }
 
 export default function BarLoader({ count }: CountProps) {

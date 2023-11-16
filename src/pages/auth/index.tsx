@@ -1,26 +1,26 @@
+import { useState } from "react";
 import { AiOutlineTwitter } from "react-icons/ai";
 import AuthForm from "components/auth/AuthForm";
 import styled from "./Auth.module.scss";
-import authBg from "../../image/background.jpg";
-import { useState } from "react";
+
 import useTranslation from "hooks/useTranslation";
+const AUTH_BG_URL = "/background.jpg";
 
 export default function AuthPage() {
   const [newAccount, setNewAccount] = useState<boolean>(true);
-  const t = useTranslation();
-
   const toggleAccount = () => setNewAccount(!newAccount);
+  const t = useTranslation();
 
   return (
     <div className={styled.container}>
       <div className={styled.authImage}>
-        <img src={authBg} alt="auth bg" />
+        <img src={AUTH_BG_URL} alt="auth background" />
       </div>
       <div className={styled.auth}>
         <div className={styled.twitter__logo}>
           <AiOutlineTwitter />
         </div>
-        <div className={styled.twitter__notice}>
+        <div className={styled.twitter__notification}>
           <span>{t("AUTH_TEXT")}</span>
         </div>
         {newAccount ? (
@@ -36,7 +36,7 @@ export default function AuthPage() {
         <AuthForm newAccount={newAccount} />
 
         {newAccount ? (
-          <div className={styled.auth__notice}>
+          <div className={styled.auth__notification}>
             <span>{t("NO_ACCOUNT")}</span>
             <div>
               <span onClick={toggleAccount} className={styled.authSwitch}>
@@ -45,7 +45,7 @@ export default function AuthPage() {
             </div>
           </div>
         ) : (
-          <div className={styled.auth__notice}>
+          <div className={styled.auth__notification}>
             <span>{t("YES_ACCOUNT")}</span>
             <div>
               <span onClick={toggleAccount} className={styled.authSwitch}>

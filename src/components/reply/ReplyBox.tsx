@@ -1,9 +1,9 @@
-import { PostProps } from "pages/home";
-import PostBox from "components/posts/PostBox";
+import { TweetProps } from "pages/home";
+import TweetBox from "components/tweets/TweetBox";
 
 export interface ReplyProps {
   id: string;
-  postId: string;
+  tweetId: string;
   email: string;
   content: string;
   createdAt: any;
@@ -17,30 +17,30 @@ export interface ReplyProps {
 
 interface ReplyBoxProps {
   reply: ReplyProps[];
-  post: PostProps;
-  detailId: string;
-  postType: string;
-  detailPost: boolean;
+  tweet: TweetProps;
+  detailId: string | null;
+  tweetType: string;
+  detailTweet: boolean;
 }
 
 export default function ReplyBox({
   reply,
-  post,
+  tweet,
   detailId,
-  postType,
-  detailPost,
+  tweetType,
+  detailTweet,
 }: ReplyBoxProps) {
   return (
     <>
       {reply &&
         reply?.map((item: ReplyProps, index: number) => (
-          <PostBox
-            post={post}
+          <TweetBox
+            tweet={tweet}
             reply={item}
             detailId={item.id}
             key={index}
-            postType={"reply"}
-            detailPost={true}
+            tweetType={"reply"}
+            detailTweet={true}
           />
         ))}
     </>

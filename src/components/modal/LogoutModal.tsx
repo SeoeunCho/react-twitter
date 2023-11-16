@@ -6,7 +6,7 @@ import useTranslation from "hooks/useTranslation";
 
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
-export default function LogoutModal({ user, onLogOutClick }: any) {
+export default function LogoutModal({ creatorInfo, onLogOutClick }: any) {
   const t = useTranslation();
 
   return (
@@ -16,14 +16,16 @@ export default function LogoutModal({ user, onLogOutClick }: any) {
           <div className={styled.leftBar__userInfo}>
             <div className={styled.userInfo__profile}>
               <img
-                src={user.photoURL || PROFILE_DEFAULT_URL}
+                src={creatorInfo.photoURL || PROFILE_DEFAULT_URL}
                 alt="profileImg"
                 className={styled.profile__image}
               />
             </div>
             <div className={styled.userInfo__name}>
-              <p>{user.displayName || user?.email?.split("@")[0]}</p>
-              <p>@{user?.email?.split("@")[0]}</p>
+              <p>
+                {creatorInfo.displayName || creatorInfo?.email?.split("@")[0]}
+              </p>
+              <p>@{creatorInfo?.email?.split("@")[0]}</p>
             </div>
             <div className={styled.userInfo__etc}>
               <BiCheck />

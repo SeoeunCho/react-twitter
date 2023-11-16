@@ -11,15 +11,15 @@ import {
 } from "firebase/firestore";
 import { db } from "firebaseApp";
 import useTranslation from "hooks/useTranslation";
-import { PostProps } from "pages/home";
+import { TweetProps } from "pages/home";
 import { ReplyProps } from "components/reply/ReplyBox";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 interface FollowingProps {
-  post: PostProps;
+  tweet: TweetProps;
   reply: ReplyProps | null;
-  postType: string;
+  tweetType: string;
 }
 
 interface UserProps {
@@ -27,12 +27,12 @@ interface UserProps {
 }
 
 export default function FollowingBox({
-  post,
+  tweet,
   reply,
-  postType,
+  tweetType,
 }: FollowingProps) {
   const { user } = useContext(AuthContext);
-  const [postFollowers, setPostFollowers] = useState<any>([]);
+  const [tweetFollowers, setTweetFollowers] = useState<any>([]);
   const t = useTranslation();
 
   const onClickFollow = async (e: any) => {
@@ -46,13 +46,13 @@ export default function FollowingBox({
         await setDoc(
           followingRef,
           {
-            users: arrayUnion({ id: post?.uid }),
+            users: arrayUnion({ id: tweet?.uid }),
           },
           { merge: true }
         );
 
         // 팔로우 당하는 사람이 주체가 되어 '팔로우' 컬렉션 생성 or 업데이트
-        const followerRef = doc(db, "Follower", post?.uid);
+        const followerRef = doc(db, "Follower", tweet?.uid);
 
         await setDoc(
           followerRef,
@@ -64,7 +64,7 @@ export default function FollowingBox({
         await addDoc(collection(db, "Notifications"), {
           content: null,
           createdAt: Date.now(),
-          uid: post?.uid,
+          uid: tweet?.uid,
           profileUrl: user?.photoURL,
           isRead: false,
           email: user?.email,
@@ -85,9 +85,9 @@ export default function FollowingBox({
       if (user?.uid) {
         const followingRef = doc(db, "Following", user?.uid);
         await updateDoc(followingRef, {
-          users: arrayRemove({ id: post?.uid }),
+          users: arrayRemove({ id: tweet?.uid }),
         });
-        const followerRef = doc(db, "Follower", post?.uid);
+        const followerRef = doc(db, "Follower", tweet?.uid);
         await updateDoc(followerRef, {
           users: arrayRemove({ id: user.uid }),
         });
@@ -100,35 +100,35 @@ export default function FollowingBox({
   };
 
   const getFollowers = useCallback(async () => {
-    if (post.uid) {
-      const ref = doc(db, "Follower", post.uid);
+    if (tweet.uid) {
+      const ref = doc(db, "Follower", tweet.uid);
       onSnapshot(ref, (doc) => {
-        setPostFollowers([]);
+        setTweetFollowers([]);
         doc
           ?.data()
           ?.users?.map((user: UserProps) =>
-            setPostFollowers((prev: UserProps[]) =>
+            setTweetFollowers((prev: UserProps[]) =>
               prev ? [...prev, user?.id] : []
             )
           );
       });
     }
-  }, [post.uid]);
+  }, [tweet.uid]);
 
-  // console.log("data", postFollowers);
+  // console.log("data", tweetFollowers);
 
   useEffect(() => {
-    if (post.uid) getFollowers();
-  }, [getFollowers, post.uid]);
+    if (tweet.uid) getFollowers();
+  }, [getFollowers, tweet.uid]);
 
   return (
     <>
-      {postType === "tweet" &&
-        user?.uid !== post?.uid &&
-        (postFollowers.includes(user?.uid) ? (
+      {tweetType === "tweet" &&
+        user?.uid !== tweet?.uid &&
+        (tweetFollowers.includes(user?.uid) ? (
           <button
             type="button"
-            className="post__following-btn"
+            className="tweet__following-btn"
             onClick={onClickDeleteFollow}
           >
             {t("BUTTON_FOLLOWING")}
@@ -136,19 +136,19 @@ export default function FollowingBox({
         ) : (
           <button
             type="button"
-            className="post__follow-btn"
+            className="tweet__follow-btn"
             onClick={onClickFollow}
           >
             {t("BUTTON_FOLLOW")}
           </button>
         ))}
 
-      {postType === "reply" &&
+      {tweetType === "reply" &&
         user?.uid !== reply?.uid &&
-        (postFollowers.includes(user?.uid) ? (
+        (tweetFollowers.includes(user?.uid) ? (
           <button
             type="button"
-            className="post__following-btn"
+            className="tweet__following-btn"
             onClick={onClickDeleteFollow}
           >
             {t("BUTTON_FOLLOWING")}
@@ -156,7 +156,7 @@ export default function FollowingBox({
         ) : (
           <button
             type="button"
-            className="post__follow-btn"
+            className="tweet__follow-btn"
             onClick={onClickFollow}
           >
             {t("BUTTON_FOLLOW")}

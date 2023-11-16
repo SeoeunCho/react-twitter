@@ -50,7 +50,7 @@
     }
   }
 
-  .twitter__notice {
+  .twitter__notification {
     font-size: 60px;
     line-height: 70px;
     word-break: keep-all;
@@ -64,7 +64,7 @@
     margin-bottom: 48px;
   }
 
-  .auth__notice {
+  .auth__notification {
     font-weight: 700;
     display: flex;
 
@@ -97,7 +97,7 @@
     margin: 0 auto;
     padding: 16px;
 
-    .twitter__notice {
+    .twitter__notification {
       font-size: 50px;
       line-height: 60px;
       margin: 35px 0;
@@ -108,7 +108,7 @@
       font-size: 26px;
     }
 
-    .auth__notice {
+    .auth__notification {
       flex-direction: column;
 
       > span {
@@ -117,11 +117,11 @@
     }
   }
 
-  .twitter__notice,
+  .twitter__notification,
   .twitter__info,
   .twitter__logo,
   .auth .authBtns,
-  .auth__notice {
+  .auth__notification {
     margin: 0 auto;
     text-align: center;
   }

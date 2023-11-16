@@ -1,79 +1,54 @@
-import PostBox from "components/posts/PostBox";
-import AuthContext from "context/AuthContext";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
-import { db } from "firebaseApp";
-import useTranslation from "hooks/useTranslation";
-import { PostProps } from "pages/home";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import SearchBar from "components/searchBar/SearchBar";
+import TabMenuBtn from "components/buttons/TabMenuBtn";
+import ExploreTweets from "components/explore/ExploreTweets";
+import ExploreUsers from "components/explore/ExploreUsers";
 
-export default function ExplorePage() {
-  const [posts, setPosts] = useState<PostProps[]>([]);
-  const [tagQuery, setTagQuery] = useState<string>("");
-  const { user } = useContext(AuthContext);
-  const t = useTranslation();
-
-  const onChange = (e: any) => {
-    setTagQuery(e?.target?.value.trim());
-  };
-
-  console.log("user", user);
+export default function ExplorePage({ userObj }: any) {
+  const location = useLocation();
+  const [selected, setSelected] = useState(1);
 
   useEffect(() => {
-    if (user) {
-      let postsRef = collection(db, "Posts");
-      let postsQuery = query(
-        postsRef,
-        where("hashTags", "array-contains-any", [tagQuery]),
-        orderBy("createdAt", "desc")
-      );
-
-      onSnapshot(postsQuery, (snapShot) => {
-        let dataObj = snapShot?.docs?.map((doc) => ({
-          ...doc?.data(),
-          id: doc?.id,
-        }));
-
-        setPosts(dataObj as PostProps[]);
-      });
+    if (location.pathname.includes("/tweets")) {
+      setSelected(1);
+    } else if (location.pathname.includes("/users")) {
+      setSelected(2);
     }
-  }, [tagQuery, user]);
+  }, [location.pathname]);
 
   return (
-    <div className="home">
-      <div className="home__top">
-        {/* <Header menu={"explore"} text={"MENU_EXPLORE"}/> */}
-        <div className="home__explore-div">
-          <input
-            className="home__explore"
-            placeholder={t("EXPLORE_HASHTAGS")}
-            onChange={onChange}
-          />
-        </div>
-      </div>
-      <div className="post">
-        {posts?.length > 0 ? (
-          posts?.map((post) => (
-            <PostBox
-              post={post}
-              reply={null}
-              detailId={post.id}
-              key={post.id}
-              postType={"tweet"}
-              detailPost={false}
-            />
-          ))
-        ) : (
-          <div className="post__no-posts">
-            <div className="post__text">{t("NO_POSTS")}</div>
+    <>
+      <div className="menu_container">
+        <div className="main__container">
+          <div className="main__category">
+            <SearchBar userObj={userObj} />
           </div>
-        )}
+          <nav className="categoryList">
+            <TabMenuBtn
+              num={1}
+              selected={selected}
+              url={"/explore/tweets/"}
+              text={"TAB_MY"}
+            />
+            <TabMenuBtn
+              num={2}
+              selected={selected}
+              url={"/explore/users"}
+              text={"TAB_USER"}
+            />
+          </nav>
+        </div>
+
+        <Routes>
+          <Route
+            path={"/explore/tweets"}
+            element={<ExploreTweets userObj={userObj} />}
+          />
+
+          <Route path="/explore/users" element={<ExploreUsers />} />
+        </Routes>
       </div>
-    </div>
+    </>
   );
 }

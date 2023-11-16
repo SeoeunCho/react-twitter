@@ -1,4 +1,3 @@
-
 import Header from "components/header";
 import AuthContext from "context/AuthContext";
 import { updateProfile } from "firebase/auth";
@@ -65,7 +64,7 @@ export default function ProfileEdit() {
           photoURL: newImageUrl || "",
         })
           .then(() => {
-            toast.success(t("UPDATE_PROFILE_TOAST"));
+            toast.success(t("ADD_PROFILE_TOAST"));
             navigate(`/profile/${user?.email}`);
           })
           .catch((error) => {
@@ -106,35 +105,35 @@ export default function ProfileEdit() {
   }, [user?.displayName, user?.photoURL]);
 
   return (
-    <div className="post" onSubmit={onSubmit}>
-      <Header menu={"profileEdit"} text={"BUTTON_EDIT_PROFILE"}/>
-      <form className="post-form">
-        <div className="post-form__profile">
+    <div className="tweet" onSubmit={onSubmit}>
+      <Header menu={"profileEdit"} text={"BUTTON_EDIT_PROFILE"} />
+      <form className="tweet-form">
+        <div className="tweet-form__profile">
           <input
             type="text"
             name="displayName"
-            className="post-form__input"
+            className="tweet-form__input"
             placeholder={t("NAME_PLACEHOLDER")}
             onChange={onChange}
             value={displayName}
           />
           {imageUrl && (
-            <div className="post-form__attachment">
+            <div className="tweet-form__attachment">
               <img src={imageUrl} alt="attachment" width={100} height={100} />
               <button
                 type="button"
                 onClick={handleDeleteImage}
-                className="post-form__clear-btn"
+                className="tweet-form__clear-btn"
               >
                 {t("BUTTON_DELETE")}
               </button>
             </div>
           )}
 
-          <div className="post-form__submit-area">
-            <div className="post-form__image-area">
-              <label className="post-form__file" htmlFor="file-input">
-                <FiImage className="post-form__file-icon" />
+          <div className="tweet-form__submit-area">
+            <div className="tweet-form__image-area">
+              <label className="tweet-form__file" htmlFor="file-input">
+                <FiImage className="tweet-form__file-icon" />
               </label>
             </div>
             <input
@@ -148,7 +147,7 @@ export default function ProfileEdit() {
             <input
               type="submit"
               value={t("BUTTON_EDIT_PROFILE")}
-              className="post-form__submit-btn"
+              className="tweet-form__submit-btn"
             />
           </div>
         </div>

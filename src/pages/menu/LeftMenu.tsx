@@ -16,21 +16,30 @@ import styled from "./LeftMenu.module.scss";
 
 import useTranslation from "hooks/useTranslation";
 import AuthContext from "context/AuthContext";
+import { setCurrentUser, setLoginToken } from "reducer/user";
+// import { UserProps } from "Router";
+import { useDispatch } from "react-redux";
+import useGetFbInfo from "hooks/useGetFbInfo";
+import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
 
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
-export default function LeftMenu() {
-  const userLogoutRef = useRef<HTMLInputElement>(null);
+export default function LeftMenu({ userObj }: any) {
+  const userLogoutRef = useRef<any>(null);
+  // const userLogoutRef = useRef<HTMLInputElement>(null);
   const [selected, setSelected] = useState<number>(1);
   const [size, setSize] = useState<number>(window.innerWidth);
   const [resize, setResize] = useState<boolean>(false);
   const [tweetModal, setTweetModal] = useState<boolean>(false);
   const [userLogout, setUserLogout] = useState<boolean>(false);
 
-  const { user } = useContext(AuthContext);
-
+  const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { myInfo } = useGetFbInfo();
+  
   const t = useTranslation();
+  
 
   useHandleOutsideClick({
     ref: userLogoutRef,
@@ -42,15 +51,6 @@ export default function LeftMenu() {
     setSelected(num);
   };
 
-  const onLogOutClick = async () => {
-    const confirm = window.confirm(t("CHECK_LOGOUT_TOAST"));
-    if (confirm) {
-      const auth = getAuth(app);
-      await signOut(auth);
-      toast.success(t("LOGOUT_TOAST"));
-    }
-  };
-
   const toggleTweetModal = () => {
     setTweetModal((prev) => !prev);
   };
@@ -59,18 +59,44 @@ export default function LeftMenu() {
     setUserLogout((prev) => !prev);
   };
 
+  const onLogOutClick = async () => {
+    const confirm = window.confirm(t("CHECK_LOGOUT_TOAST"));
+    if (confirm) {
+      const auth = getAuth(app);
+      await signOut(auth);
+      dispatch(setLoginToken("logout"));
+      dispatch(
+        setCurrentUser({
+          photoURL: "",
+          uid: "",
+          displayName: "",
+          email: "",
+          description: "",
+          bgURL: "",
+          bookmark: [],
+          follower: [],
+          following: [],
+          reTweet: [],
+          reTweetAt: [],
+        })
+      );
+      toast.success(t("LOGOUT_TOAST"));
+      navigate("/auth");
+    }
+  };
+
   // 리사이징
   useEffect(() => {
     // 렌더 시
     if (size < 500) {
       setResize(true);
       if (location.pathname.includes("bookmark")) {
-        // history.push("/profile/bookmarktweets/" + userObj.email);
+        navigate(`/profile/bookmarktweets/${userObj?.email}`);
       }
     } else if (size > 500) {
       setResize(false);
       if (location.pathname.includes("bookmark")) {
-        // history.push("/bookmark/tweets");
+        navigate("/bookmark/tweets");
       }
     }
 
@@ -81,22 +107,21 @@ export default function LeftMenu() {
 
     window.addEventListener("resize", Resize);
     return () => window.addEventListener("resize", Resize);
-  });
+  }, [size, location.pathname, navigate, userObj?.email]);
 
   useEffect(() => {
     if (location.pathname === "/") {
       setSelected(1);
     } else if (location.pathname.includes("/explore")) {
       setSelected(2);
-    } else if (location.pathname.includes("/notice")) {
+    } else if (location.pathname.includes("/notification")) {
       setSelected(3);
-    } else if (location.pathname.includes(`/profile/${user?.email}`)) {
+    } else if (location.pathname.includes("/bookmark")) {
       setSelected(4);
+    } else if (location.pathname.includes("/profile")) {
+      setSelected(5);
     }
-    // else if (location.pathname.includes("/bookmark")) {
-    //   setSelected(5);
-    // }
-  }, [location.pathname, user?.email]);
+  }, [location.pathname]);
 
   return (
     <>
@@ -151,7 +176,10 @@ export default function LeftMenu() {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/notifications" onClick={() => onSelect(3)}>
+                  <Link
+                    to="/notification"
+                    onClick={() => onSelect(3)}
+                  >
                     <div className={styled.leftMenu__list}>
                       {selected === 3 ? (
                         <>
@@ -170,12 +198,31 @@ export default function LeftMenu() {
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    to={`/profile/${user?.email}`}
-                    onClick={() => onSelect(4)}
-                  >
+                  <Link to={"/bookmark/tweets"} onClick={() => onSelect(4)}>
                     <div className={styled.leftMenu__list}>
                       {selected === 4 ? (
+                        <>
+                          <IoBookmark />
+                          <span>
+                            <b>{t("MENU_BOOKMARK")}</b>
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <IoBookmarkOutline />
+                          <span>{t("MENU_BOOKMARK")}</span>
+                        </>
+                      )}
+                    </div>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={`/profile/mytweets/${userObj.email}`}
+                    onClick={() => onSelect(5)}
+                  >
+                    <div className={styled.leftMenu__list}>
+                      {selected === 5 ? (
                         <>
                           <BsPersonFill />
                           <span>
@@ -189,11 +236,11 @@ export default function LeftMenu() {
                         </>
                       )}
 
-                      {user && resize && (
+                      {myInfo && resize && (
                         <div className={styled.userInfo__profileHidden}>
                           <div className={styled.userInfo__profile}>
                             <img
-                              src={user?.photoURL || PROFILE_DEFAULT_URL}
+                              src={myInfo?.photoURL || PROFILE_DEFAULT_URL}
                               alt="profileImg"
                               className={styled.profile__image}
                             />
@@ -214,7 +261,7 @@ export default function LeftMenu() {
           </div>
           <div style={{ position: "relative" }} ref={userLogoutRef}>
             {userLogout && (
-              <LogoutModal user={user} onLogOutClick={onLogOutClick} />
+              <LogoutModal creatorInfo={myInfo} onLogOutClick={onLogOutClick} />
             )}
             <section className={styled.leftMenu__user}>
               <div
@@ -223,14 +270,16 @@ export default function LeftMenu() {
               >
                 <div className={styled.userInfo__profile}>
                   <img
-                    src={user?.photoURL ? user?.photoURL : PROFILE_DEFAULT_URL}
+                    src={
+                      myInfo?.photoURL ? myInfo?.photoURL : PROFILE_DEFAULT_URL
+                    }
                     alt="profileImg"
                     className={styled.profile__image}
                   />
                 </div>
                 <div className={styled.userInfo__name}>
-                  <p>{user?.displayName || user?.email?.split("@")[0]}</p>
-                  <p>@{user?.email?.split("@")[0]}</p>
+                  <p>{myInfo?.displayName || myInfo?.email?.split("@")[0]}</p>
+                  <p>@{myInfo?.email?.split("@")[0]}</p>
                 </div>
                 <div className={styled.userInfo__etc}>
                   <FiMoreHorizontal />
@@ -241,7 +290,7 @@ export default function LeftMenu() {
         </div>
       </section>
       {tweetModal && (
-        <TweetModal tweetModal={tweetModal} setTweetModal={setTweetModal} />
+        <TweetModal userObj={userObj} tweetModal={tweetModal} setTweetModal={setTweetModal} />
       )}
     </>
   );

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useDispatch } from "react-redux";
 import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,21 +11,27 @@ import {
   GithubAuthProvider,
   GoogleAuthProvider,
 } from "firebase/auth";
-import { app } from "firebaseApp";
+import { app, db } from "firebaseApp";
 import { toast } from "react-toastify";
 import useTranslation from "hooks/useTranslation";
 import styled from "./AuthForm.module.scss";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import AuthContext from "context/AuthContext";
+import { setCurrentUser, setLoginToken } from "reducer/user";
+const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
+const PROFILE_BG_URL = "/bgimg.jpg";
 
 interface AuthProps {
   newAccount: boolean;
 }
 
 export default function AuthForm({ newAccount }: AuthProps) {
-  const [error, setError] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
   const [select, setSelect] = useState<string>("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const t = useTranslation();
 
@@ -36,6 +43,7 @@ export default function AuthForm({ newAccount }: AuthProps) {
     "(auth/too-many-requests)":
       "로그인 시도가 여러 번 실패하여 이 계정에 대한 액세스가 일시적으로 비활성화되었습니다. 비밀번호를 재설정하여 즉시 복원하거나 나중에 다시 시도할 수 있습니다.",
     "(auth/user-not-found)": "가입된 아이디를 찾을 수 없습니다.",
+    "(auth/invalid-login-credentials)": "가입된 아이디를 찾을 수 없습니다.",
   };
 
   const onSubmit = async (e: any) => {
@@ -44,16 +52,71 @@ export default function AuthForm({ newAccount }: AuthProps) {
       const auth = getAuth(app);
       if (newAccount) {
         // Log in
-        await signInWithEmailAndPassword(auth, email, password);
+        await signInWithEmailAndPassword(auth, email, password).then(
+          async (result: any) => {
+            let signUser = result?.user;
+            const docRef = doc(db, "Users", signUser?.email);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              dispatch(setLoginToken("login"));
+              dispatch(
+                setCurrentUser({
+                  ...docSnap.data(),
+                })
+              );
+            } else {
+              console.log("error");
+            }
+          }
+        );
         navigate("/");
         toast.success(t("SUCCESS_LOGIN_TOAST"));
       } else {
         // Sign up
-        await createUserWithEmailAndPassword(auth, email, password);
-        navigate("/");
-        toast.success(t("SUCCESS_SIGNIN_TOAST"));
+        await createUserWithEmailAndPassword(auth, email, password).then(
+          async (result) => {
+            let createUser: any = result.user;
+            const usersRef = collection(db, "Users");
+            await setDoc(doc(usersRef, createUser?.email), {
+              uid: createUser.uid,
+              displayName: createUser.email.split("@")[0],
+              email: createUser.email,
+              photoURL: PROFILE_DEFAULT_URL,
+              createdAtId: Date.now(),
+              description: "",
+              bgURL: PROFILE_BG_URL,
+              bookmark: [],
+              followerAt: [],
+              followingAt: [],
+              follower: [],
+              following: [],
+              reTweet: [],
+            });
+            dispatch(setLoginToken("login"));
+            dispatch(
+              setCurrentUser({
+                uid: createUser.uid,
+                displayName: createUser.email.split("@")[0],
+                email: createUser.email,
+                photoURL: PROFILE_DEFAULT_URL,
+                bgURL: PROFILE_BG_URL,
+                description: "",
+                createdAtId: Date.now(),
+                bookmark: [],
+                followerAt: [],
+                followingAt: [],
+                follower: [],
+                following: [],
+                reTweet: [],
+              })
+            );
+          }
+        );
       }
+      navigate("/");
+      toast.success(t("SUCCESS_SIGNIN_TOAST"));
     } catch (error: any) {
+      console.log("error", error, error.message);
       const errorKey = Object.keys(errorMessages).find((key) =>
         error.message.includes(key)
       );
@@ -122,7 +185,9 @@ export default function AuthForm({ newAccount }: AuthProps) {
       target: { name },
     } = e;
 
-    let provider;
+    let provider: any;
+    let user: any;
+
     const auth = getAuth(app);
 
     if (name === "google") {
@@ -133,21 +198,88 @@ export default function AuthForm({ newAccount }: AuthProps) {
       provider = new GithubAuthProvider();
     }
 
-    await signInWithPopup(
-      auth,
-      provider as GoogleAuthProvider | GithubAuthProvider
-    )
-      .then((result) => {
-        console.log(result);
-        toast.success(t("LOGIN_TOAST"));
-      })
-      .catch((error: any) => {
-        const errorKey = Object.keys(errorMessages).find((key) =>
-          error.message.includes(key)
-        );
-        const errorMessage = errorKey ? errorMessages[errorKey] : error.message;
-        toast?.error(errorMessage);
+    try {
+      await signInWithPopup(
+        auth,
+        provider as GoogleAuthProvider | GithubAuthProvider
+      ).then(async (result: any) => {
+        const credential = provider.credentialFromResult(result);
+        const token = credential.accessToken;
+        user = result.user;
+
+        const docRef = doc(db, "Users", user.email);
+        await getDoc(docRef).then(async (docSnap) => {
+          if (docSnap.exists()) {
+            dispatch(setLoginToken("login"));
+            dispatch(
+              setCurrentUser({
+                ...docSnap.data(),
+              })
+            );
+          } else {
+            const usersRef = collection(db, "Users");
+            await setDoc(doc(usersRef, user.email), {
+              uid: user.uid,
+              displayName: user.email.split("@")[0],
+              email: user.email,
+              photoURL: PROFILE_DEFAULT_URL,
+              createdAtId: Date.now(),
+              description: "",
+              bgURL: PROFILE_BG_URL,
+              bookmark: [],
+              followerAt: [],
+              followingAt: [],
+              follower: [],
+              following: [],
+              reTweet: [],
+              token: token,
+            });
+            dispatch(setLoginToken("login"));
+            dispatch(
+              setCurrentUser({
+                uid: user?.uid,
+                displayName: user?.email.split("@")[0],
+                email: user?.email,
+                photoURL: PROFILE_DEFAULT_URL,
+                bgURL: PROFILE_BG_URL,
+                description: "",
+                createdAtId: Date.now(),
+                bookmark: [],
+                followerAt: [],
+                followingAt: [],
+                follower: [],
+                following: [],
+                reTweet: [],
+              })
+            );
+          }
+        });
       });
+      navigate("/");
+      toast.success(t("LOGIN_TOAST"));
+    } catch (error: any) {
+      const errorKey = Object.keys(errorMessages).find((key) =>
+        error.message.includes(key)
+      );
+      const errorMessage = errorKey ? errorMessages[errorKey] : error.message;
+      toast?.error(errorMessage);
+    }
+
+    // await signInWithPopup(
+    //   auth,
+    //   provider as GoogleAuthProvider | GithubAuthProvider
+    // )
+    //   .then((result) => {
+    //     console.log(result);
+    //     toast.success(t("LOGIN_TOAST"));
+    //   })
+    //   .catch((error: any) => {
+    //     const errorKey = Object.keys(errorMessages).find((key) =>
+    //       error.message.includes(key)
+    //     );
+    //     const errorMessage = errorKey ? errorMessages[errorKey] : error.message;
+    //     toast?.error(errorMessage);
+    //   });
   };
 
   return (
@@ -155,7 +287,7 @@ export default function AuthForm({ newAccount }: AuthProps) {
       <div className={styled.container}>
         <form onSubmit={onSubmit} className={styled.wrapper}>
           <input
-            type="text"
+            type="email"
             name="email"
             id="email"
             placeholder="Email"

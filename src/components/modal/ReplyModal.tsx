@@ -4,10 +4,11 @@ import { GrClose } from "react-icons/gr";
 import ReplyForm, { ReplyPropsBox } from "components/reply/ReplyForm";
 
 export default function ReplyModal({
-  post,
+  userObj,
+  tweetObj,
   replyModal,
   setReplyModal,
-}: ReplyPropsBox) {
+}: any) {
   return (
     <Modal
       open={replyModal}
@@ -23,7 +24,8 @@ export default function ReplyModal({
         </div>
         <div className={styled.editInput__container}>
           <ReplyForm
-            post={post}
+            userObj={userObj}
+            tweetObj={tweetObj}
             replyModal={replyModal}
             setReplyModal={setReplyModal}
           />

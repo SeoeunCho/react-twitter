@@ -1,5 +1,5 @@
-import { useContext, useRef, useState } from "react";
-import { PostProps } from "pages/home";
+import { useCallback, useContext, useRef, useState } from "react";
+import { TweetProps } from "pages/home";
 import {
   addDoc,
   arrayUnion,
@@ -27,32 +27,36 @@ import { BsReplyFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { languageState } from "atom";
 import { useRecoilState } from "recoil";
+import imageCompression from "browser-image-compression";
+import useGetFbInfo from "hooks/useGetFbInfo";
 
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
 export interface ReplyPropsBox {
-  post: PostProps;
+  tweet: TweetProps;
   replyModal: boolean;
   setReplyModal: any;
 }
 
 export default function ReplyForm({
-  post,
+  userObj,
+  tweetObj,
   replyModal,
   setReplyModal,
-}: ReplyPropsBox) {
+}: any) {
   const [reply, setReply] = useState<string>("");
   const [progressBarCount, setProgressBarCount] = useState<number>(0);
-  const [imageFile, setImageFile] = useState<string | null>("");
-  const [select, setSelect] = useState<boolean>(false);
+  const [imageUrl, setImageUrl] = useState<string | null>("");
+  const [select, setSelect] = useState<string>("");
   const fileInput = useRef<any>();
   const textRef = useRef<any>();
   const emojiRef = useRef<any>();
 
   // 이모지 모달 밖 클릭 시 창 끔
-  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({ emojiRef });
+  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick(emojiRef, textRef);
+  const { myInfo } = useGetFbInfo();
 
-  const { user } = useContext(AuthContext);
+  // const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const t = useTranslation();
   const language = useRecoilState(languageState);
@@ -61,112 +65,106 @@ export default function ReplyForm({
     return str?.length > 10 ? str?.substring(0, 10) + "..." : str;
   };
 
-  const handleFileUpload = (e: any) => {
-    const {
-      target: { files },
-    } = e;
-
-    const file = files?.[0];
-    const fileReader = new FileReader();
-    fileReader?.readAsDataURL(file);
-
-    fileReader.onloadend = (e: any) => {
-      const { result } = e?.currentTarget;
-      setImageFile(result);
-    };
-  };
-
   const onSubmit = async (e: any) => {
     e.preventDefault();
     setProgressBarCount(0); // 프로그레스 바 초기화
     let imageUrl = "";
-    //파일 경로 참조 만들기
-    const key = `${user?.uid}/${uuidv4()}`;
-    const storageRef = ref(storage, key);
 
-    if (post && user) {
-      // 입력 값 없을 시 업로드 X
-      if (reply !== "") {
-        // 이미지 있을 때만 첨부
-        if (imageFile) {
-          //storage 참조 경로로 파일 업로드 하기
-          const data = await uploadString(storageRef, imageFile, "data_url");
+    // 입력 값 없을 시 업로드 X
+    if (reply !== "") {
+      // 이미지 있을 때만 첨부
+      if (imageUrl !== "") {
+        //파일 경로 참조 만들기
+        const key = `${userObj?.uid}/${uuidv4()}`;
+        const storageRef = ref(storage, key);
 
-          // storage 참조 경로에 있는 파일의 URL을 다운로드해서 imageUrl 변수에 넣어서 업데이트
-          imageUrl = await getDownloadURL(data?.ref);
-        }
+        //storage 참조 경로로 파일 업로드 하기
+        await uploadString(storageRef, imageUrl, "data_url");
 
-        const replyObj = {
-          postId: post?.id,
-          email: user?.email,
-          content: reply,
-          createdAt: Date.now(),
-          uid: user?.uid,
-          profileUrl: user?.photoURL,
-          imageUrl: imageUrl,
-          displayName: user?.displayName || user?.email?.split("@")[0],
-        };
-
-        /* 하위 컬렉션 생성하기
-        const postRef = doc(collection(db, "Posts", post?.id, "Replies"));
-        setDoc(postRef, replyObj)*/
-
-        /** 답글 컬렉션 생성 */
-        const addReply = async () => {
-          await addDoc(collection(db, "Replies"), replyObj)
-            .then(() => {
-              toast.success(t("UPDATE_REPLY_TOAST"));
-              setReply("");
-              setSelect(false);
-              setImageFile(null);
-              setProgressBarCount(0); // 프로그레스 바 초기화
-
-              if (!replyModal) {
-                textRef.current.style.height = "52px";
-              } else {
-                setReplyModal(false);
-              }
-            })
-            .catch((e: any) => {
-              // 에러 처리
-              console.log(e);
-              setProgressBarCount(0); // 프로그레스 바 초기화
-              clearInterval(interval);
-            });
-
-          // 답글 생성 알림 만들기
-          if (user?.uid !== post?.uid) {
-            await addDoc(collection(db, "Notifications"), {
-              content: truncate(post?.content),
-              createdAt: Date.now(),
-              uid: post?.uid,
-              profileUrl: user?.photoURL,
-              isRead: false,
-              email: user?.email,
-              url: `/posts/${post?.id}`,
-              displayName: user?.displayName || user?.email?.split("@")[0],
-            });
-          }
-        };
-
-        let start = 0;
-        const interval = setInterval(() => {
-          if (start <= 100) {
-            setProgressBarCount((prev) => (prev === 100 ? 100 : prev + 1));
-            start++; // progress 증가
-          }
-          if (start === 100) {
-            addReply();
-            return;
-          }
-        });
-
-        return () => {
-          clearInterval(interval);
-        };
-      } else {
-        toast.error(t("SUBMIT_ERROR_TOAST"));
+        // storage 참조 경로에 있는 파일의 URL을 다운로드해서 imageUrl 변수에 넣어서 업데이트
+        imageUrl = await getDownloadURL(ref(storageRef));
       }
+
+      const tweetReply = {
+        text: reply,
+        createdAt: Date.now(),
+        creatorId: userObj.uid,
+        email: userObj.email,
+        imageUrl,
+        like: [],
+        reTweet: [],
+        reTweetAt: [],
+        parent: tweetObj.id,
+        parentEmail: tweetObj.email,
+        replyId: [],
+        reTweetEmail: [],
+        isReply: true,
+        // displayName: userObj?.displayName || userObj?.email?.split("@")[0],
+      };
+
+      /* 하위 컬렉션 생성하기
+        const tweetRef = doc(collection(db, "Tweets", tweet?.id, "Replies"));
+        setDoc(tweetRef, replyObj)*/
+
+      /** 답글 컬렉션 생성 */
+      const addReply = async () => {
+        const replies = await addDoc(collection(db, "Replies"), tweetReply);
+
+        await updateDoc(doc(db, "Tweets", tweetObj.id), {
+          replyId: [...tweetObj?.replyId, replies.id],
+        })
+          .then(() => {
+            toast.success(t("ADD_REPLY_TOAST"));
+            setReply("");
+            setSelect("");
+            setImageUrl("");
+            setProgressBarCount(0); // 프로그레스 바 초기화
+
+            if (!replyModal) {
+              textRef.current.style.height = "52px";
+            } else {
+              setReplyModal(false);
+            }
+          })
+          .catch((e: any) => {
+            // 에러 처리
+            console.log(e);
+            setProgressBarCount(0); // 프로그레스 바 초기화
+            clearInterval(interval);
+          });
+
+        // 답글 생성 알림 만들기
+        // if (user?.uid !== tweet?.uid) {
+        //   await addDoc(collection(db, "Notifications"), {
+        //     content: truncate(tweet?.content),
+        //     createdAt: Date.now(),
+        //     uid: tweet?.uid,
+        //     profileUrl: user?.photoURL,
+        //     isRead: false,
+        //     email: user?.email,
+        //     url: `/tweets/${tweet?.id}`,
+        //     displayName: user?.displayName || user?.email?.split("@")[0],
+        //   });
+        // }
+      };
+
+      let start = 0;
+      const interval = setInterval(() => {
+        if (start <= 100) {
+          setProgressBarCount((prev) => (prev === 100 ? 100 : prev + 1));
+          start++; // progress 증가
+        }
+        if (start === 100) {
+          addReply();
+          return;
+        }
+      });
+
+      return () => {
+        clearInterval(interval);
+      };
+    } else {
+      toast.error(t("SUBMIT_ERROR_TOAST"));
     }
   };
 
@@ -180,13 +178,47 @@ export default function ReplyForm({
     }
   };
 
-  const goPage = () => {
-    navigate(`/profile/${post?.email}`);
+  // 이미지 압축
+  const compressImage = async (image: any) => {
+    try {
+      const options = {
+        maxSizeMb: 1,
+        maxWidthOrHeight: 800,
+      };
+      return await imageCompression(image, options);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleFileUpload = async (e: any) => {
+    const {
+      target: { files },
+    } = e;
+
+    const file = files?.[0]; // 파일 1개만 첨부
+    const compressedImage: any = await compressImage(file); // 이미지 압축
+    const fileReader = new FileReader(); // 파일 이름 읽기
+
+    /* 파일 선택 누르고 이미지 한 개 선택 뒤 다시 파일선택 누르고 취소 누르면
+        Failed to execute 'readAsDataURL' on 'FileReader': parameter 1 is not of type 'Blob'. 이런 오류가 나옴. -> if문으로 예외 처리 */
+    if (file) {
+      fileReader?.readAsDataURL(compressedImage);
+    }
+
+    fileReader.onloadend = (e: any) => {
+      const { result } = e?.currentTarget;
+      setImageUrl(result);
+    };
   };
 
   const handleDeleteImage = () => {
-    setImageFile("");
+    setImageUrl("");
     fileInput.current.value = ""; // 취소 시 파일 문구 없애기
+  };
+
+  const goPage = () => {
+    navigate("/profile/mytweets/" + tweetObj.email);
   };
 
   const onEmojiClick = (event: any) => {
@@ -195,19 +227,23 @@ export default function ReplyForm({
       event.emoji +
       reply.slice(textRef.current?.selectionEnd, reply.length);
     setReply(textEmoji);
-    setSelect(true);
+    setSelect("");
   };
 
   return (
     <>
       {progressBarCount !== 0 && <BarLoader count={progressBarCount} />}
-      <div className={`${styled.tweet__reply} ${select && styled.select} `}>
+      <div
+        className={`${styled.tweet__reply} ${
+          select === "text" && styled.select
+        } `}
+      >
         <div className={styled.tweet__replyIcon}>
           <BsReplyFill />
         </div>
         <div className={styled.tweet__replyText}>
           {language[0] === "en" && <p>{t("REPLY_TO")}&nbsp;</p>}
-          <p onClick={goPage}>@{post.email?.split("@")[0]}</p>
+          <p onClick={goPage}>@{tweetObj.email?.split("@")[0]}</p>
           {language[0] === "ko" && <p>&nbsp;{t("REPLY_TO")}</p>}
         </div>
       </div>
@@ -217,7 +253,7 @@ export default function ReplyForm({
         <div className={styled.replyInput__container}>
           <div className={styled.tweet__profile}>
             <img
-              src={user?.photoURL || PROFILE_DEFAULT_URL}
+              src={myInfo?.photoURL || PROFILE_DEFAULT_URL}
               alt="profileImg"
               className={styled.profile__image}
             />
@@ -225,7 +261,7 @@ export default function ReplyForm({
           <form onSubmit={onSubmit} className={styled.replyInput}>
             <div
               className={`${styled.replyForm__content} ${
-                select && styled.focus
+                select === "text" && styled.focus
               }`}
             >
               <textarea
@@ -237,18 +273,18 @@ export default function ReplyForm({
                 id="reply"
                 required
                 onChange={onChange}
-                onFocus={() => setSelect(true)}
+                onFocus={() => setSelect("text")}
                 maxLength={280}
                 placeholder={t("REPLY_PLACEHOLDER")}
               />
-              {imageFile && (
+              {imageUrl && (
                 <div className={styled.replyForm__attachment}>
                   <div className={styled.replyForm__Image}>
                     <img
-                      src={imageFile}
+                      src={imageUrl}
                       alt="upload file"
                       style={{
-                        backgroundImage: imageFile,
+                        backgroundImage: imageUrl,
                       }}
                     />
                   </div>
@@ -304,7 +340,7 @@ export default function ReplyForm({
                 type="submit"
                 value={t("BUTTON_REPLY")}
                 className={styled.replyInput__arrow}
-                disabled={reply === "" && imageFile === ""}
+                disabled={reply === "" && imageUrl === ""}
               />
             </div>
           </form>

@@ -9,13 +9,13 @@ import {
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
-import { PostProps } from "pages/home";
-import { EditFormProps } from "components/posts/PostEditForm";
+import { TweetProps } from "pages/home";
+import { EditFormProps } from "components/tweets/TweetEditForm";
 
 import Picker from "emoji-picker-react";
 import useEmojiModalOutClick from "hooks/useEmojiModalOutClick";
 import BarLoader from "components/loader/BarLoader";
-import styled from "../posts/PostForm.module.scss";
+import styled from "../tweets/TweetForm.module.scss";
 
 import { GrEmoji } from "react-icons/gr";
 import { IoCloseSharp, IoImageOutline } from "react-icons/io5";
@@ -23,6 +23,7 @@ import { IoCloseSharp, IoImageOutline } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
 import AuthContext from "context/AuthContext";
 import useTranslation from "hooks/useTranslation";
+import { ReplyProps } from "components/reply/ReplyBox";
 
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
@@ -31,7 +32,7 @@ export default function ReplyEditForm({
   editModal,
   setEditModal,
 }: EditFormProps) {
-  const [post, setPost] = useState<PostProps | null>(null);
+  const [reply, setReply] = useState<ReplyProps | null>(null);
   const [content, setContent] = useState<string>("");
   const [hashTag, setHashTag] = useState<string>("");
   const [imageFile, setImageFile] = useState<string | null>(null);
@@ -44,7 +45,7 @@ export default function ReplyEditForm({
   const emojiRef = useRef<any>();
 
   // 이모지 모달 밖 클릭 시 창 끔
-  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({ emojiRef });
+  // const { clickEmoji, toggleEmoji } = useEmojiModalOutClick(emojiRef);
 
   const { user } = useContext(AuthContext);
   const t = useTranslation();
@@ -64,15 +65,12 @@ export default function ReplyEditForm({
     };
   };
 
-  console.log("post", post);
-
-  const getPost = useCallback(async () => {
+  const getReply = useCallback(async () => {
     if (detailId) {
-      const docRef = doc(db, "Posts", detailId);
+      const docRef = doc(db, "Replies", detailId);
       const docSnap = await getDoc(docRef);
-      setPost({ ...(docSnap?.data() as PostProps), id: docSnap.id });
+      setReply({ ...(docSnap?.data() as ReplyProps), id: docSnap.id });
       setContent(docSnap?.data()?.content);
-      setTags(docSnap?.data()?.hashTags);
       setImageFile(docSnap?.data()?.imageUrl);
     }
   }, [detailId]);
@@ -87,12 +85,12 @@ export default function ReplyEditForm({
 
     // 입력 값 없을 시 업로드 X
     if (content !== "") {
-      const editPost = async () => {
+      const editReply = async () => {
         try {
-          if (post) {
+          if (reply) {
             // 기존 사진 지우고 새로운 사진 업로드
-            if (post?.imageUrl) {
-              let imageRef = ref(storage, post?.imageUrl);
+            if (reply?.imageUrl) {
+              let imageRef = ref(storage, reply?.imageUrl);
               await deleteObject(imageRef).catch((error) => {
                 console.log(error);
               });
@@ -111,14 +109,13 @@ export default function ReplyEditForm({
               imageUrl = await getDownloadURL(data?.ref);
             }
 
-            const postRef = doc(db, "Posts", post?.id);
-            await updateDoc(postRef, {
+            const replyRef = doc(db, "Replies", reply?.id);
+            await updateDoc(replyRef, {
               content: content,
-              hashTags: tags,
               imageUrl: imageUrl,
             });
-            toast.success(t("EDIT_POST_TOAST"));
-            // setImageFile(null);
+            toast.success(t("EDIT_TWEET_TOAST"));
+            setImageFile(null);
           }
 
           if (!editModal) {
@@ -138,7 +135,7 @@ export default function ReplyEditForm({
           start++; // progress 증가
         }
         if (start === 100) {
-          editPost();
+          editReply();
           return;
         }
       });
@@ -161,27 +158,6 @@ export default function ReplyEditForm({
     }
   };
 
-  const removeTag = (tag: string) => {
-    setTags(tags?.filter((val) => val !== tag));
-  };
-
-  const onChangeHashTag = (e: any) => {
-    setHashTag(e?.target?.value.trim());
-  };
-
-  const handleKeyUp = (e: any) => {
-    if (e.keyCode === 32 && e.target.value.trim() !== "") {
-      // 만약 같은 태그가 있다면 에러를 띄운다
-      // 태그를 생성해준다
-      if (tags?.includes(e.target.value?.trim())) {
-        toast.error(t("SAME_TAG_TOAST"));
-      } else {
-        setTags((prev) => (prev?.length > 0 ? [...prev, hashTag] : [hashTag]));
-        setHashTag("");
-      }
-    }
-  };
-
   const handleDeleteImage = () => {
     setImageFile(null);
   };
@@ -195,14 +171,14 @@ export default function ReplyEditForm({
   };
 
   useEffect(() => {
-    if (detailId) getPost();
-  }, [getPost, detailId]);
+    if (detailId) getReply();
+  }, [getReply, detailId]);
 
   return (
     <>
       {progressBarCount !== 0 && <BarLoader count={progressBarCount} />}
-      <div className={`${styled.postForm} ${editModal && styled.modalBorder}`}>
-        <div className={styled.postInput__container}>
+      <div className={`${styled.tweetForm} ${editModal && styled.modalBorder}`}>
+        <div className={styled.tweetInput__container}>
           <div className={styled.tweet__profile}>
             {user && (
               <img
@@ -212,36 +188,36 @@ export default function ReplyEditForm({
               />
             )}
           </div>
-          <form className={styled.postInput} onSubmit={onSubmit}>
+          <form className={styled.tweetInput} onSubmit={onSubmit}>
             <div
-              className={`${styled.postForm__content} ${
+              className={`${styled.tweetForm__content} ${
                 select === "text" && styled.focus
               }`}
             >
               <textarea
-                className={styled.postInput__input}
+                className={styled.tweetInput__input}
                 spellCheck="false"
                 value={content}
                 ref={textRef}
                 name="content"
                 id="content"
                 required
-                placeholder={t("POST_PLACEHOLDER")}
+                placeholder={t("TWEET_PLACEHOLDER")}
                 onChange={onChange}
                 onFocus={() => setSelect("text")}
                 onBlur={() => setSelect("")}
                 maxLength={280}
               />
-              <div
-                className={`${styled.postInput__hashtags} ${
+              {/* <div
+                className={`${styled.tweetInput__hashtags} ${
                   select === "hashtag" && styled.focus
                 }`}
               >
                 {tags.length !== 0 ? (
-                  <span className={styled.postInput__hashtags_outputs}>
+                  <span className={styled.tweetInput__hashtags_outputs}>
                     {tags?.map((tag, index) => (
                       <span
-                        className={styled.postInput__hashtags_tag}
+                        className={styled.tweetInput__hashtags_tag}
                         key={index}
                         onClick={() => removeTag(tag)}
                       >
@@ -251,21 +227,21 @@ export default function ReplyEditForm({
                   </span>
                 ) : null}
                 <input
-                  className={styled.postInput__hashtags_input}
+                  className={styled.tweetInput__hashtags_input}
                   name="hashtag"
                   id="hashtag"
-                  placeholder={t("POST_HASHTAG")}
+                  placeholder={t("TWEET_HASHTAG")}
                   onChange={onChangeHashTag}
                   onKeyUp={handleKeyUp}
                   value={hashTag}
                   onFocus={() => setSelect("hashtag")}
                   onBlur={() => setSelect("")}
                 />
-              </div>
+              </div> */}
 
               {imageFile && (
-                <div className={styled.postForm__attachment}>
-                  <div className={styled.postForm__Image}>
+                <div className={styled.tweetForm__attachment}>
+                  <div className={styled.tweetForm__Image}>
                     <img
                       src={imageFile}
                       alt="upload file"
@@ -275,7 +251,7 @@ export default function ReplyEditForm({
                     />
                   </div>
                   <div
-                    className={styled.postForm__clear}
+                    className={styled.tweetForm__clear}
                     onClick={handleDeleteImage}
                   >
                     <IoCloseSharp />
@@ -283,13 +259,13 @@ export default function ReplyEditForm({
                 </div>
               )}
             </div>
-            <div className={styled.postInput__add}>
-              <div className={styled.postInput__iconBox}>
+            <div className={styled.tweetInput__add}>
+              <div className={styled.tweetInput__iconBox}>
                 <label
                   htmlFor={editModal ? "modal-attach-file" : "attach-file"}
-                  className={styled.postInput__label}
+                  className={styled.tweetInput__label}
                 >
-                  <div className={styled.postInput__icon}>
+                  <div className={styled.tweetInput__icon}>
                     <IoImageOutline />
                   </div>
                 </label>
@@ -301,17 +277,17 @@ export default function ReplyEditForm({
                   onChange={handleFileUpload}
                 />
               </div>
-              <div
+              {/* <div
                 ref={emojiRef}
                 onClick={toggleEmoji}
-                className={styled.postInput__iconBox}
+                className={styled.tweetInput__iconBox}
               >
                 <div
-                  className={`${styled.postInput__icon} ${styled.emoji__icon}`}
+                  className={`${styled.tweetInput__icon} ${styled.emoji__icon}`}
                 >
                   <GrEmoji />
                 </div>
-                {/* 해결: clickEmoji이 true일 때만 실행해서textarea 버벅이지 않음 */}
+                해결: clickEmoji이 true일 때만 실행해서textarea 버벅이지 않음
                 {clickEmoji && (
                   <div
                     className={`${styled.emoji} 
@@ -321,11 +297,11 @@ export default function ReplyEditForm({
                     <Picker onEmojiClick={onEmojiClick} />
                   </div>
                 )}
-              </div>
+              </div> */}
               <input
                 type="submit"
                 value={t("BUTTON_EDIT")}
-                className={styled.postInput__arrow}
+                className={styled.tweetInput__arrow}
                 disabled={content === "" && imageFile === ""}
               />
             </div>

@@ -4,12 +4,26 @@ import useTranslation from "hooks/useTranslation";
 import { divide } from "lodash";
 import { IoIosArrowBack, IoMdExit } from "react-icons/io";
 import { IoArrowBackOutline } from "react-icons/io5";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { setCurrentUser, setLoginToken } from "reducer/user";
 
-export default function Header({ menu, text }: { menu: string; text: any }) {
+interface HeaderProps {
+  menu?: string;
+  text: string | any;
+  myTweets?: [];
+  creatorInfo?: [] | any;
+}
+
+export default function Header({
+  menu,
+  text,
+  myTweets,
+  creatorInfo,
+}: HeaderProps) {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const t = useTranslation();
 
   const onLogOutClick = async () => {
@@ -17,6 +31,23 @@ export default function Header({ menu, text }: { menu: string; text: any }) {
     if (confirm) {
       const auth = getAuth(app);
       await signOut(auth);
+      dispatch(setLoginToken("logout"));
+      dispatch(
+        setCurrentUser({
+          photoURL: "",
+          userEmail: "",
+          displayName: "",
+          email: "",
+          description: "",
+          bgURL: "",
+          bookmark: [],
+          follower: [],
+          following: [],
+          reTweet: [],
+          reTweetAt: [],
+        })
+      );
+      navigate("/auth");
       toast.success(t("LOGOUT_TOAST"));
     }
   };
@@ -28,14 +59,6 @@ export default function Header({ menu, text }: { menu: string; text: any }) {
           <div className="main_text">
             <h2>{t(text)}</h2>
           </div>
-          {/* <button
-    type="button"
-    onClick={() => {
-      navigate(-1);
-    }}
-  >
-    <IoIosArrowBack className="post__header-btn" />
-  </button> */}
         </div>
       ) : (
         <div className="minor__category">
@@ -48,16 +71,18 @@ export default function Header({ menu, text }: { menu: string; text: any }) {
             <IoArrowBackOutline />
           </div>
           <div className="userInfo">
-            <p className="category__name">{t(text)}</p>
-            {/* {myNweets && (
-              <p className="category__sub">{myNweets.length} 트윗</p>
-            )} */}
+            <p className="category__name">
+              {menu === "profile" ? text : t(text)}
+            </p>
+            {myTweets && (
+              <p className="category__sub">{myTweets.length} 트윗</p>
+            )}
 
-            {/* {creatorInfo && (
+            {creatorInfo && (
               <p className="category__sub">
-                @{creatorInfo.email?.split("@")[0]}
+                @{creatorInfo?.email?.split("@")[0]}
               </p>
-            )} */}
+            )}
           </div>
           {menu === "profile" && (
             <div className="minor__iconExit" onClick={onLogOutClick}>

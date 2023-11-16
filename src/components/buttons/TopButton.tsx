@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { RiArrowUpSLine } from "react-icons/ri";
 import styled from "./TopButton.module.scss";

@@ -5,7 +5,7 @@ Youtube, Unsplash, TMDB(The Movie Database) API를
 Firebase를 이용하여 데이터를 생성하고 사용자 인증에서 회원가입 및 로그인을 구축하고
 CRUD를 구현하여 게시글 등록, 답글, 좋아요 등의 소셜 SNS 기능 및 실시간 업데이트와 알림목록을 생성했습니다.
 Sass와 Media Query를 사용해 어떤 기기에도 모바일에 대응하는 반응형으로 작업했습니다.
-전역 상태 라이브러리 Recoil로 메뉴명 다국어 처리 기능을 추가하고 Vercel로 배포했습니다. 
+전역 상태 라이브러리 Recoil로 메뉴명 다국어 처리 기능을 추가하고 Vercel로 배포했습니다.
 
 <!-- ![image](https://github.com/SeoeunCho/site2023-react/blob/main/src/assets/img/scrrenshot/site2023-react-screenshot.png) -->
 
@@ -50,6 +50,7 @@ Sass와 Media Query를 사용해 어떤 기기에도 모바일에 대응하는 �
 - Material UI(MUI)를 설치합니다. `yarn add @mui/material @emotion/react @emotion/styled`
 - Emoji Picker를 설치합니다. `yarn add emoji-picker-react`
 - Uuid를 설치합니다. `yarn add uuid`, `yarn add --dev @types/uuid`
+- 이미지 압축 모듈을 설치합니다. `yarn add browser-image-compression`
 - Vercel CLI를 설치합니다. `yarn global add vercel`
 - 프로젝트 시작 `yarn start`
 
@@ -59,7 +60,7 @@ Sass와 Media Query를 사용해 어떤 기기에도 모바일에 대응하는 �
 2. [ **Firebase Authentication** ](https://firebase.google.com/products/auth?hl=ko)에서 사용자 인증 시작하기
 3. [ **Firebase OAuth** ](https://firebase.google.com/docs/auth/web/google-signin?hl=ko)을 참고해 SNS 로그인 구현
 4. [ **Firestore** ](https://firebase.google.com/docs/firestore)를 사용해 데이터 생성 및 실시간 데이터 업데이트
-4. [ **Firestore 기본 보안 규칙** ](https://firebase.google.com/docs/rules/basics?hl=ko&authuser=0)를 참고해 API키 보안 작업
+5. [ **Firestore 기본 보안 규칙** ](https://firebase.google.com/docs/rules/basics?hl=ko&authuser=0)를 참고해 API키 보안 작업
 
 ## Screenshots
 
