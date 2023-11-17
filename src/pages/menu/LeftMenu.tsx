@@ -37,9 +37,8 @@ export default function LeftMenu({ userObj }: any) {
   const location = useLocation();
   const navigate = useNavigate();
   const { myInfo } = useGetFbInfo();
-  
+
   const t = useTranslation();
-  
 
   useHandleOutsideClick({
     ref: userLogoutRef,
@@ -90,14 +89,14 @@ export default function LeftMenu({ userObj }: any) {
     // 렌더 시
     if (size < 500) {
       setResize(true);
-      if (location.pathname.includes("bookmark")) {
-        navigate(`/profile/bookmarktweets/${userObj?.email}`);
-      }
+      // if (location.pathname.includes("bookmark")) {
+      //   navigate(`/profile/bookmarktweets/${userObj?.email}`);
+      // }
     } else if (size > 500) {
       setResize(false);
-      if (location.pathname.includes("bookmark")) {
-        navigate("/bookmark/tweets");
-      }
+      // if (location.pathname.includes("bookmark")) {
+      //   navigate("/bookmark/tweets");
+      // }
     }
 
     const Resize = () => {
@@ -112,7 +111,7 @@ export default function LeftMenu({ userObj }: any) {
   useEffect(() => {
     if (location.pathname === "/") {
       setSelected(1);
-    } else if (location.pathname.includes("/explore")) {
+    } else if (location.pathname.includes("explore")) {
       setSelected(2);
     } else if (location.pathname.includes("/notification")) {
       setSelected(3);
@@ -157,7 +156,7 @@ export default function LeftMenu({ userObj }: any) {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/explore" onClick={() => onSelect(2)}>
+                  <Link to="/explore/tweets/" onClick={() => onSelect(2)}>
                     <div className={styled.leftMenu__list}>
                       {selected === 2 ? (
                         <>
@@ -176,10 +175,7 @@ export default function LeftMenu({ userObj }: any) {
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    to="/notification"
-                    onClick={() => onSelect(3)}
-                  >
+                  <Link to="/notification/retweets" onClick={() => onSelect(3)}>
                     <div className={styled.leftMenu__list}>
                       {selected === 3 ? (
                         <>
@@ -290,7 +286,11 @@ export default function LeftMenu({ userObj }: any) {
         </div>
       </section>
       {tweetModal && (
-        <TweetModal userObj={userObj} tweetModal={tweetModal} setTweetModal={setTweetModal} />
+        <TweetModal
+          userObj={userObj}
+          tweetModal={tweetModal}
+          setTweetModal={setTweetModal}
+        />
       )}
     </>
   );

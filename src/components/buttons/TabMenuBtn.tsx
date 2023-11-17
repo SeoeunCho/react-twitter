@@ -15,7 +15,7 @@ export default function TabMenuBtn({ url, text, selected, num }: any) {
   return (
     <Link
       to={url}
-      className={`${styled.tab_container} ${size && styled.sizeContainer}`}
+      className={`${styled.tab__container} ${size && styled.sizeContainer}`}
     >
       <div
         className={`${styled.btnBox} ${selected === num && styled.selectedBox}`}

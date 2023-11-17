@@ -1,13 +1,4 @@
 import AuthContext from "context/AuthContext";
-import {
-  arrayRemove,
-  updateDoc,
-  arrayUnion,
-  deleteDoc,
-  doc,
-  onSnapshot,
-} from "firebase/firestore";
-import { db, storage } from "firebaseApp";
 import { TweetProps } from "pages/home";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
@@ -18,26 +9,26 @@ import {
   FaRegBookmark,
 } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FiRepeat, FiMoreHorizontal } from "react-icons/fi";
 import { toast } from "react-toastify";
 
-import { ref, deleteObject } from "firebase/storage";
-import FollowingBox from "components/following/FollowingBox";
-import useTranslation from "hooks/useTranslation";
-// import useTweetEditModalClick from "hooks/useTweetEditModal";
-import styled from "./TweetBox.module.scss";
-import { useTimeToString } from "hooks/useTimeToString";
-import { FiRepeat, FiMoreHorizontal, FiEdit, FiTrash2 } from "react-icons/fi";
 import { ReplyProps } from "components/reply/ReplyBox";
-import { languageState } from "atom";
-import { useRecoilState } from "recoil";
+import FollowingBox from "components/following/FollowingBox";
+import TweetEditDeleteBtn from "components/buttons/TweetEditDeleteBtn";
 import ReplyModal from "components/modal/ReplyModal";
 import EditTweetModal from "components/modal/EditTweetModal";
-// import { UserProps } from "Router";
-import TweetEditDeleteBtn from "components/buttons/TweetEditDeleteBtn";
-import useToggleLike from "hooks/useToggleLike";
-import useHandleOutsideClick from "hooks/useHandleOutsideClick";
-import { useToggleBookmark } from "hooks/useToggleBookmark";
+import styled from "./TweetBox.module.scss";
+
 import { useSelector } from "react-redux";
+import { languageState } from "atom";
+import { useRecoilState } from "recoil";
+import { useTimeToString } from "hooks/useTimeToString";
+import { useToggleBookmark } from "hooks/useToggleBookmark";
+import useToggleLike from "hooks/useToggleLike";
+import useTranslation from "hooks/useTranslation";
+import useHandleOutsideClick from "hooks/useHandleOutsideClick";
+
+// import { UserProps } from "Router";
 
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
@@ -254,9 +245,7 @@ export default function TweetBox({
               to={`/profile/mytweets/${tweetObj.email}`}
             >
               <img
-                src={
-                  loading && (creatorInfo?.photoURL || PROFILE_DEFAULT_URL)
-                }
+                src={loading && (creatorInfo?.photoURL || PROFILE_DEFAULT_URL)}
                 alt="profileImg"
                 loading="lazy"
                 className={styled.profile__image}
@@ -361,7 +350,11 @@ export default function TweetBox({
         {/* 트윗 이미지 콘텐츠 */}
         {tweetObj.attachmentUrl ? (
           <div className={styled.tweet__image} onClick={goTweet}>
-            <img src={tweetObj.attachmentUrl} alt="uploaded file" loading="lazy" />
+            <img
+              src={tweetObj.attachmentUrl}
+              alt="uploaded file"
+              loading="lazy"
+            />
           </div>
         ) : null}
 

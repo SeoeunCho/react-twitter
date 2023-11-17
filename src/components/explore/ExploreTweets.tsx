@@ -21,6 +21,7 @@ export default function ExploreTweets({ userObj }: any) {
         id: doc.id,
         ...doc.data(),
       }));
+      console.log("tweetArray", tweetArray);
       setTweets(tweetArray);
       setLoading(true);
     });

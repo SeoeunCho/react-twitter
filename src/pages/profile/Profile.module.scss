@@ -63,7 +63,7 @@
 }
 
 .container .main__container .profile .profile__edit .profile__image:hover {
-  background: #ececec;
+  background: var(--grayLight);
 }
 
 .container .main__container .profile .profile__edit .profile__image img {
@@ -83,7 +83,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 9999px;
-  border: 1.5px solid #c1dbd1;
+  border: 1.5px solid var(--secondary);
   background: white;
   font-size: 15px;
   font-weight: 500;
@@ -93,7 +93,7 @@
 }
 
 .container .main__container .profile .profile__edit .profile__editBtn:hover {
-  background: #ececec;
+  background: var(--grayLight);
 }
 
 /* 팔로우 버튼 */
@@ -131,7 +131,7 @@
   .profile
   .profile__edit
   .profile__editBtn.profile__followBtn.follow:hover {
-  background: #ececec;
+  background: var(--grayLight);
 }
 
 /* 프로필 안내 */
@@ -213,7 +213,7 @@
   /* width: 100%; */
   height: 53px;
   user-select: none;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid var(--grayLight);
 }
 
 @media screen and (max-width: 687px) {

@@ -12,6 +12,7 @@ import {
 } from "react-icons/io5";
 import { db } from "firebaseApp";
 import { setCurrentUser } from "reducer/user";
+import useTranslation from "hooks/useTranslation";
 
 const PROFILE_DEFAULT_URL = "/PROFILE_DEFAULT_URL.jpg";
 const PROFILE_BG_URL = "/PROFILE_BG_URL.jpg";
@@ -24,14 +25,21 @@ export default function EditProfileModal({
   const currentUser = useSelector((state: any) => state.user.currentUser);
   const dispatch = useDispatch();
   const inputRef = useRef<any>();
-  const [newDisplayName, setNewDisplayName] = useState<any>(creatorInfo.displayName);
+  const [newDisplayName, setNewDisplayName] = useState<any>(
+    creatorInfo.displayName
+  );
   const [desc, setDesc] = useState<any>(creatorInfo.description);
-  const [editAttachment, setEditAttachment] = useState<any>(creatorInfo.photoURL);
-  const [editAttachmentBg, setEditAttachmentBg] = useState<any>(creatorInfo.bgURL);
+  const [editAttachment, setEditAttachment] = useState<any>(
+    creatorInfo.photoURL
+  );
+  const [editAttachmentBg, setEditAttachmentBg] = useState<any>(
+    creatorInfo.bgURL
+  );
   const [isDeleteProfileURL, setIsDeleteProfileURL] = useState<boolean>(false);
   const [isDeleteBgURL, setIsDeleteBgURL] = useState<boolean>(false);
   const [isAddFile, setIsAddFile] = useState<any>(null);
   const [select, setSelect] = useState<string>("");
+  const t = useTranslation();
 
   const onChangeInfo = (e: any, type: any) => {
     if (type === "displayName") {
@@ -165,7 +173,7 @@ export default function EditProfileModal({
             <div className={styled.submit}>
               <input
                 type="submit"
-                value="프로필 수정"
+                value={t("BUTTON_EDIT_PROFILE")}
                 className={styled.editInput__arrow}
                 disabled={
                   newDisplayName === creatorInfo.displayName &&
@@ -259,7 +267,7 @@ export default function EditProfileModal({
                 } ${creatorInfo.displayName !== "" && styled.focus}`}
               >
                 <div className={styled.edit__InputBox}>
-                  <p>이름</p>
+                  <p>{t("PROFILE_NAME")}</p>
                   <input
                     maxLength={25}
                     className={styled.edit__Input}
@@ -282,7 +290,7 @@ export default function EditProfileModal({
                 } ${creatorInfo.description !== "" && styled.focus}`}
               >
                 <div className={styled.edit__InputBox}>
-                  <p>자기 소개</p>
+                  <p>{t("PROFILE_ABOUT_ME")}</p>
                   <textarea
                     rows={3}
                     className={`${styled.edit__Input} ${styled.edit__textarea}`}

@@ -11,12 +11,12 @@
   padding: 12px 16px;
   cursor: pointer;
   transition: all 0.2s;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid var(--grayLight);
 }
 
 .followBox .follows .follow__user:hover,
 .more:hover {
-  background: #e0ebe8;
+  background: var(--grayLightSky);
 }
 
 .follow__user .follow__userInfo {
@@ -101,7 +101,7 @@
 }
 
 .followBox .follows .follow__user .follow__btn.follow__btn.follow:hover {
-  background: #ececec;
+  background: var(--grayLight);
 }
 
 @media screen and (max-width: 500px) {

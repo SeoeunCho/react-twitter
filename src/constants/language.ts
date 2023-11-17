@@ -70,6 +70,10 @@ const TRANSLATIONS = {
     ko: "가입하기",
     en: "Sign up",
   },
+  BUTTON_MORE: {
+    ko: "더 보기",
+    en: "See more",
+  },
 
   // reply
   REPLY_PLACEHOLDER: {
@@ -100,10 +104,6 @@ const TRANSLATIONS = {
     ko: "이미지 변경",
     en: "Change Image",
   },
-  NAME_PLACEHOLDER: {
-    ko: "이름",
-    en: "Name",
-  },
 
   /* no tweet === start */
   // 홈
@@ -121,9 +121,29 @@ const TRANSLATIONS = {
   },
 
   // 검색
+  EXPLORE_PLACEHOLDER: {
+    ko: "트위터 검색",
+    en: "Search tweets",
+  },
+  EXPLORE_KEYWORD: {
+    ko: "사용자, 키워드를 검색해보세요.",
+    en: "Search for users and keywords.",
+  },
+  EXPLORE_NOT_REVEALED: {
+    ko: "(본인 정보는 노출되지 않습니다.)",
+    en: "(Your information will not be revealed.)",
+  },
+  EXPLORE_NO_MATCHED: {
+    ko: "검색하신 결과가 없습니다.",
+    en: "There are no results for your search.",
+  },
   NO_EXPLORE_LIST: {
     ko: "타임라인이 비어있습니다. 지금 트윗해보세요.",
     en: "No Posts Yet",
+  },
+  RECOMMEND_FOLLOW: {
+    ko: "팔로우 추천",
+    en: "Follow recommend",
   },
 
   // 알림
@@ -164,7 +184,7 @@ const TRANSLATIONS = {
     ko: "전체",
     en: "For you",
   },
-  TAB_MY: {
+  TAB_TWEET: {
     ko: "트윗",
     en: "Tweet",
   },
@@ -185,6 +205,10 @@ const TRANSLATIONS = {
     en: "Bookmark",
   },
   TAB_USER: {
+    ko: "유저",
+    en: "User",
+  },
+  TAB_USER2: {
     ko: "사용자",
     en: "User",
   },
@@ -196,8 +220,20 @@ const TRANSLATIONS = {
   },
   // profile
   PROFILE_NAME: {
-    ko: "사용자님",
-    en: "User",
+    ko: "이름",
+    en: "Name",
+  },
+  PROFILE_ABOUT_ME: {
+    ko: "자기 소개",
+    en: "About Me",
+  },
+  PROFILE_ABOUT_ME_TEXT: {
+    ko: "소개글이 없습니다.",
+    en: "There is no introduction.",
+  },
+  PROFILE_JOIN_DATE: {
+    ko: "가입일",
+    en: "Join Date",
   },
 
   // signin, signup
@@ -293,7 +329,7 @@ const TRANSLATIONS = {
   },
   CHECK_DELETE_REPLY_TOAST: {
     ko: "정말로 이 답글을 삭제하시겠습니까?",
-    en: "Are you sure you want to delete this reply?",
+    en: "Are you sure deleting this reply?",
   },
   DELETE_REPLY_TOAST: {
     ko: "답글을 삭제했습니다.",
@@ -305,7 +341,7 @@ const TRANSLATIONS = {
   },
   CHECK_DELETE_TWEET_TOAST: {
     ko: "정말로 이 트윗을 삭제하시겠습니까?",
-    en: "Are you sure you want to delete this tweet?",
+    en: "Are you sure deleting this tweet?",
   },
   ADD_TWEET_TOAST: {
     ko: "트윗이 등록되었습니다.",
@@ -338,6 +374,48 @@ const TRANSLATIONS = {
   LIKE_CANCEL_TOAST: {
     ko: "좋아요를 취소했습니다.",
     en: "Followed.",
+  },
+  EDIT_PROFILE_TOAST: {
+    ko: "프로필이 수정되었습니다.",
+    en: "The profile has been edited.",
+  },
+  CHECK_DELETE_PROFILE_IMG_TOAST: {
+    ko: "프로필 사진을 삭제하시겠습니까?",
+    en: "Delete your profile image?",
+  },
+  CHECK_DELETE_BG_IMG_TOAST: {
+    ko: "배경 사진을 삭제하시겠습니까?",
+    en: "Delete your profile background image?",
+  },
+
+  // time
+  TIME_JUST: {
+    ko: "방금 전",
+    en: "Just ago",
+  },
+  TIME_MINUTE: {
+    ko: "분 전",
+    en: "minutes ago",
+  },
+  TIME_HOUR: {
+    ko: "시간 전",
+    en: "hours ago",
+  },
+  TIME_DAY: {
+    ko: "일 전",
+    en: "days ago",
+  },
+  TIME_WEEK: {
+    ko: "주 전",
+    en: "weeks ago",
+  },
+  TIME_AM: {
+    ko: "오전",
+    en: "AM",
+  },
+  TIME_PM: {
+    ko: "오후",
+    en: "PM",
   },
 };
 

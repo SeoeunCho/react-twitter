@@ -20,6 +20,7 @@ import BookmarkPage from "pages/bookmark";
 import CircleLoader from "components/loader/CircleLoader";
 import EditProfileModal from "components/modal/EditProfileModal";
 import { useRecoilState } from "recoil";
+import useTranslation from "hooks/useTranslation";
 
 export default function Profile({ userObj }: any) {
   const [creatorInfo, setCreatorInfo] = useState<any>({});
@@ -32,9 +33,10 @@ export default function Profile({ userObj }: any) {
   const { pathname } = useLocation();
   const userEmail = pathname.split("/")[3];
   const { myInfo } = useGetFbInfo();
-  const { timeToString } = useTimeToString();
+  const { timeToString3 } = useTimeToString();
   const toggleFollow = useToggleFollow(myInfo);
   const [language, setLanguage] = useRecoilState(languageState);
+  const t = useTranslation();
 
   const onClickLanguage = () => {
     setLanguage(language === "ko" ? "en" : "ko");
@@ -104,8 +106,6 @@ export default function Profile({ userObj }: any) {
     setIsEditing((prev) => !prev);
   };
 
-  console.log("creatorInfo", creatorInfo?.displayName);
-
   return (
     <>
       <section className={styled.container}>
@@ -133,21 +133,23 @@ export default function Profile({ userObj }: any) {
                               alt="프로필 이미지"
                             />
                           </div>
-                          <button
-                            type="button"
-                            className="profile__btn--language"
-                            onClick={onClickLanguage}
-                          >
-                            {language === "ko" ? "한국어" : "English"}
-                          </button>
 
                           {userObj.email === userEmail ? (
-                            <div
-                              className={styled.profile__editBtn}
-                              onClick={toggleEdit}
-                            >
-                              프로필 수정
-                            </div>
+                            <>
+                              <div
+                                className={styled.profile__editBtn}
+                                onClick={toggleEdit}
+                              >
+                                {t("BUTTON_EDIT_PROFILE")}
+                              </div>
+                              <button
+                                type="button"
+                                className="profile__btn--language"
+                                onClick={onClickLanguage}
+                              >
+                                {language === "ko" ? "한국어" : "English"}
+                              </button>
+                            </>
                           ) : (
                             <>
                               {myInfo.following.some(
@@ -158,14 +160,14 @@ export default function Profile({ userObj }: any) {
                                   className={`${styled.profile__editBtn} ${styled.follow} `}
                                   onClick={() => toggleFollow(creatorInfo)}
                                 >
-                                  <p>팔로잉</p>
+                                  <p>{t("BUTTON_FOLLOWING")}</p>
                                 </div>
                               ) : (
                                 <div
                                   className={`${styled.profile__editBtn} ${styled.profile__followBtn} `}
                                   onClick={() => toggleFollow(creatorInfo)}
                                 >
-                                  <p>팔로우</p>
+                                  <p>{t("BUTTON_FOLLOW")}</p>
                                 </div>
                               )}
                             </>
@@ -179,7 +181,7 @@ export default function Profile({ userObj }: any) {
                           <div className={styled.profile__desc}>
                             {creatorInfo.description === "" ? (
                               <p className={styled.notDesc}>
-                                소개글이 없습니다
+                                {t("PROFILE_ABOUT_ME_TEXT")}
                               </p>
                             ) : (
                               <p>{creatorInfo.description}</p>
@@ -188,15 +190,18 @@ export default function Profile({ userObj }: any) {
                           <div className={styled.profile__createdAt}>
                             <BsCalendar3 />
                             <p>
-                              가입일 : {timeToString(creatorInfo.createdAtId)}
+                              {t("PROFILE_JOIN_DATE")} :{" "}
+                              {timeToString3(creatorInfo.createdAtId)}
                             </p>
                           </div>
                           <div className={styled.profile__followInfo}>
                             <p>
-                              <b>{creatorInfo.following?.length}</b> 팔로잉
+                              <b>{creatorInfo.following?.length}</b>{" "}
+                              {t("BUTTON_FOLLOWING")}
                             </p>
                             <p>
-                              <b>{creatorInfo.follower?.length}</b> 팔로워
+                              <b>{creatorInfo.follower?.length}</b>{" "}
+                              {t("BUTTON_FOLLOW")}
                             </p>
                           </div>
                         </div>
@@ -208,7 +213,7 @@ export default function Profile({ userObj }: any) {
                         num={1}
                         selected={selected}
                         url={`/profile/mytweets/${userEmail}`}
-                        text={"TAB_MY"}
+                        text={"TAB_TWEET"}
                       />
                       <TabMenuBtn
                         num={2}

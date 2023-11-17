@@ -1,4 +1,4 @@
-import TopButton from "./components/buttons/TopButton";
+import TopButton from "../components/buttons/TopButton";
 import LeftMenu from "pages/menu/LeftMenu";
 import HomePage from "pages/home";
 import ExplorePage from "pages/explore";
@@ -6,7 +6,7 @@ import NotificationPage from "pages/notification";
 import BookmarkPage from "pages/bookmark";
 import DetailTweet from "components/detail/DetailTweet";
 import ProfilePage from "pages/profile";
-import NotFound from "./pages/NotFound";
+import NotFound from "./NotFound";
 import RightMenu from "pages/menu/RightMenu";
 import AuthPage from "pages/auth";
 
@@ -23,8 +23,6 @@ interface RouterProps {
 }
 
 export default function Router({ isAuthenticated, userObj }: RouterProps) {
-  const location = useLocation();
-  console.log("location.pathname", location.pathname);
   return (
     <>
       <TopButton />

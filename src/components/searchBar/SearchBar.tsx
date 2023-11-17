@@ -6,6 +6,7 @@ import { db } from "firebaseApp";
 import useHandleOutsideClick from "hooks/useHandleOutsideClick";
 import styled from "./SearchBar.module.scss";
 import SearchBox from "./SearchBox";
+import useTranslation from "hooks/useTranslation";
 
 export default function SearchBar({ userObj }: any) {
   const searchRef = useRef<HTMLInputElement>(null);
@@ -18,6 +19,7 @@ export default function SearchBar({ userObj }: any) {
   const [tweets, setTweets] = useState<any>([]);
   const [focus, setFocus] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const t = useTranslation();
 
   useHandleOutsideClick({
     ref: searchRef,
@@ -118,7 +120,7 @@ export default function SearchBar({ userObj }: any) {
             spellCheck={false}
             ref={textRef}
             className={styled.search__bar}
-            placeholder="트위터 검색"
+            placeholder={t("EXPLORE_PLACEHOLDER")}
             onChange={onChange}
           />
         </div>

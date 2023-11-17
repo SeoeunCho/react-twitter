@@ -49,7 +49,7 @@ export default function TweetEditForm({
   const emojiRef = useRef<any>();
 
   // 이모지 모달 밖 클릭 시 창 끔
-  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick(emojiRef, textRef);
+  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({ emojiRef });
 
   const { user } = useContext(AuthContext);
   const t = useTranslation();

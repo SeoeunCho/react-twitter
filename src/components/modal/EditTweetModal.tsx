@@ -25,7 +25,7 @@ export default function EditTweetModal({
   const [filterReTweetId, setFilterReTweetId] = useState<any>({});
   const [select, setSelect] = useState("");
 
-  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick(emojiRef, editRef);
+  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({emojiRef});
 
   // 수정된 글 firebase에 업데이트
   useEffect(() => {
@@ -73,10 +73,10 @@ export default function EditTweetModal({
     setIsEditing(false);
   };
 
-  const onEmojiClick = (event: any, emojiObject: any) => {
+  const onEmojiClick = (event: any) => {
     const textEmoji =
       newTweet.slice(0, editRef.current.selectionStart) +
-      emojiObject.emoji +
+      event.emoji +
       newTweet.slice(editRef.current.selectionEnd, newTweet.length);
     setNewTweet(textEmoji);
   };

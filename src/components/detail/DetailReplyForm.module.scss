@@ -38,7 +38,7 @@
 
 .tweet__reply .tweet__replyText p:first-child {
   font-weight: 700;
-  color: #429170;
+  color: var(--primary);
   cursor: pointer;
 }
 
@@ -53,7 +53,7 @@
   background-color: white;
   padding: 16px;
   box-sizing: border-box;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid var(--grayLight);
 }
 
 .factoryForm.modalBorer {
@@ -97,13 +97,13 @@
   outline: none;
   resize: none;
   border: none;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid var(--grayLight);
   font-weight: 500;
   font-size: 20px;
   margin-bottom: 6px;
   font-size: 16px;
   line-height: 24px;
-  caret-color: #429170;
+  caret-color: var(--primary);
 }
 
 .factoryInput__input::placeholder {
@@ -153,7 +153,7 @@
   justify-content: center;
   width: 20px;
   height: 20px;
-  color: #429170;
+  color: var(--primary);
 }
 
 .factoryInput__icon:hover {
@@ -196,7 +196,7 @@
 }
 
 .factoryInput__arrow {
-  background-color: #429170;
+  background-color: var(--primary);
   padding: 10px 16px;
   margin-left: auto;
   text-align: center;

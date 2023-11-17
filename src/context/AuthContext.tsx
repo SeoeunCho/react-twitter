@@ -14,15 +14,15 @@ export const AuthContextProvider = ({ children }: AuthProps) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const auth = getAuth(app);
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCurrentUser(user);
-      } else {
-        setCurrentUser(null);
-      }
-    });
-  }, [auth]);
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       setCurrentUser(user);
+  //     } else {
+  //       setCurrentUser(null);
+  //     }
+  //   });
+  // }, [auth]);
 
   return (
     <AuthContext.Provider

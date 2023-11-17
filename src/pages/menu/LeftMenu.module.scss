@@ -53,7 +53,7 @@
         }
 
         &:hover::after {
-          background: #5cb69134;
+          background: var(--grayLightSkyHover);
         }
       }
     }
@@ -314,11 +314,11 @@
                 padding: 8px;
               }
 
-              // &:nth-child(3) {
-              //   display: none;
-              // }
-
               &:nth-child(4) {
+                // display: none;
+              }
+
+              &:nth-child(5) {
                 .leftMenu__list {
                   padding: 0;
                 }

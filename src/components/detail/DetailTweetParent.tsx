@@ -46,7 +46,7 @@ export default function DetailTweetParent({
     isModal: tweetEditDelBtn,
     setIsModal: setTweetEditDelBtn,
   });
-  const { timeToString } = useTimeToString();
+  const { timeToString2 } = useTimeToString();
 
   //  map 처리 된 각 유저 정보들
   useEffect(() => {
@@ -168,7 +168,7 @@ export default function DetailTweetParent({
               </div>
               <div className={styled.tweet__created}>
                 <p className={styled.tweet__createdAt}>
-                  {timeToString(tweetObj.createdAt)}
+                  {timeToString2(tweetObj.createdAt)}
                 </p>
               </div>
             </div>

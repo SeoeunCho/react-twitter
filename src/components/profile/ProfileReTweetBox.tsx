@@ -29,7 +29,7 @@ export default function ProfileReTweetBox({ userObj, creatorInfo }: any) {
                   ? "/user/retweets/" + creatorInfo.email
                   : "/profile/retweets/" + creatorInfo.email
               }
-              text={"TAB_MY"}
+              text={"TAB_USER"}
             />
             <TabMenuBtn
               num={2}

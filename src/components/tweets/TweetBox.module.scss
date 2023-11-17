@@ -11,6 +11,10 @@
   &:hover {
     background: #ececec70;
   }
+
+  .tweet__wrapper {
+    cursor: pointer;
+  }
 }
 
 /* 리트윗 */
@@ -279,11 +283,11 @@
 /* 트윗 액션 바 ==== start */
 .tweet .tweet__actions {
   display: flex;
-  flex-direction: row-reverse;
+  justify-content: space-between;
   align-items: center;
   max-width: 100%;
   overflow: hidden;
-  gap: 20px;
+  /* padding: 0 16px 16px; */
   margin-top: -16px;
   padding: 16px;
 }
@@ -336,14 +340,14 @@
 }
 
 /* 좋아요 */
-.tweet .tweet__actions .actionBox:nth-child(1):hover,
-.tweet .tweet__actions .actionBox:nth-child(1):hover .actions__icon svg,
-.tweet .tweet__actions .actionBox:nth-child(1).like .actions__icon svg,
-.tweet .tweet__actions .actionBox:nth-child(1).like:hover {
+.tweet .tweet__actions .actionBox:nth-child(3):hover,
+.tweet .tweet__actions .actionBox:nth-child(3):hover .actions__icon svg,
+.tweet .tweet__actions .actionBox:nth-child(3).like .actions__icon svg,
+.tweet .tweet__actions .actionBox:nth-child(3).like:hover {
   color: #f9183d;
 }
 
-.tweet .tweet__actions .actionBox:nth-child(1):hover .actions__icon::after {
+.tweet .tweet__actions .actionBox:nth-child(3):hover .actions__icon::after {
   background-color: #f918801a;
 }
 

@@ -113,7 +113,7 @@ export default function ProfileEdit() {
             type="text"
             name="displayName"
             className="tweet-form__input"
-            placeholder={t("NAME_PLACEHOLDER")}
+            placeholder="이름"
             onChange={onChange}
             value={displayName}
           />

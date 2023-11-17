@@ -52,6 +52,7 @@
 .container .searchbox .search__bar {
   caret-color: var(--primary);
   margin-left: 6px;
+  width: 100%;
 }
 
 @media screen and (max-width: 500px) {

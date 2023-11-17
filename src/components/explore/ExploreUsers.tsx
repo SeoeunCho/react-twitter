@@ -8,6 +8,7 @@ import { db } from "firebaseApp";
 import useGetFbInfo from "hooks/useGetFbInfo";
 import { useToggleFollow } from "hooks/useToggleFollow";
 import CircleLoader from "components/loader/CircleLoader";
+import useTranslation from "hooks/useTranslation";
 
 const ExploreUsers = () => {
   const btnRef = useRef<any>();
@@ -15,6 +16,7 @@ const ExploreUsers = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { myInfo } = useGetFbInfo();
   const toggleFollow = useToggleFollow(myInfo);
+  const t = useTranslation();
 
   useEffect(() => {
     const userInfo = async () => {
@@ -25,9 +27,7 @@ const ExploreUsers = () => {
 
     userInfo().then((userArray) => {
       // 본인 제외 노출
-      const exceptArray = userArray.filter(
-        (name) => name.uid !== myInfo?.uid
-      );
+      const exceptArray = userArray.filter((name) => name.uid !== myInfo?.uid);
       let cloneArr = cloneDeep(exceptArray);
 
       randomArray(cloneArr);
@@ -89,14 +89,14 @@ const ExploreUsers = () => {
                         className={`${styled.follow__btn} ${styled.follow} `}
                         onClick={() => toggleFollow(userInfo)}
                       >
-                        <p>팔로잉</p>
+                        <p>{t("BUTTON_FOLLOWING")}</p>
                       </div>
                     ) : (
                       <div
                         className={`${styled.follow__btn} ${styled.profile__followBtn} `}
                         onClick={() => toggleFollow(userInfo)}
                       >
-                        <p>팔로우</p>
+                        <p>{t("BUTTON_FOLLOW")}</p>
                       </div>
                     )}
                   </div>

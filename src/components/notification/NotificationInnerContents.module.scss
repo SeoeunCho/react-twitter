@@ -6,7 +6,7 @@
   justify-content: center;
   flex: 1 1 auto;
   color: rgba(0, 0, 0, 0.8);
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid var(--grayLight);
   cursor: pointer;
 }
 
@@ -89,7 +89,7 @@
 }
 
 .tweet .tweet__container .reTweetBox p span:first-child {
-  color: #429170;
+  color: var(--primary);
   font-weight: 600;
 }
 

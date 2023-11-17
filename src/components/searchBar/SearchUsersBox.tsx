@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import styled from "./SearchTweetsBox.module.scss";
+import useTranslation from "hooks/useTranslation";
 
-export default function SearchUsersBox ({ userResult }: any) {
+export default function SearchUsersBox({ userResult }: any) {
   const navigate = useNavigate();
+  const t = useTranslation();
 
   const goPage = (userId: any) => {
     navigate("/profile/mytweets/" + userId.email);
@@ -36,9 +38,9 @@ export default function SearchUsersBox ({ userResult }: any) {
       ))}
       {userResult.length >= 4 && (
         <div className={styled.more} onClick={showMore}>
-          더 보기
+          {t("BUTTON_MORE")}
         </div>
       )}
     </>
   );
-};
+}

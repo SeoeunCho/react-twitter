@@ -4,7 +4,7 @@ import ProfileLikeTweets from "./ProfileLikeTweets";
 import ProfileLikeReplies from "./ProfileLikeReplies";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
 
-export default function ProfileLikeBox ({ userObj }: any) {
+export default function ProfileLikeBox({ userObj }: any) {
   const location = useLocation();
   const uid = location.pathname.split("/")[3];
   const [selected, setSelected] = useState(1);
@@ -30,7 +30,7 @@ export default function ProfileLikeBox ({ userObj }: any) {
                   ? "/user/liketweets/" + uid
                   : "/profile/liketweets/" + uid
               }
-              text={"TAB_MY"}
+              text={"TAB_USER"}
             />
             <TabMenuBtn
               num={2}
@@ -68,4 +68,4 @@ export default function ProfileLikeBox ({ userObj }: any) {
       </div>
     </>
   );
-};
+}

@@ -66,7 +66,7 @@ export default function BookmarkPage({ userObj }: any) {
                   ? "/profile/bookmarktweets/" + userObj.email
                   : "/bookmark/tweets"
               }
-              text={"TAB_MY"}
+              text={"TAB_TWEET"}
             />
             <TabMenuBtn
               num={2}

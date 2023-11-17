@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { app } from "firebaseApp";
 import { ToastContainer } from "react-toastify";
 
@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Loader from "components/loader/Loader";
 
 import { RecoilRoot } from "recoil";
-import Router from "Router";
+import Router from "pages/Router";
 
 function App() {
   const auth = getAuth(app);
@@ -18,9 +18,25 @@ function App() {
     !!auth?.currentUser
   );
 
+  // useEffect(() => {
+  //   // 유저 상태 변화 추적(로그인, 로그아웃, 어플리케이션 초기화 시)
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       setIsAuthenticated(true);
+  //       setUserObj(user);
+  //     } else {
+  //       setIsAuthenticated(false);
+  //       setUserObj(null);
+  //     }
+  //     setInit(true);
+  //   });
+  // }, [auth]);
+
   useEffect(() => {
     // 유저 상태 변화 추적(로그인, 로그아웃, 어플리케이션 초기화 시)
-    onAuthStateChanged(auth, (user) => {
+    const auth = getAuth(app);
+
+    auth.onAuthStateChanged(async (user) => {
       if (user) {
         setIsAuthenticated(true);
         setUserObj(user);
@@ -30,7 +46,7 @@ function App() {
       }
       setInit(true);
     });
-  }, [auth]);
+  }, []);
 
   return (
     <RecoilRoot>

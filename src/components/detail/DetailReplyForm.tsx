@@ -28,7 +28,7 @@ export default function DetailReplyForm({
   const [select, setSelect] = useState("");
   const [progressBarCount, setProgressBarCount] = useState(0);
   // 이모지 모달 밖 클릭 시 창 끔
-  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick(emojiRef, textRef);
+  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({ emojiRef });
   const { myInfo } = useGetFbInfo();
 
   const onSubmit = async (e: any) => {

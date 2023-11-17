@@ -9,7 +9,7 @@ import { db } from "firebaseApp";
 import Header from "components/header";
 import BarLoader from "components/loader/BarLoader";
 
-export default function DetailTweet ({ userObj }: any) {
+export default function DetailTweet({ userObj }: any) {
   const currentProgressBar = useSelector((state: any) => state.user.load);
   const currentNotModal = useSelector((state: any) => state.user.modal);
   const [tweets, setTweets] = useState<any>([]);
@@ -71,7 +71,9 @@ export default function DetailTweet ({ userObj }: any) {
         ...doc.data(),
       }));
 
-      const parentTweet = replyArray.filter((reply: any) => reply.parent === uid);
+      const parentTweet = replyArray.filter(
+        (reply: any) => reply.parent === uid
+      );
 
       setReplies(parentTweet);
     });
@@ -83,7 +85,7 @@ export default function DetailTweet ({ userObj }: any) {
     <>
       {tweets && reTweets && replies && (
         <>
-          <Header text={"트윗"} />
+          <Header text={"TAB_USER"} />
           <DetailTweetParent
             tweetObj={tweets}
             userObj={userObj}
@@ -105,4 +107,4 @@ export default function DetailTweet ({ userObj }: any) {
       )}
     </>
   );
-};
+}

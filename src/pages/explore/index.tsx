@@ -7,7 +7,7 @@ import ExploreUsers from "components/explore/ExploreUsers";
 
 export default function ExplorePage({ userObj }: any) {
   const location = useLocation();
-  const [selected, setSelected] = useState(1);
+  const [selected, setSelected] = useState<number>(1);
 
   useEffect(() => {
     if (location.pathname.includes("/tweets")) {
@@ -29,13 +29,13 @@ export default function ExplorePage({ userObj }: any) {
               num={1}
               selected={selected}
               url={"/explore/tweets/"}
-              text={"TAB_MY"}
+              text={"TAB_TWEET"}
             />
             <TabMenuBtn
               num={2}
               selected={selected}
               url={"/explore/users"}
-              text={"TAB_USER"}
+              text={"TAB_USER2"}
             />
           </nav>
         </div>

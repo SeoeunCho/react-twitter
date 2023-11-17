@@ -21,8 +21,8 @@ import useGetFbInfo from "hooks/useGetFbInfo";
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
 export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
-  const [content, setContent] = useState<string>("");
-  const [tweet, setTweet] = useState("");
+  // const [content, setContent] = useState<string>("");
+  const [tweet, setTweet] = useState<string>("");
   const [hashTag, setHashTag] = useState<string>("");
   const [imageFile, setImageFile] = useState<string | null>("");
   const [attachment, setAttachment] = useState("");
@@ -36,7 +36,7 @@ export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
   const { myInfo } = useGetFbInfo();
 
   // 이모지 모달 밖 클릭 시 창 끔
-  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick(emojiRef);
+  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({ emojiRef });
 
   const { user } = useContext(AuthContext);
   const t = useTranslation();
@@ -185,10 +185,10 @@ export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
 
   const onEmojiClick = (event: any) => {
     const textEmoji =
-      content.slice(0, textRef.current?.selectionStart) +
+      tweet.slice(0, textRef.current?.selectionStart) +
       event.emoji +
-      content.slice(textRef.current?.selectionEnd, content.length);
-    setContent(textEmoji);
+      tweet.slice(textRef.current?.selectionEnd, tweet.length);
+      setTweet(textEmoji);
   };
 
   return (

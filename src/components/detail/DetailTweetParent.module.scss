@@ -187,8 +187,8 @@
   justify-content: space-around;
   align-items: center;
   cursor: pointer;
-  border-top: 1px solid #ebebeb;
-  border-bottom: 1px solid #ebebeb;
+  border-top: 1px solid var(--grayLight);
+  border-bottom: 1px solid var(--grayLight);
   height: 48px;
 }
 
@@ -226,7 +226,7 @@
 
 /* 댓글 */
 .tweet .tweet__actions .actionBox .comment:hover .actions__icon svg {
-  color: #429170;
+  color: var(--primary);
 }
 
 /* 좋아요 */
@@ -243,7 +243,7 @@
 .tweet .tweet__actions .actionBox .bookmark,
 .tweet .tweet__actions .actionBox .bookmark .actions__icon svg,
 .tweet .tweet__actions .actionBox .bookmarkBox:hover .actions__icon svg {
-  color: #429170;
+  color: var(--primary);
 }
 
 /* 리트윗 */
@@ -268,7 +268,7 @@
   align-items: center;
   height: 53px;
   padding: 16px 0px;
-  border-top: 1px solid #ebebeb;
+  border-top: 1px solid var(--grayLight);
 }
 
 .tweet .tweet__actions .actions__text span {

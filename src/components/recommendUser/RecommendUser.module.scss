@@ -48,7 +48,7 @@
 }
 
 .followBox .followBox__name .actions__icon:hover::after {
-  background: var(--quaternary);
+  background: var(--grayLightSkyHover);
 }
 
 /* 프로필 리스트 */
@@ -64,7 +64,7 @@
 
 .followBox .follows .follow__user:hover,
 .more:hover {
-  background: var(--quaternary);
+  background: var(--grayLightSkyHover);
 }
 
 .followBox .follows .follow__user .follow__userInfo {
@@ -115,7 +115,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 9999px;
-  background: #213025;
+  background: var(--followPrimary);
   font-size: 14px;
   color: white;
   flex: 1 1 auto;
@@ -128,23 +128,24 @@
 /* 팔로우 버튼 */
 .followBox .follows .follow__user .follow__btn.follow__btn {
   color: white;
-  background-color: #204a71;
-  border: 1.5px solid #213025;
+  background-color: var(--followPrimary);
+  border: 1.5px solid var(--followPrimary);
 }
 
 .followBox .follows .follow__user .follow__btn.follow__btn:hover {
-  background-color: #3b5d90;
+  background-color: var(--followSecondary);
+  border: 1.5px solid var(--followSecondary);
 }
 
 /* 팔로잉 버튼 */
 .followBox .follows .follow__user .follow__btn.follow__btn.follow {
   background-color: white;
-  color: #213025;
-  border: 1.5px solid #c1dbd1;
+  color: var(--followPrimary);
+  border: 1.5px solid var(--secondary);
 }
 
 .followBox .follows .follow__user .follow__btn.follow__btn.follow:hover {
-  background: #ececec;
+  background: var(--grayLight);
 }
 
 /* 더 보기 */
@@ -155,6 +156,6 @@
   padding: 16px;
   font-size: 14px;
   cursor: pointer;
-  color: #0099ff;
+  color: var(--active);
   transition: all 0.2s;
 }

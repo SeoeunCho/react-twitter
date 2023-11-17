@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setCurrentUser, setLoginToken } from "reducer/user";
+import styled from "./Header.module.scss";
 
 interface HeaderProps {
   menu?: string;
@@ -55,37 +56,37 @@ export default function Header({
   return (
     <>
       {menu === "home" ? (
-        <div className="main__category">
+        <div className={styled.main__category}>
           <div className="main_text">
             <h2>{t(text)}</h2>
           </div>
         </div>
       ) : (
-        <div className="minor__category">
+        <div className={styled.minor__category}>
           <div
-            className="minor__icon"
+            className={styled.minor__icon}
             onClick={() => {
               navigate(-1);
             }}
           >
             <IoArrowBackOutline />
           </div>
-          <div className="userInfo">
-            <p className="category__name">
+          <div className={styled.userInfo}>
+            <p className={styled.category__name}>
               {menu === "profile" ? text : t(text)}
             </p>
             {myTweets && (
-              <p className="category__sub">{myTweets.length} 트윗</p>
+              <p className={styled.category__sub}>{myTweets.length} {t('TAB_TWEET')}</p>
             )}
 
             {creatorInfo && (
-              <p className="category__sub">
+              <p className={styled.category__sub}>
                 @{creatorInfo?.email?.split("@")[0]}
               </p>
             )}
           </div>
           {menu === "profile" && (
-            <div className="minor__iconExit" onClick={onLogOutClick}>
+            <div className={styled.minor__iconExit} onClick={onLogOutClick}>
               <IoMdExit />
             </div>
           )}

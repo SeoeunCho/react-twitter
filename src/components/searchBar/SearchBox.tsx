@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "./SearchBox.module.scss";
 import SearchTweetsBox from "./SearchTweetsBox";
 import SearchUsersBox from "./SearchUsersBox";
+import useTranslation from "hooks/useTranslation";
 
 export default function SearchBox({
   userResult,
@@ -9,9 +10,10 @@ export default function SearchBox({
   users,
   search,
   focus,
-  user,
+  userObj,
 }: any) {
   const navigate = useNavigate();
+  const t = useTranslation();
 
   const showMore = () => {
     navigate("/explore/tweets/");
@@ -23,16 +25,16 @@ export default function SearchBox({
         <article className={styled.container}>
           {search === "" && (
             <div className={styled.notification}>
-              <p>사용자, 키워드를 검색해보세요.</p>
-              <span>(본인 정보는 노출되지 않습니다.)</span>
+              <p>{t("EXPLORE_KEYWORD")}</p>
+              <span>{t("EXPLORE_NOT_REVEALED")}</span>
             </div>
           )}
           {search !== "" &&
             userResult?.length === 0 &&
             tweetResult?.length === 0 && (
               <div className={styled.notification}>
-                <p>검색하신 결과가 없습니다.</p>
-                <span>(본인 정보는 노출되지 않습니다.)</span>
+                <p>{t("EXPLORE_NO_MATCHED")}</p>
+                <span>{t("EXPLORE_NOT_REVEALED")}</span>
               </div>
             )}
           <div className={styled.searchUser__container}>
@@ -41,7 +43,7 @@ export default function SearchBox({
                 {userResult?.length !== 0 && (
                   <section className={styled.followBox}>
                     <div className={styled.followBox__name}>
-                      <h2>유저</h2>
+                      <h2>{t("TAB_USER")}</h2>
                     </div>
                     <ul className={styled.follows}>
                       <SearchUsersBox userResult={userResult} />
@@ -54,7 +56,7 @@ export default function SearchBox({
                 {tweetResult?.length !== 0 && (
                   <section className={styled.followBox}>
                     <div className={styled.followBox__name}>
-                      <h2>트윗</h2>
+                      <h2>{t("TAB_TWEET")}</h2>
                     </div>
                     <ul className={styled.follows}>
                       {tweetResult?.slice(0, 5).map((tweet: any) => (
@@ -70,7 +72,7 @@ export default function SearchBox({
                           className={styled.more}
                           onClick={showMore}
                         >
-                          더 보기
+                          {t("BUTTON_MORE")}
                         </button>
                       )}
                     </ul>

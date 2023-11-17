@@ -31,18 +31,25 @@ export default function TweetDetail() {
     }
   }, [params.id]);
 
-  useEffect(() => {{/* <Route
+  useEffect(() => {
+    {
+      /* <Route
                   path="/tweets"
                   element={<TweetListPage userObj={userObj} />}
-                /> */}
-                {/* <Route
+                /> */
+    }
+    {
+      /* <Route
                   path="/tweets/new"
                   element={<TweetNew userObj={userObj} />}
-                /> */}
-                {/* <Route
+                /> */
+    }
+    {
+      /* <Route
                   path="/tweets/edit/:id"
                   element={<TweetEdit userObj={userObj} />}
-                /> */}
+                /> */
+    }
     if (params.id) getTweet();
   }, [getTweet, params.id]);
 
@@ -66,7 +73,7 @@ export default function TweetDetail() {
 
   return (
     <div className="tweet">
-      <Header menu={"detail"} text={"TAB_MY"} />
+      <Header menu={"detail"} text={"TAB_USER"} />
       {tweet ? (
         <>
           <TweetBox

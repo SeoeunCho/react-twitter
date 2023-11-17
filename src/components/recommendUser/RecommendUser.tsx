@@ -8,6 +8,7 @@ import { db } from "firebaseApp";
 import { useToggleFollow } from "hooks/useToggleFollow";
 import useGetFbInfo from "hooks/useGetFbInfo";
 import CircleLoader from "components/loader/CircleLoader";
+import useTranslation from "hooks/useTranslation";
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
 export default function RecommendUser() {
@@ -16,6 +17,7 @@ export default function RecommendUser() {
   const [loading, setLoading] = useState(false);
   const { myInfo } = useGetFbInfo();
   const toggleFollow = useToggleFollow(myInfo);
+  const t = useTranslation();
 
   // 무분별한 리렌더링 방지 (실시간 문서 받아오기 x)
   // (새로고침(랜덤 함수) 버튼 누를 때만 리렌더링 되도록 함)
@@ -69,7 +71,7 @@ export default function RecommendUser() {
       {loading ? (
         <>
           <div className={styled.followBox__name}>
-            <h2>팔로우 추천</h2>
+            <h2>{t("RECOMMEND_FOLLOW")}</h2>
             <div onClick={onRefresh} className={styled.actions__icon}>
               <GrRefresh />
             </div>
@@ -85,7 +87,9 @@ export default function RecommendUser() {
                     >
                       <img
                         src={
-                          userInfo.photoURL ? userInfo.photoURL : PROFILE_DEFAULT_URL
+                          userInfo.photoURL
+                            ? userInfo.photoURL
+                            : PROFILE_DEFAULT_URL
                         }
                         alt="profileImg"
                         className={styled.follow__image}
@@ -102,14 +106,14 @@ export default function RecommendUser() {
                         className={`${styled.follow__btn} ${styled.follow} `}
                         onClick={() => toggleFollow(userInfo)}
                       >
-                        <p>팔로잉</p>
+                        <p>{t("BUTTON_FOLLOWING")}</p>
                       </div>
                     ) : (
                       <div
                         className={`${styled.follow__btn} ${styled.profile__followBtn} `}
                         onClick={() => toggleFollow(userInfo)}
                       >
-                        <p>팔로우</p>
+                        <p>{t("BUTTON_FOLLOW")}</p>
                       </div>
                     )}
                   </li>
@@ -118,7 +122,7 @@ export default function RecommendUser() {
             })}
           </ul>
           <Link className={styled.more} to="/explore/users/">
-            더 보기
+            {t("BUTTON_MORE")}
           </Link>
         </>
       ) : (
