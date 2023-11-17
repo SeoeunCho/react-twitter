@@ -28,51 +28,47 @@ export default function Router({ isAuthenticated, userObj }: RouterProps) {
       <TopButton />
 
       {isAuthenticated ? (
-        <>
-          <div className="container">
-            <LeftMenu userObj={userObj} />
-            <div className="center__container">
-              <Routes>
-                <Route path="/" element={<HomePage userObj={userObj} />} />
-                <Route
-                  path="/explore/*"
-                  element={<ExplorePage userObj={userObj} />}
-                />
-                <Route
-                  path="/notification/*"
-                  element={<NotificationPage userObj={userObj} />}
-                />
-                <Route
-                  path="/bookmark/*"
-                  element={<BookmarkPage userObj={userObj} />}
-                />
-                <Route
-                  path="/tweet/:id"
-                  element={<DetailTweet userObj={userObj} />}
-                />
-                <Route
-                  path="/profile/:type/:id"
-                  element={<ProfilePage userObj={userObj} />}
-                />
-                <Route
-                  path="/user/:type/:id"
-                  element={<ProfilePage userObj={userObj} />}
-                />
+        <div className="container">
+          <LeftMenu userObj={userObj} />
+          <div className="center__container">
+            <Routes>
+              <Route path="/" element={<HomePage userObj={userObj} />} />
+              <Route
+                path="/explore/*"
+                element={<ExplorePage userObj={userObj} />}
+              />
+              <Route
+                path="/notification/*"
+                element={<NotificationPage userObj={userObj} />}
+              />
+              <Route
+                path="/bookmark/*"
+                element={<BookmarkPage userObj={userObj} />}
+              />
+              <Route
+                path="/tweet/:id"
+                element={<DetailTweet userObj={userObj} />}
+              />
+              <Route
+                path="/profile/:type/:id"
+                element={<ProfilePage userObj={userObj} />}
+              />
+              <Route
+                path="/user/:type/:id"
+                element={<ProfilePage userObj={userObj} />}
+              />
 
-                {/* <Route path="*" element={<Navigate replace to="/" />} /> */}
-                {/* <Route path="*" element={<NotFound />} /> */}
-              </Routes>
-            </div>
-            <RightMenu />
+              {/* <Route path="*" element={<Navigate replace to="/" />} /> */}
+              {/* <Route path="*" element={<NotFound />} /> */}
+            </Routes>
           </div>
-        </>
+          <RightMenu />
+        </div>
       ) : (
-        <>
-          <Routes>
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="*" element={<Navigate replace to="/auth" />} />
-          </Routes>
-        </>
+        <Routes>
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="*" element={<Navigate replace to="/auth" />} />
+        </Routes>
       )}
     </>
   );

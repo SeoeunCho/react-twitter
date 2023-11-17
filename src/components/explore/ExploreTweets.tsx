@@ -7,7 +7,7 @@ import { db } from "firebaseApp";
 
 export default function ExploreTweets({ userObj }: any) {
   const [tweets, setTweets] = useState<any>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const { reTweets } = useGetFbInfo();
 
   useEffect(() => {
@@ -21,7 +21,6 @@ export default function ExploreTweets({ userObj }: any) {
         id: doc.id,
         ...doc.data(),
       }));
-      console.log("tweetArray", tweetArray);
       setTweets(tweetArray);
       setLoading(true);
     });

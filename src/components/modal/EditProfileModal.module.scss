@@ -67,12 +67,12 @@
 }
 
 .container .editForm .topBox .submit .editInput__arrow:hover {
-  background-color: #337258;
+  background-color: var(--active);
   cursor: pointer;
 }
 
 .container .editForm .topBox .submit .editInput__arrow:disabled {
-  background-color: #75837d;
+  background-color: var(--disabled);
   transition: all 0.3s;
   cursor: auto;
   z-index: 10;

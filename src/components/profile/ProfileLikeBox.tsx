@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import ProfileLikeTweets from "./ProfileLikeTweets";
 import ProfileLikeReplies from "./ProfileLikeReplies";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
+import { Link } from "react-router-dom";
 
 export default function ProfileLikeBox({ userObj }: any) {
   const location = useLocation();
@@ -45,26 +46,27 @@ export default function ProfileLikeBox({ userObj }: any) {
           </nav>
         </div>
 
-        <Routes>
-          <Route
-            path={
+        {selected === 1 ? (
+          <Link
+            to={
               location.pathname.includes("/user/")
                 ? "/user/liketweets/" + uid
                 : "/profile/liketweets/" + uid
             }
           >
             <ProfileLikeTweets userObj={userObj} />
-          </Route>
-          <Route
-            path={
+          </Link>
+        ) : (
+          <Link
+            to={
               location.pathname.includes("/user/")
                 ? "/user/likereplies/" + uid
                 : "/profile/likereplies/" + uid
             }
           >
             <ProfileLikeReplies userObj={userObj} />
-          </Route>
-        </Routes>
+          </Link>
+        )}
       </div>
     </>
   );

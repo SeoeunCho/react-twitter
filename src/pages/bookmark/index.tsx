@@ -81,42 +81,43 @@ export default function BookmarkPage({ userObj }: any) {
           </nav>
         </div>
 
-        {loading ? (
-          <Routes>
-            <Route
-              path={
-                location.pathname.includes(userObj.email)
-                  ? "/profile/bookmarktweets/" + userObj.email
-                  : "/bookmark/tweets"
-              }
-              element={
-                <BookmarkTweets
-                  userObj={userObj}
-                  reTweetsObj={reTweets}
-                  creatorInfo={creatorInfo}
-                  loading={loading}
-                />
-              }
-            />
-            <Route
-              path={
-                location.pathname.includes(userObj.email)
-                  ? "/profile/bookmarkreplies/" + userObj.email
-                  : "/bookmark/replies"
-              }
-              element={
-                <BookmarkReplies
-                  userObj={userObj}
-                  reTweetsObj={reTweets}
-                  creatorInfo={creatorInfo}
-                  loading={loading}
-                />
-              }
-            />
-          </Routes>
-        ) : (
-          <CircleLoader />
+        {loading && selected === 1 && (
+          <Link
+            to={
+              location.pathname.includes(userObj.email)
+                ? "/profile/bookmarktweets/" + userObj.email
+                : "/bookmark/tweets"
+            }
+          >
+            {
+              <BookmarkTweets
+                userObj={userObj}
+                reTweetsObj={reTweets}
+                creatorInfo={creatorInfo}
+                loading={loading}
+              />
+            }
+          </Link>
         )}
+        {loading && selected === 2 && (
+          <Link
+            to={
+              location.pathname.includes(userObj.email)
+                ? "/profile/bookmarkreplies/" + userObj.email
+                : "/bookmark/replies"
+            }
+          >
+            {
+              <BookmarkReplies
+                userObj={userObj}
+                reTweetsObj={reTweets}
+                creatorInfo={creatorInfo}
+                loading={loading}
+              />
+            }
+          </Link>
+        )}
+        {!loading && <CircleLoader />}
       </div>
     </>
   );

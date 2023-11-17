@@ -96,6 +96,18 @@
   background: var(--grayLight);
 }
 
+.container .main__container .profile .profile__edit .profile__languageBtn {
+  margin-left: 10px;
+  color: white;
+  background: var(--primary);
+  border: 1.5px solid var(--primary);
+}
+
+.container .main__container .profile .profile__edit .profile__languageBtn:hover {
+  background: var(--grayPale);
+  color: var(--primary);
+}
+
 /* 팔로우 버튼 */
 .container
   .main__container
@@ -123,7 +135,7 @@
   .profile__editBtn.profile__followBtn.follow {
   background-color: white;
   color: #213025;
-  border: 1.5px solid #c1dbd1;
+  border: 1.5px solid var(--secondary);
 }
 
 .container

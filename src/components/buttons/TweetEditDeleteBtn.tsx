@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCurrentUser } from "../../reducer/user";
 import styled from "./TweetEditDeleteBtn.module.scss";
 import { db, storage } from "firebaseApp";
+import useTranslation from "hooks/useTranslation";
 
 export default function TweetEditDeleteBtn({
   tweetAttachment,
@@ -30,6 +31,7 @@ export default function TweetEditDeleteBtn({
   const dbRef = doc(db, "Tweets", `${tweetObj.id}`);
   const repliesRef = doc(db, "Replies", `${tweetObj.id}`);
   const dbAttachmentRef = ref(storage, tweetAttachment);
+  const t = useTranslation();
 
   // 원글의 답글 정보 가져오기
   useEffect(() => {
@@ -84,7 +86,7 @@ export default function TweetEditDeleteBtn({
   }, [currentUser.email]);
 
   const onDeleteClick = async () => {
-    const ok = window.confirm("트윗을 삭제할까요?");
+    const ok = window.confirm("정말로 삭제하시겠습니까?");
 
     if (ok === true) {
       // 원글 삭제
@@ -131,14 +133,14 @@ export default function TweetEditDeleteBtn({
     <div className={styled.container}>
       <div className={`${styled.btn} ${styled.updateBtn}`} onClick={toggleEdit}>
         <FiEdit />
-        <p>수정하기</p>
+        <p>{t("BUTTON_EDIT")}</p>
       </div>
       <div
         className={`${styled.btn} ${styled.deleteBtn}`}
         onClick={onDeleteClick}
       >
         <FiTrash2 />
-        <p>삭제하기</p>
+        <p>{t("BUTTON_DELETE")}</p>
       </div>
     </div>
   );

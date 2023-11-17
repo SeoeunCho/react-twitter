@@ -6,6 +6,7 @@ import { GrEmoji, GrClose } from "react-icons/gr";
 import Picker from "emoji-picker-react";
 import useEmojiModalOutClick from "hooks/useEmojiModalOutClick";
 import { db } from "firebaseApp";
+import useTranslation from "hooks/useTranslation";
 
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
@@ -24,8 +25,9 @@ export default function EditTweetModal({
   const emojiRef = useRef<any>();
   const [filterReTweetId, setFilterReTweetId] = useState<any>({});
   const [select, setSelect] = useState("");
+  const t = useTranslation();
 
-  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({emojiRef});
+  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({ emojiRef });
 
   // 수정된 글 firebase에 업데이트
   useEffect(() => {
@@ -98,7 +100,7 @@ export default function EditTweetModal({
             <div className={styled.submit}>
               <input
                 type="submit"
-                value="수정하기"
+                value={t("BUTTON_EDIT")}
                 className={styled.editInput__arrow}
                 disabled={newTweet === "" && tweetAttachment === ""}
               />
@@ -131,7 +133,7 @@ export default function EditTweetModal({
                   onFocus={() => setSelect("text")}
                   onBlur={() => setSelect("")}
                   maxLength={280}
-                  placeholder="무슨 일이 일어나고 있나요?"
+                  placeholder={t("TWEET_PLACEHOLDER")}
                 />
                 <div className={styled.editInput__add}>
                   <div ref={emojiRef} onClick={toggleEmoji}>

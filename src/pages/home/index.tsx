@@ -228,30 +228,6 @@ export default function HomePage({ userObj }: any) {
           </>
         )} */}
 
-        {/* {loading && activeTab === "all" && (
-          <>
-            <TweetForm />
-            {tweets?.length > 0 ? (
-              tweets?.map((tweet: TweetProps) => (
-                <TweetListPage
-                  key={tweet.id}
-                  tweetObj={tweet}
-                  reTweetsObj={reTweets}
-                  userObj={userObj}
-                  isOwner={tweet.creatorId === userObj?.uid}
-                />
-              ))
-            ) : (
-              <div className="noInfoBox">
-                <div className="noInfo">
-                  <h2>{t("NO_TWEET")}</h2>
-                  <p>{t("NO_TWEET_LIST")}</p>
-                </div>
-              </div>
-            )}
-          </>
-        )} */}
-
         {/* {loading && activeTab === "following" && (
           <div className="tweet">
             {followingTweets?.length > 0 ? (
@@ -274,53 +250,6 @@ export default function HomePage({ userObj }: any) {
             )}
           </div>
         )} */}
-
-        {/* {loading && activeTab === "all" && (
-        <>
-          <TweetForm />
-          {tweets?.length > 0 ? (
-            tweets?.map((tweet: TweetProps) => (
-              <TweetBox
-                tweet={tweet}
-                detailId={tweet.id}
-                key={tweet.id}
-                tweetType={"tweet"}
-                detailTweet={false}
-              />
-            ))
-          ) : (
-            <div className="noInfoBox">
-              <div className="noInfo">
-                <h2>{t("NO_TWEET")}</h2>
-                <p>{t("NO_TWEET_LIST")}</p>
-              </div>
-            </div>
-          )}
-        </>
-      )}
-
-      {loading && activeTab === "following" && (
-        <div className="tweet">
-          {followingTweets?.length > 0 ? (
-            followingTweets?.map((tweet) => (
-              <TweetBox
-                tweet={tweet}
-                detailId={tweet.id}
-                key={tweet.id}
-                tweetType={"tweet"}
-                detailTweet={false}
-              />
-            ))
-          ) : (
-            <div className="noInfoBox">
-              <div className="noInfo">
-                <h2>{t("NO_TWEET")}</h2>
-                <p>{t("NO_TWEET_FLLOWING")}</p>
-              </div>
-            </div>
-          )}
-        </div>
-      )} */}
       </div>
     </>
   );

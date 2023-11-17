@@ -81,7 +81,7 @@ const TRANSLATIONS = {
     en: "Tweet your reply.",
   },
   REPLY_TO: {
-    ko: "님에게 보내는 답글",
+    ko: "이에게 보내는 답글",
     en: "Replying to",
   },
 
@@ -103,6 +103,12 @@ const TRANSLATIONS = {
   TWEET_CHANGE_IMAGE: {
     ko: "이미지 변경",
     en: "Change Image",
+  },
+
+  // retweet
+  RETWEET_TEXT: {
+    ko: "님이 리트윗 했습니다.",
+    en: "retweeted this.",
   },
 
   /* no tweet === start */
@@ -137,6 +143,10 @@ const TRANSLATIONS = {
     ko: "검색하신 결과가 없습니다.",
     en: "There are no results for your search.",
   },
+  EXPLORE_HASHTAGS: {
+    ko: "해시태그 탐색",
+    en: "Explore Hashtags",
+  },
   NO_EXPLORE_LIST: {
     ko: "타임라인이 비어있습니다. 지금 트윗해보세요.",
     en: "No Posts Yet",
@@ -159,8 +169,6 @@ const TRANSLATIONS = {
     ko: "지금 일어나는 일을 북마크에 담아보세요.",
     en: "Bookmark what's happening now.",
   },
-
-  // 알림
   NO_NOTIFICATION_FOLLOWING: {
     ko: "누군가가 나를 팔로우를 하면 여기에 표시됩니다.",
     en: "No Notifications",
@@ -213,11 +221,6 @@ const TRANSLATIONS = {
     en: "User",
   },
 
-  // explore
-  EXPLORE_HASHTAGS: {
-    ko: "해시태그 탐색",
-    en: "Explore Hashtags",
-  },
   // profile
   PROFILE_NAME: {
     ko: "이름",

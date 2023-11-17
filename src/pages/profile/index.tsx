@@ -21,12 +21,14 @@ import CircleLoader from "components/loader/CircleLoader";
 import EditProfileModal from "components/modal/EditProfileModal";
 import { useRecoilState } from "recoil";
 import useTranslation from "hooks/useTranslation";
+import { Link } from "react-router-dom";
 
 export default function Profile({ userObj }: any) {
   const [creatorInfo, setCreatorInfo] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const [myTweets, setMyTweets] = useState<any>([]);
   const [selected, setSelected] = useState(1);
+  const [selectedTab, setSelectedTab] = useState(1);
   const [isEditing, setIsEditing] = useState(false);
   const [size, setSize] = useState(window.innerWidth);
   const [resize, setResize] = useState(false);
@@ -48,11 +50,15 @@ export default function Profile({ userObj }: any) {
       mytweets: 1,
       replies: 2,
       retweets: 3,
-      like: 4,
-      bookmark: 5,
+      retweetsreplies: 31,
+      liketweets: 4,
+      likereplies: 41,
+      bookmarktweets: 5,
+      bookmarkreplies: 51,
     };
 
     const selectedValue = paths[pathname.split("/")[2]];
+    console.log("selectedValue", selectedValue);
 
     setSelected(selectedValue);
   }, [pathname, userObj.email]);
@@ -142,13 +148,12 @@ export default function Profile({ userObj }: any) {
                               >
                                 {t("BUTTON_EDIT_PROFILE")}
                               </div>
-                              <button
-                                type="button"
-                                className="profile__btn--language"
+                              <div
+                                className={`${styled.profile__editBtn} ${styled.profile__languageBtn}`}
                                 onClick={onClickLanguage}
                               >
                                 {language === "ko" ? "한국어" : "English"}
-                              </button>
+                              </div>
                             </>
                           ) : (
                             <>
@@ -233,81 +238,72 @@ export default function Profile({ userObj }: any) {
                         url={`/profile/liketweets/${userEmail}`}
                         text={"TAB_LIKES"}
                       />
-                      {resize && userObj.email === userEmail && (
-                        <TabMenuBtn
-                          num={5}
-                          selected={selected}
-                          url={`/profile/bookmarktweets/${userEmail}`}
-                          text={"TAB_BOOKMARK"}
-                        />
-                      )}
+                      <TabMenuBtn
+                        num={5}
+                        selected={selected}
+                        url={`/profile/bookmarktweets/${userEmail}`}
+                        text={"TAB_BOOKMARK"}
+                      />
                     </nav>
 
-                    <Routes>
-                      <Route
-                        path={`/profile/mytweets/${userEmail}`}
-                        element={
-                          <ProfileMyTweets
-                            myTweets={myTweets}
-                            userObj={userObj}
-                          />
-                        }
-                      />
-
-                      <Route
-                        path={`/profile/replies/${userEmail}`}
-                        element={
-                          <ProfileReplies
-                            userObj={userObj}
-                            creatorInfo={creatorInfo}
-                          />
-                        }
-                      />
-
-                      <Route
-                        path={`/profile/retweets/${userEmail}`}
-                        element={
-                          <ProfileReTweetBox
-                            userObj={userObj}
-                            creatorInfo={creatorInfo}
-                          />
-                        }
-                      />
-
-                      <Route
-                        path={`/profile/retweetsreplies/${userEmail}`}
-                        element={
-                          <ProfileReTweetBox
-                            userObj={userObj}
-                            creatorInfo={creatorInfo}
-                          />
-                        }
-                      />
-
-                      <Route
-                        path={`/profile/liketweets/${userEmail}`}
-                        element={<ProfileLikeBox userObj={userObj} />}
-                      />
-
-                      <Route
-                        path={`/profile/likereplies/${userEmail}`}
-                        element={<ProfileLikeBox userObj={userObj} />}
-                      />
-
-                      {userObj.email === userEmail && (
-                        <Route
-                          path={`/profile/bookmarktweets/${userEmail}`}
-                          element={<BookmarkPage userObj={userObj} />}
+                    {selected === 1 && (
+                      <Link to={`/profile/mytweets/${userEmail}`}>
+                        <ProfileMyTweets
+                          myTweets={myTweets}
+                          userObj={userObj}
                         />
-                      )}
+                      </Link>
+                    )}
 
-                      {userObj.email === userEmail && (
-                        <Route
-                          path={`/profile/bookmarkreplies/${userEmail}`}
-                          element={<BookmarkPage userObj={userObj} />}
+                    {selected === 2 && (
+                      <Link to={`/profile/replies/${userEmail}`}>
+                        <ProfileReplies
+                          userObj={userObj}
+                          creatorInfo={creatorInfo}
                         />
-                      )}
-                    </Routes>
+                      </Link>
+                    )}
+
+                    {selected === 3 && (
+                      <Link to={`/profile/retweets/${userEmail}`}>
+                        <ProfileReTweetBox
+                          userObj={userObj}
+                          creatorInfo={creatorInfo}
+                        />
+                      </Link>
+                    )}
+
+                    {selected === 31 && (
+                      <Link to={`/profile/retweetsreplies/${userEmail}`}>
+                        <ProfileReTweetBox
+                          userObj={userObj}
+                          creatorInfo={creatorInfo}
+                        />
+                      </Link>
+                    )}
+
+                    {selected === 4 && (
+                      <Link to={`/profile/liketweets/${userEmail}`}>
+                        <ProfileLikeBox userObj={userObj} />
+                      </Link>
+                    )}
+
+                    {selected === 41 && (
+                      <Link to={`/profile/likereplies/${userEmail}`}>
+                        <ProfileLikeBox userObj={userObj} />
+                      </Link>
+                    )}
+
+                    {selected === 5 && (
+                      <Link to={`/profile/bookmarktweets/${userEmail}`}>
+                        <BookmarkPage userObj={userObj} />
+                      </Link>
+                    )}
+                    {selected === 51 && (
+                      <Link to={`/profile/bookmarkreplies/${userEmail}`}>
+                        <BookmarkPage userObj={userObj} />
+                      </Link>
+                    )}
                   </>
                 ) : (
                   <CircleLoader />

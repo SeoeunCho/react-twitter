@@ -3,6 +3,8 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
 import ProfileReTweets from "./ProfileReTweets";
 import ProfileReTweetsReplies from "./ProfileReTweetsReplies";
+import { Link } from "react-router-dom";
+import { divide } from "lodash";
 
 export default function ProfileReTweetBox({ userObj, creatorInfo }: any) {
   const location = useLocation();
@@ -44,7 +46,31 @@ export default function ProfileReTweetBox({ userObj, creatorInfo }: any) {
           </nav>
         </div>
 
-        <Routes>
+        {selected === 1 ? (
+          <Link
+            to={
+              location.pathname.includes("/user/")
+                ? "/user/retweets/" + creatorInfo.email
+                : "/profile/retweets/" + creatorInfo.email
+            }
+          >
+            <ProfileReTweets userObj={userObj} creatorInfo={creatorInfo} />
+          </Link>
+        ) : (
+          <Link
+            to={
+              location.pathname.includes("/user/")
+                ? "/user/retweetsreplies/" + creatorInfo.email
+                : "/profile/retweetsreplies/" + creatorInfo.email
+            }
+          >
+            <ProfileReTweetsReplies
+              userObj={userObj}
+              creatorInfo={creatorInfo}
+            />
+          </Link>
+        )}
+        {/* <Routes>
           <Route
             path={
               location.pathname.includes("/user/")
@@ -66,7 +92,7 @@ export default function ProfileReTweetBox({ userObj, creatorInfo }: any) {
               creatorInfo={creatorInfo}
             />
           </Route>
-        </Routes>
+        </Routes> */}
       </div>
     </>
   );

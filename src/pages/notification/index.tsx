@@ -10,6 +10,7 @@ import NotificationReTweet from "components/notification/NotificationReTweet";
 import NotificationReply from "components/notification/NotificationReply";
 import NotificationFollow from "components/notification/NotificationFollow";
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function NotificationPage({ userObj }: any) {
   const location = useLocation();
@@ -112,98 +113,91 @@ export default function NotificationPage({ userObj }: any) {
           </nav>
         </div>
 
-        <Routes>
-          <Route
-            path="/notification/retweets"
-            element={
-              loading.reTweets ? (
-                <>
-                  {reTweets.length !== 0 ? (
-                    reTweets?.map((reTweet: any) => (
-                      <NotificationReTweet
-                        key={reTweet.id}
-                        reTweetsObj={reTweet}
-                        loading={loading}
+        {selected === 1 && (
+          <Link to="/notification/retweets">
+            {loading.reTweets ? (
+              <>
+                {reTweets.length !== 0 ? (
+                  reTweets?.map((reTweet: any) => (
+                    <NotificationReTweet
+                      key={reTweet.id}
+                      reTweetsObj={reTweet}
+                      loading={loading}
+                      userObj={userObj}
+                    />
+                  ))
+                ) : (
+                  <div className="noInfoBox">
+                    <div className="noInfo">
+                      <h2>아직은 여기에 아무 것도 없습니다.</h2>
+                      <p>누군가가 나의 트윗을 리트윗 하면 여기에 표시됩니다.</p>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <CircleLoader />
+            )}
+          </Link>
+        )}
+
+        {selected === 2 && (
+          <Link to="/notification/replies">
+            {loading.replies ? (
+              <>
+                {replies.length !== 0 ? (
+                  replies?.map((reply: any) => (
+                    <NotificationReply
+                      key={reply.id}
+                      userObj={userObj}
+                      replyObj={reply}
+                      loading={loading}
+                    />
+                  ))
+                ) : (
+                  <div className="noInfoBox">
+                    <div className="noInfo">
+                      <h2>아직은 여기에 아무 것도 없습니다.</h2>
+                      <p>누군가가 나의 트윗에 답글을 달면 여기에 표시됩니다.</p>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <CircleLoader />
+            )}
+          </Link>
+        )}
+
+        {selected === 3 && (
+          <Link to="/notification/followers">
+            {fbLoading.myInfo ? (
+              <>
+                {myInfo && myInfo.follower.length !== 0 ? (
+                  myInfo.follower
+                    .sort((a: any, b: any) => b.followAt - a.followAt)
+                    .map((follow: any, index: number) => (
+                      <NotificationFollow
+                        key={index}
                         userObj={userObj}
+                        followObj={follow}
+                        loading={loading}
                       />
                     ))
-                  ) : (
-                    <div className="noInfoBox">
-                      <div className="noInfo">
-                        <h2>아직은 여기에 아무 것도 없습니다.</h2>
-                        <p>
-                          누군가가 나의 트윗을 리트윗 하면 여기에 표시됩니다.
-                        </p>
-                      </div>
+                ) : (
+                  <div className="noInfoBox">
+                    <div className="noInfo">
+                      <h2>아직은 여기에 아무 것도 없습니다.</h2>
+                      <p>누군가가 나를 팔로우 하면 여기에 표시됩니다.</p>
                     </div>
-                  )}
-                </>
-              ) : (
-                <CircleLoader />
-              )
-            }
-          />
-          <Route
-            path="/notification/replies"
-            element={
-              loading.replies ? (
-                <>
-                  {replies.length !== 0 ? (
-                    replies?.map((reply: any) => (
-                      <NotificationReply
-                        key={reply.id}
-                        userObj={userObj}
-                        replyObj={reply}
-                        loading={loading}
-                      />
-                    ))
-                  ) : (
-                    <div className="noInfoBox">
-                      <div className="noInfo">
-                        <h2>아직은 여기에 아무 것도 없습니다.</h2>
-                        <p>
-                          누군가가 나의 트윗에 답글을 달면 여기에 표시됩니다.
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <CircleLoader />
-              )
-            }
-          />
-          <Route
-            path="/notification/followers"
-            element={
-              fbLoading.myInfo ? (
-                <>
-                  {myInfo ? (
-                    myInfo.follower
-                      .sort((a: any, b: any) => b.followAt - a.followAt)
-                      .map((follow: any, index: number) => (
-                        <NotificationFollow
-                          key={index}
-                          userObj={userObj}
-                          followObj={follow}
-                          loading={loading}
-                        />
-                      ))
-                  ) : (
-                    <div className="noInfoBox">
-                      <div className="noInfo">
-                        <h2>아직은 여기에 아무 것도 없습니다.</h2>
-                        <p>누군가가 나를 팔로우 하면 여기에 표시됩니다.</p>
-                      </div>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <CircleLoader />
-              )
-            }
-          />
-        </Routes>
+                  </div>
+                )}
+              </>
+            ) : (
+              <CircleLoader />
+            )}
+          </Link>
+        )}
       </div>
     </>
   );

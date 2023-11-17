@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import SearchBar from "components/searchBar/SearchBar";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
 import ExploreTweets from "components/explore/ExploreTweets";
 import ExploreUsers from "components/explore/ExploreUsers";
+import { Link } from "react-router-dom";
 
 export default function ExplorePage({ userObj }: any) {
   const location = useLocation();
@@ -20,7 +21,10 @@ export default function ExplorePage({ userObj }: any) {
   return (
     <>
       <div className="menu_container">
-        <div className="main__container">
+        <div
+          className="main__container"
+          style={{ borderBottom: "1px solid var(--grayLight)" }}
+        >
           <div className="main__category">
             <SearchBar userObj={userObj} />
           </div>
@@ -40,14 +44,15 @@ export default function ExplorePage({ userObj }: any) {
           </nav>
         </div>
 
-        <Routes>
-          <Route
-            path={"/explore/tweets"}
-            element={<ExploreTweets userObj={userObj} />}
-          />
-
-          <Route path="/explore/users" element={<ExploreUsers />} />
-        </Routes>
+        {selected === 1 ? (
+          <Link to="/explore/tweets">
+            <ExploreTweets userObj={userObj} />
+          </Link>
+        ) : (
+          <Link to={"/explore/users"}>
+            <ExploreUsers />
+          </Link>
+        )}
       </div>
     </>
   );

@@ -77,6 +77,7 @@ export default function TweetBox({
   const { liked, setLiked, toggleLike } = useToggleLike(tweetObj);
   const { bookmark, setBookmark, toggleBookmark } = useToggleBookmark(tweetObj);
   const { timeToString } = useTimeToString();
+  
   useHandleOutsideClick({
     ref: editRef,
     isModal: tweetEditDelBtn,
@@ -234,7 +235,9 @@ export default function TweetBox({
             <div className={styled.tweet__reTweetIcon}>
               <FiRepeat />
             </div>
-            <p>{currentUser.displayName} 님이 리트윗 했습니다</p>
+            <p>
+              @{currentUser.displayName} {t("RETWEET_TEXT")}
+            </p>
           </div>
         )}
         <div className={styled.tweet__wrapper} onClick={goTweet}>

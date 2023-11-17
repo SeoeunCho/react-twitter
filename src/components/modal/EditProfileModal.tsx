@@ -13,9 +13,10 @@ import {
 import { db } from "firebaseApp";
 import { setCurrentUser } from "reducer/user";
 import useTranslation from "hooks/useTranslation";
+import { toast } from "react-toastify";
 
-const PROFILE_DEFAULT_URL = "/PROFILE_DEFAULT_URL.jpg";
-const PROFILE_BG_URL = "/PROFILE_BG_URL.jpg";
+const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
+const PROFILE_BG_URL = "/bgimg.jpg";
 
 export default function EditProfileModal({
   creatorInfo,
@@ -85,19 +86,21 @@ export default function EditProfileModal({
   };
 
   const onDeleteClick = async (type: any) => {
-    const profilType = type === "profile";
-    const confirmMessage = profilType
+    const profileType = type === "profile";
+    const confirmMessage = profileType
       ? "프로필 사진을 삭제하시겠어요?"
       : "배경사진을 삭제하시겠어요?";
-    const setDeleteType = profilType ? setIsDeleteProfileURL : setIsDeleteBgURL;
-    const setEditType = profilType ? setEditAttachment : setEditAttachmentBg;
+    const setDeleteType = profileType
+      ? setIsDeleteProfileURL
+      : setIsDeleteBgURL;
+    const setEditType = profileType ? setEditAttachment : setEditAttachmentBg;
 
     const ok = window.confirm(confirmMessage);
     // 이미지 없는 글 삭제 시 에러가 나와서 예외 처리
     // (삭제 시 tweetObj.attachmentUrl로 찾아가기 때문)
     if (ok) {
       setDeleteType(true);
-      setEditType(profilType ? PROFILE_DEFAULT_URL : PROFILE_BG_URL);
+      setEditType(profileType ? PROFILE_DEFAULT_URL : PROFILE_BG_URL);
       setIsAddFile(false);
     }
   };
@@ -153,7 +156,7 @@ export default function EditProfileModal({
       );
     }
 
-    alert(`프로필이 수정되었습니다.`);
+    toast.success(t("EDIT_PROFILE_TOAST"));
     toggleEdit(false);
   };
 

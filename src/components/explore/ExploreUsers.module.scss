@@ -75,6 +75,7 @@
   border-radius: 9999px;
   background: #213025;
   font-size: 14px;
+  padding: 0 12px;
   color: white;
 }
 
@@ -85,19 +86,19 @@
 /* 팔로우 버튼 */
 .followBox .follows .follow__user .follow__btn.follow__btn {
   color: white;
-  background-color: #213025;
-  border: 1.5px solid #213025;
+  background-color: var(--followPrimary);
+  border: 1.5px solid var(--followPrimary);
 }
 
 .followBox .follows .follow__user .follow__btn.follow__btn:hover {
-  background-color: #414d45;
+  background-color: var(--followSecondary);
 }
 
 /* 팔로잉 버튼 */
 .followBox .follows .follow__user .follow__btn.follow__btn.follow {
   background-color: white;
-  color: #213025;
-  border: 1.5px solid #c1dbd1;
+  color: var(--followPrimary);
+  border: 1.5px solid var(--secondary);
 }
 
 .followBox .follows .follow__user .follow__btn.follow__btn.follow:hover {

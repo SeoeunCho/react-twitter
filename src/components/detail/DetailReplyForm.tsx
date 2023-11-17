@@ -12,6 +12,8 @@ import { db, storage } from "firebaseApp";
 import useEmojiModalOutClick from "hooks/useEmojiModalOutClick";
 import useGetFbInfo from "hooks/useGetFbInfo";
 import BarLoader from "components/loader/BarLoader";
+import useTranslation from "hooks/useTranslation";
+import { toast } from "react-toastify";
 
 export default function DetailReplyForm({
   userObj,
@@ -30,6 +32,7 @@ export default function DetailReplyForm({
   // 이모지 모달 밖 클릭 시 창 끔
   const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({ emojiRef });
   const { myInfo } = useGetFbInfo();
+  const t = useTranslation();
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
@@ -99,7 +102,7 @@ export default function DetailReplyForm({
         clearInterval(interval);
       };
     } else {
-      alert("글자를 입력하세요");
+      toast.error(t("SUBMIT_ERROR_TOAST"));
     }
   };
 
@@ -196,7 +199,7 @@ export default function DetailReplyForm({
                 onChange={onChange}
                 onFocus={() => setSelect("text")}
                 maxLength={280}
-                placeholder="내 답글을 트윗합니다."
+                placeholder={t("REPLY_PLACEHOLDER")}
               />
               {attachment && (
                 <div className={styled.factoryForm__attachment}>
@@ -259,7 +262,7 @@ export default function DetailReplyForm({
               </div>
               <input
                 type="submit"
-                value="답글"
+                value={t("BUTTON_REPLY")}
                 className={styled.factoryInput__arrow}
                 disabled={reply === "" && attachment === ""}
               />

@@ -319,7 +319,7 @@
 }
 
 .tweet .tweet__actions .actionBox:hover .actions__icon::after {
-  background-color: #7ad3ae34;
+  background-color: var(--grayLightSky);
 }
 
 .tweet .tweet__actions .actionBox .actions__icon svg {
@@ -329,26 +329,6 @@
   align-items: center;
   justify-content: center;
   color: #6f7c79c7;
-}
-
-/* 댓글 */
-.tweet .tweet__actions .actionBox.reply .actions__icon svg {
-}
-
-.tweet .tweet__actions .actionBox.reply:hover .actions__icon svg {
-  color: var(--primary);
-}
-
-/* 좋아요 */
-.tweet .tweet__actions .actionBox:nth-child(3):hover,
-.tweet .tweet__actions .actionBox:nth-child(3):hover .actions__icon svg,
-.tweet .tweet__actions .actionBox:nth-child(3).like .actions__icon svg,
-.tweet .tweet__actions .actionBox:nth-child(3).like:hover {
-  color: #f9183d;
-}
-
-.tweet .tweet__actions .actionBox:nth-child(3):hover .actions__icon::after {
-  background-color: #f918801a;
 }
 
 /* 트윗 액션 숫자 */
@@ -371,9 +351,14 @@
   color: var(--darkBlue);
 }
 
+/* 리트윗 숫자 */
+.tweet .tweet__actions .actionBox.reTweet p {
+  color: var(--primary);
+}
+
 /* 좋아요 숫자 */
 .tweet .tweet__actions .actionBox.like p {
-  color: #f9183d;
+  color: var(--red);
 }
 /* 트윗 액션 바 ==== end */
 
@@ -414,7 +399,8 @@
 }
 
 .tweet .tweet__actions_detail .actionBox div:hover .actions__icon::after {
-  background-color: #7ad3ae34;
+  // background-color: #7ad3ae34;
+  background-color: var(--red);
 }
 
 .tweet .tweet__actions_detail .actionBox .actions__icon svg {
@@ -427,42 +413,44 @@
 }
 
 /* 댓글 */
-.tweet .tweet__actions_detail .actionBox .reply:hover .actions__icon svg {
+.tweet .tweet__actions .actionBox.comment:hover .actions__icon svg {
   color: var(--primary);
 }
 
 /* 좋아요 */
-.tweet .tweet__actions_detail .actionBox .likeBox:hover .actions__icon svg,
-.tweet .tweet__actions_detail .actionBox .like .actions__icon svg {
-  color: #f9183d;
+.tweet .tweet__actions .actionBox:nth-child(3):hover,
+.tweet .tweet__actions .actionBox:nth-child(3):hover .actions__icon svg,
+.tweet .tweet__actions .actionBox:nth-child(3).like .actions__icon svg,
+.tweet .tweet__actions .actionBox:nth-child(3).like:hover {
+  color: var(--red);
 }
 
-.tweet .tweet__actions_detail .actionBox .likeBox:hover .actions__icon::after {
+.tweet .tweet__actions .actionBox:nth-child(3):hover .actions__icon::after {
   background-color: #f918801a;
 }
 
 /* 북마크 */
-.tweet .tweet__actions_detail .actionBox .bookmark,
-.tweet .tweet__actions_detail .actionBox .bookmark .actions__icon svg,
-.tweet .tweet__actions_detail .actionBox .bookmarkBox:hover .actions__icon svg {
+.tweet .tweet__actions .actionBox.bookmark,
+.tweet .tweet__actions .actionBox.bookmark .actions__icon svg,
+.tweet .tweet__actions .actionBox:nth-child(4):hover .actions__icon svg {
   color: var(--primary);
 }
 
 /* 리트윗 */
-.tweet .tweet__actions_detail .actionBox div:nth-child(2) .actions__icon svg {
+.tweet .tweet__actions .actionBox:nth-child(2) .actions__icon svg {
   transform: rotate(90deg);
 }
 
-.tweet .tweet__actions_detail .actionBox .retweetBox:hover .actions__icon svg,
-.tweet .tweet__actions_detail .actionBox .retweet .actions__icon svg {
+.tweet .tweet__actions .actionBox:nth-child(2):hover,
+.tweet .tweet__actions .actionBox:nth-child(2):hover .actions__icon svg,
+.tweet .tweet__actions .actionBox.reTweet .actions__icon svg,
+.tweet .tweet__actions .actionBox.reTweet:hover {
   color: #1d9bf0;
 }
-.tweet
-  .tweet__actions_detail
-  .actionBox
-  .retweetBox:hover
-  .actions__icon::after {
-  background: #1d9bf01a;
+
+.tweet .tweet__actions .actionBox:nth-child(2):hover .actions__icon::after {
+  background-color: var(--grayLightSky);
+  // background-color: #1d9bf01a;
 }
 
 /* 디테일 액션 숫자 */

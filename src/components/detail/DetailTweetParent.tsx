@@ -20,6 +20,7 @@ import TweetEditDeleteBtn from "components/buttons/TweetEditDeleteBtn";
 import EditTweetModal from "components/modal/EditTweetModal";
 import ReplyModal from "components/modal/ReplyModal";
 import useHandleOutsideClick from "hooks/useHandleOutsideClick";
+import useTranslation from "hooks/useTranslation";
 
 export default function DetailTweetParent({
   tweetObj,
@@ -41,6 +42,8 @@ export default function DetailTweetParent({
   );
   const { liked, setLiked, toggleLike } = useToggleLike(tweetObj);
   const { bookmark, setBookmark, toggleBookmark } = useToggleBookmark(tweetObj);
+  const t = useTranslation();
+
   useHandleOutsideClick({
     ref: etcRef,
     isModal: tweetEditDelBtn,
@@ -110,7 +113,9 @@ export default function DetailTweetParent({
                 <div className={styled.tweet__reTweetIcon}>
                   <FiRepeat />
                 </div>
-                <p>{currentUser.displayName} 님이 리트윗 했습니다</p>
+                <p>
+                  @{currentUser.displayName} {t("RETWEET_TEXT")}
+                </p>
               </div>
             )}
             <div className={styled.tweet__wrapper}>
@@ -192,7 +197,7 @@ export default function DetailTweetParent({
                     ) : (
                       <>
                         <span>{tweetObj.replyId?.length}</span>
-                        <span> 답글</span>
+                        <span> {t("TAB_REPLY")}</span>
                       </>
                     )}
                   </div>
@@ -202,7 +207,7 @@ export default function DetailTweetParent({
                     ) : (
                       <>
                         <span>{tweetObj.reTweet?.length}</span>
-                        <span> 리트윗</span>
+                        <span> {t("TAB_RETWEET")}</span>
                       </>
                     )}
                   </div>
@@ -212,7 +217,7 @@ export default function DetailTweetParent({
                     ) : (
                       <>
                         <span>{tweetObj.like?.length}</span>
-                        <span> 마음에 들어요</span>
+                        <span> {t("ACTION_LIKES")}</span>
                       </>
                     )}
                   </div>
