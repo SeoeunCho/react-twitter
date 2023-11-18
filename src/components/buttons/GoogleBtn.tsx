@@ -53,7 +53,7 @@ export const GoogleBtn = ({ newAccount }: AuthProps) => {
                 followingAt: [],
                 follower: [],
                 following: [],
-                reNweet: [],
+                reTweet: [],
                 token: token,
               });
               dispatch(setLoginToken("login"));
@@ -71,7 +71,7 @@ export const GoogleBtn = ({ newAccount }: AuthProps) => {
                   followingAt: [],
                   follower: [],
                   following: [],
-                  reNweet: [],
+                  reTweet: [],
                 })
               );
             }
