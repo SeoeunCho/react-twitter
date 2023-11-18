@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTimeToString } from "../../hooks/useTimeToString";
 import styled from "./NotificationInnerContents.module.scss";
+import useTranslation from "hooks/useTranslation";
 
 export default function NotificationInnerContents({
   notificationUser,
@@ -13,11 +14,30 @@ export default function NotificationInnerContents({
   const nameRef = useRef<any>();
   const location = useLocation();
   const [followTime, setFollowTime] = useState<any>([]);
+  const t = useTranslation();
+  const navigate = useNavigate();
+
+  const goProfilePage = (e: any) => {
+    e.stopPropagation();
+    navigate(`/profile/mytweets/${notificationUser?.email}`);
+  };
+
+  const goPage = (e: any) => {
+    e.stopPropagation();
+
+    navigate(`/tweet/${notificationUser?.parent}`);
+
+    if (location.pathname.includes("followers")) {
+      navigate(`/profile/mytweets/${notificationUser?.email}`);
+    }
+  };
 
   // 팔로우 시간 정보 가져오기
   useEffect(() => {
     if (creatorInfo?.following) {
-      creatorInfo?.following.map((follow: any) => setFollowTime(follow.followAt));
+      creatorInfo?.following.map((follow: any) =>
+        setFollowTime(follow.followAt)
+      );
     }
   }, [creatorInfo?.following]);
 
@@ -27,8 +47,8 @@ export default function NotificationInnerContents({
     <>
       <div className={styled.tweet}>
         <div className={styled.tweet__container}>
-          <Link
-            to={`/profile/mytweets/${notificationUser?.email}`}
+          <div
+            onClick={goProfilePage}
             className={styled.tweet__profile}
             ref={imgRef}
           >
@@ -37,30 +57,41 @@ export default function NotificationInnerContents({
               alt="profileImg"
               className={styled.profile__image}
             />
-          </Link>
-          <Link
-            className={styled.tweet__contents}
-            to={
-              location.pathname.includes("followers")
-                ? `/profile/mytweets/${notificationUser?.email}`
-                : `/tweet/${notificationUser?.parent}`
-            }
-          >
+          </div>
+          <div className={styled.tweet__contents} onClick={goPage}>
             <div className={styled.reTweetBox}>
               <p>
                 <span ref={nameRef}>
-                  @{(notificationUser?.email || creatorInfo.email)?.split("@")[0]}
+                  @
+                  {
+                    (notificationUser?.email || creatorInfo.email)?.split(
+                      "@"
+                    )[0]
+                  }
                 </span>
-                님이{" "}
                 {location.pathname.includes("retweets") && (
-                  <span className={styled.reTweet__name}>
-                    "{notificationUser?.text ? notificationUser?.text : tweets?.text}"
-                  </span>
+                  <>
+                    {t("NOTIFICATION_FROM_RETWEET")}{" "}
+                    <span className={styled.reTweet__name}>
+                      "
+                      {notificationUser?.text
+                        ? notificationUser?.text
+                        : tweets?.text}
+                      "
+                    </span>
+                  </>
                 )}
                 {location.pathname.includes("replies") && (
-                  <span className={styled.reTweet__name}>"{tweets?.text}"</span>
+                  <>
+                    {t("NOTIFICATION_FROM_REPLY")}{" "}
+                    <span className={styled.reTweet__name}>
+                      "{tweets?.text}"
+                    </span>
+                  </>
                 )}
-                {location.pathname.includes("followers") && null}
+                {location.pathname.includes("followers") && (
+                  <>{t("NOTIFICATION_FROM_REPLY")} </>
+                )}
                 {text}
               </p>
             </div>
@@ -78,7 +109,7 @@ export default function NotificationInnerContents({
                 <p>{timeToString(followTime)}</p>
               )}
             </div>
-          </Link>
+          </div>
         </div>
       </div>
     </>

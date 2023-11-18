@@ -4,10 +4,12 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { db } from "firebaseApp";
 import NotificationInnerContents from "./NotificationInnerContents";
+import useTranslation from "hooks/useTranslation";
 
-export default function NotificationReply ({ replyObj }: any) {
+export default function NotificationReply({ replyObj }: any) {
   const [creatorInfo, setCreatorInfo] = useState<any>([]);
   const [tweets, setTweets] = useState<any>([]);
+  const t = useTranslation();
 
   // 정보 가져오기
   useEffect(() => {
@@ -36,9 +38,9 @@ export default function NotificationReply ({ replyObj }: any) {
           creatorInfo={creatorInfo}
           notificationUser={replyObj}
           tweets={tweets}
-          text={"글에 답글을 달았습니다."}
+          text={t("NOTIFICATION_REPLY")}
         />
       )}
     </>
   );
-};
+}

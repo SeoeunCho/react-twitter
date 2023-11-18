@@ -1,16 +1,12 @@
 import { collection, doc, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { IoArrowBackOutline } from "react-icons/io5";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
 import { db } from "firebaseApp";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
-import useTranslation from "hooks/useTranslation";
 import CircleLoader from "components/loader/CircleLoader";
 import Header from "components/header";
 import BookmarkTweets from "components/bookmark/BookmarkTweets";
 import BookmarkReplies from "components/bookmark/BookmarkReplies";
-import { Link } from "react-router-dom";
 
 export default function BookmarkPage({ userObj }: any) {
   const location = useLocation();

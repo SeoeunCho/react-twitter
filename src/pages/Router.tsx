@@ -2,7 +2,7 @@ import TopButton from "../components/buttons/TopButton";
 import LeftMenu from "pages/menu/LeftMenu";
 import HomePage from "pages/home";
 import ExplorePage from "pages/explore";
-import NotificationPage from "pages/notifications";
+import NotificationPage from "pages/notification";
 import BookmarkPage from "pages/bookmark";
 import DetailTweet from "components/detail/DetailTweet";
 import ProfilePage from "pages/profile";
@@ -10,7 +10,7 @@ import NotFound from "./NotFound";
 import RightMenu from "pages/menu/RightMenu";
 import AuthPage from "pages/auth";
 
-import { Route, Routes, Navigate, useLocation } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 
 // export interface UserProps {
 //   userObj: any;

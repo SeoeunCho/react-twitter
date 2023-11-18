@@ -1,13 +1,6 @@
-import { useCallback, useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { TweetProps } from "pages/home";
-import {
-  addDoc,
-  arrayUnion,
-  collection,
-  doc,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { db, storage } from "firebaseApp";
 import { v4 as uuidv4 } from "uuid";
@@ -20,8 +13,6 @@ import Picker from "emoji-picker-react";
 import useEmojiModalOutClick from "hooks/useEmojiModalOutClick";
 import BarLoader from "components/loader/BarLoader";
 import styled from "./ReplyForm.module.scss";
-
-import AuthContext from "context/AuthContext";
 import useTranslation from "hooks/useTranslation";
 import { BsReplyFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -99,7 +90,6 @@ export default function ReplyForm({
         replyId: [],
         reTweetEmail: [],
         isReply: true,
-        // displayName: userObj?.displayName || userObj?.email?.split("@")[0],
       };
 
       /* 하위 컬렉션 생성하기
@@ -132,20 +122,6 @@ export default function ReplyForm({
             setProgressBarCount(0); // 프로그레스 바 초기화
             clearInterval(interval);
           });
-
-        // 답글 생성 알림 만들기
-        // if (user?.uid !== tweet?.uid) {
-        //   await addDoc(collection(db, "Notifications"), {
-        //     content: truncate(tweet?.content),
-        //     createdAt: Date.now(),
-        //     uid: tweet?.uid,
-        //     profileUrl: user?.photoURL,
-        //     isRead: false,
-        //     email: user?.email,
-        //     url: `/tweets/${tweet?.id}`,
-        //     displayName: user?.displayName || user?.email?.split("@")[0],
-        //   });
-        // }
       };
 
       let start = 0;

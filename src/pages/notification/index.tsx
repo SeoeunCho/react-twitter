@@ -9,8 +9,8 @@ import useGetFbInfo from "hooks/useGetFbInfo";
 import NotificationReTweet from "components/notification/NotificationReTweet";
 import NotificationReply from "components/notification/NotificationReply";
 import NotificationFollow from "components/notification/NotificationFollow";
-import React from "react";
 import { Link } from "react-router-dom";
+import useTranslation from "hooks/useTranslation";
 
 export default function NotificationPage({ userObj }: any) {
   const location = useLocation();
@@ -22,6 +22,7 @@ export default function NotificationPage({ userObj }: any) {
   });
   const [replies, setReplies] = useState([]);
   const { myInfo, fbLoading } = useGetFbInfo();
+  const t = useTranslation();
   const navigate = useNavigate();
 
   const goPage = (e: any) => {
@@ -30,7 +31,7 @@ export default function NotificationPage({ userObj }: any) {
       navigate("/notification/retweets");
     } else if (selected === 2) {
       navigate("/notification/replies");
-    } else if (selected === 3) {
+    } else {
       navigate("/notification/followers");
     }
   };
@@ -102,7 +103,7 @@ export default function NotificationPage({ userObj }: any) {
     <>
       <div className="menu_container">
         <Header text={"MENU_NOTI"} />
-        <div className="main__container">
+        <div className="main__container" style={{ height: "53px" }}>
           <nav className="categoryList">
             <TabMenuBtn
               num={1}
@@ -141,8 +142,8 @@ export default function NotificationPage({ userObj }: any) {
                 ) : (
                   <div className="noInfoBox">
                     <div className="noInfo">
-                      <h2>아직은 여기에 아무 것도 없습니다.</h2>
-                      <p>누군가가 나의 트윗을 리트윗 하면 여기에 표시됩니다.</p>
+                      <h2>{t("NO_TWEET")}</h2>
+                      <p>{t("NO_NOTIFICATION_RETWEET")}</p>
                     </div>
                   </div>
                 )}
@@ -169,8 +170,8 @@ export default function NotificationPage({ userObj }: any) {
                 ) : (
                   <div className="noInfoBox">
                     <div className="noInfo">
-                      <h2>아직은 여기에 아무 것도 없습니다.</h2>
-                      <p>누군가가 나의 트윗에 답글을 달면 여기에 표시됩니다.</p>
+                      <h2>{t("NO_TWEET")}</h2>
+                      <p>{t("NO_NOTIFICATION_REPLY")}</p>
                     </div>
                   </div>
                 )}
@@ -199,8 +200,8 @@ export default function NotificationPage({ userObj }: any) {
                 ) : (
                   <div className="noInfoBox">
                     <div className="noInfo">
-                      <h2>아직은 여기에 아무 것도 없습니다.</h2>
-                      <p>누군가가 나를 팔로우 하면 여기에 표시됩니다.</p>
+                      <h2>{t("NO_TWEET")}</h2>
+                      <p>{t("NO_NOTIFICATION_FOLLOW")}</p>
                     </div>
                   </div>
                 )}

@@ -1,8 +1,7 @@
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "firebaseApp";
 import useTranslation from "hooks/useTranslation";
-import { divide } from "lodash";
-import { IoIosArrowBack, IoMdExit } from "react-icons/io";
+import { IoMdExit } from "react-icons/io";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";

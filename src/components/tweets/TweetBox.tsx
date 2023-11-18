@@ -1,6 +1,5 @@
-import AuthContext from "context/AuthContext";
 import { TweetProps } from "pages/home";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FaRegComment,
   FaHeart,
@@ -10,10 +9,6 @@ import {
 } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiRepeat, FiMoreHorizontal } from "react-icons/fi";
-import { toast } from "react-toastify";
-
-import { ReplyProps } from "components/reply/ReplyBox";
-import FollowingBox from "components/following/FollowingBox";
 import TweetEditDeleteBtn from "components/buttons/TweetEditDeleteBtn";
 import ReplyModal from "components/modal/ReplyModal";
 import EditTweetModal from "components/modal/EditTweetModal";
@@ -67,7 +62,6 @@ export default function TweetBox({
   const language = useRecoilState(languageState);
   const currentUser = useSelector((state: any) => state.user.currentUser);
 
-  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   // const imageRef = ref(storage, tweet?.imageUrl);
   const editRef = useRef<any>();
@@ -112,7 +106,7 @@ export default function TweetBox({
   };
 
   const goProfile = (e: any) => {
-    e.stopPropagation()
+    e.stopPropagation();
     navigate(`/profile/mytweets/${tweetObj.email}`);
   };
 
@@ -184,10 +178,7 @@ export default function TweetBox({
             {/* 유저 정보 */}
             <div className={styled.userInfo}>
               <div className={styled.userInfo__name}>
-                <div
-                  className={styled.userInfo__one}
-                  onClick={goProfile}
-                >
+                <div className={styled.userInfo__one} onClick={goProfile}>
                   <p>{creatorInfo.displayName}</p>
                 </div>
                 {/* <Link

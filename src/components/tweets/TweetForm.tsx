@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { collection, addDoc, doc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { db, storage } from "firebaseApp";
@@ -13,7 +13,6 @@ import useEmojiModalOutClick from "hooks/useEmojiModalOutClick";
 import BarLoader from "components/loader/BarLoader";
 import styled from "./TweetForm.module.scss";
 
-import AuthContext from "context/AuthContext";
 import useTranslation from "hooks/useTranslation";
 import imageCompression from "browser-image-compression";
 import useGetFbInfo from "hooks/useGetFbInfo";
@@ -21,14 +20,11 @@ import useGetFbInfo from "hooks/useGetFbInfo";
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
 export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
-  // const [content, setContent] = useState<string>("");
   const [tweet, setTweet] = useState<string>("");
   const [hashTag, setHashTag] = useState<string>("");
-  const [imageFile, setImageFile] = useState<string | null>("");
   const [attachment, setAttachment] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [progressBarCount, setProgressBarCount] = useState<number>(0);
-  // const [randomCount, setRandomCount] = useState<number>(1);
   const [select, setSelect] = useState<string>("");
   const fileInput = useRef<any>();
   const textRef = useRef<any>();
@@ -38,7 +34,6 @@ export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
   // 이모지 모달 밖 클릭 시 창 끔
   const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({ emojiRef });
 
-  const { user } = useContext(AuthContext);
   const t = useTranslation();
 
   const onSubmit = async (e: any) => {
