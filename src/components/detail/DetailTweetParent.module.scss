@@ -21,7 +21,7 @@
   margin: 8px 0 -8px 0;
   height: 16px;
   font-weight: 700;
-  color: #53716a;
+  color: var(--darkBlue);
 }
 
 .tweet__reTweet .tweet__reTweetIcon {
@@ -102,7 +102,7 @@
 .userInfo .userInfo__name .userInfo__two {
   font-size: 14px;
   display: flex;
-  color: #53716a;
+  color: var(--darkBlue);
   align-items: baseline;
 }
 
@@ -134,7 +134,7 @@
 /* 날짜 */
 .tweet__created {
   padding: 0 16px;
-  color: #53716a;
+  color: var(--darkBlue);
 }
 
 .tweet__createdAt {
@@ -165,7 +165,7 @@
   position: absolute;
   width: 34px;
   height: 34px;
-  background-color: rgba(51, 114, 88, 0.1);
+  background-color: #1d9bf01a;
 }
 
 .tweet__editIcon svg {
@@ -212,7 +212,7 @@
 }
 
 .tweet .tweet__actions .actionBox div:hover .actions__icon::after {
-  background-color: #7ad3ae34;
+  background-color: #1d9bf01a;
 }
 
 .tweet .tweet__actions .actionBox .actions__icon svg {
@@ -232,7 +232,7 @@
 /* 좋아요 */
 .tweet .tweet__actions .actionBox .likeBox:hover .actions__icon svg,
 .tweet .tweet__actions .actionBox .like .actions__icon svg {
-  color: #f9183d;
+  color: var(--red);
 }
 
 .tweet .tweet__actions .actionBox .likeBox:hover .actions__icon::after {
@@ -253,7 +253,7 @@
 
 .tweet .tweet__actions .actionBox .reTweetBox:hover .actions__icon svg,
 .tweet .tweet__actions .actionBox .reTweet .actions__icon svg {
-  color: #1d9bf0;
+  color: var(--primary);
 }
 .tweet .tweet__actions .actionBox .reTweetBox:hover .actions__icon::after {
   background: #1d9bf01a;
@@ -286,5 +286,5 @@
 
 .tweet .tweet__actions .actions__text span:last-child {
   margin-right: 20px;
-  color: #53716a;
+  color: var(--darkBlue);
 }

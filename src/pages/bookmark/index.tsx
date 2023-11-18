@@ -1,7 +1,7 @@
 import { collection, doc, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { IoArrowBackOutline } from "react-icons/io5";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import { db } from "firebaseApp";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
@@ -19,6 +19,23 @@ export default function BookmarkPage({ userObj }: any) {
   const [reTweets, setReTweets] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selected, setSelected] = useState<number>(1);
+  const navigate = useNavigate();
+
+  const goTweet = () => {
+    if (location.pathname.includes(userObj.email)) {
+      navigate(`/profile/bookmarktweets/${userObj.email}`);
+    } else {
+      navigate("/bookmark/tweets");
+    }
+  };
+
+  const goReply = () => {
+    if (location.pathname.includes(userObj.email)) {
+      navigate(`/profile/bookmarkreplies/${userObj.email}`);
+    } else {
+      navigate("/bookmark/replies");
+    }
+  };
 
   useEffect(() => {
     if (location.pathname.includes("tweets")) {
@@ -82,13 +99,7 @@ export default function BookmarkPage({ userObj }: any) {
         </div>
 
         {loading && selected === 1 && (
-          <Link
-            to={
-              location.pathname.includes(userObj.email)
-                ? "/profile/bookmarktweets/" + userObj.email
-                : "/bookmark/tweets"
-            }
-          >
+          <div onClick={goTweet}>
             {
               <BookmarkTweets
                 userObj={userObj}
@@ -97,16 +108,10 @@ export default function BookmarkPage({ userObj }: any) {
                 loading={loading}
               />
             }
-          </Link>
+          </div>
         )}
         {loading && selected === 2 && (
-          <Link
-            to={
-              location.pathname.includes(userObj.email)
-                ? "/profile/bookmarkreplies/" + userObj.email
-                : "/bookmark/replies"
-            }
-          >
+          <div onClick={goReply}>
             {
               <BookmarkReplies
                 userObj={userObj}
@@ -115,7 +120,7 @@ export default function BookmarkPage({ userObj }: any) {
                 loading={loading}
               />
             }
-          </Link>
+          </div>
         )}
         {!loading && <CircleLoader />}
       </div>

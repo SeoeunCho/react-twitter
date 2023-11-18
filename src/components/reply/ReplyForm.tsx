@@ -53,7 +53,7 @@ export default function ReplyForm({
   const emojiRef = useRef<any>();
 
   // 이모지 모달 밖 클릭 시 창 끔
-  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({emojiRef});
+  const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({ emojiRef });
   const { myInfo } = useGetFbInfo();
 
   // const { user } = useContext(AuthContext);

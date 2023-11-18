@@ -1,5 +1,5 @@
-import { TweetProps } from "pages/home";
 import TweetBox from "components/tweets/TweetBox";
+import { TweetProps } from "pages/home";
 
 export interface ReplyProps {
   id: string;

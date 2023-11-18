@@ -15,7 +15,6 @@ import useHandleOutsideClick from "hooks/useHandleOutsideClick";
 import styled from "./LeftMenu.module.scss";
 
 import useTranslation from "hooks/useTranslation";
-import AuthContext from "context/AuthContext";
 import { setCurrentUser, setLoginToken } from "reducer/user";
 // import { UserProps } from "Router";
 import { useDispatch } from "react-redux";
@@ -81,6 +80,16 @@ export default function LeftMenu({ userObj }: any) {
       );
       toast.success(t("LOGOUT_TOAST"));
       navigate("/auth");
+    }
+  };
+
+  const goPage = (e: any) => {
+    e.stopPropagation();
+    if (selected === 1) {
+    } else if (selected === 2) {
+    } else if (selected === 3) {
+    } else if (selected === 4) {
+    } else if (selected === 5) {
     }
   };
 

@@ -14,6 +14,7 @@ import { setCurrentUser } from "../../reducer/user";
 import styled from "./TweetEditDeleteBtn.module.scss";
 import { db, storage } from "firebaseApp";
 import useTranslation from "hooks/useTranslation";
+import { toast } from "react-toastify";
 
 export default function TweetEditDeleteBtn({
   tweetAttachment,
@@ -86,7 +87,7 @@ export default function TweetEditDeleteBtn({
   }, [currentUser.email]);
 
   const onDeleteClick = async () => {
-    const ok = window.confirm("정말로 삭제하시겠습니까?");
+    const ok = window.confirm(t("CHECK_DELETE_TOAST"));
 
     if (ok === true) {
       // 원글 삭제
@@ -115,7 +116,8 @@ export default function TweetEditDeleteBtn({
         await updateDoc(doc(db, "Tweets", tweets.id), {
           replyId: filter,
         });
-        await deleteDoc(repliesRef); // 답글 삭제
+        // 답글 삭제
+        await deleteDoc(repliesRef);
 
         dispatch(
           setCurrentUser({
@@ -126,6 +128,7 @@ export default function TweetEditDeleteBtn({
       }
 
       setTweetEtc && setTweetEtc(false);
+      toast.success(t("DELETE_TOAST"));
     }
   };
 

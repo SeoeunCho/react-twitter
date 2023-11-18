@@ -18,20 +18,6 @@ function App() {
     !!auth?.currentUser
   );
 
-  // useEffect(() => {
-  //   // 유저 상태 변화 추적(로그인, 로그아웃, 어플리케이션 초기화 시)
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       setIsAuthenticated(true);
-  //       setUserObj(user);
-  //     } else {
-  //       setIsAuthenticated(false);
-  //       setUserObj(null);
-  //     }
-  //     setInit(true);
-  //   });
-  // }, [auth]);
-
   useEffect(() => {
     // 유저 상태 변화 추적(로그인, 로그아웃, 어플리케이션 초기화 시)
     const auth = getAuth(app);

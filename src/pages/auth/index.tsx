@@ -4,6 +4,8 @@ import AuthForm from "components/auth/AuthForm";
 import styled from "./Auth.module.scss";
 
 import useTranslation from "hooks/useTranslation";
+import { GoogleBtn } from "components/buttons/GoogleBtn";
+import { GithubBtn } from "components/buttons/GithubBtn";
 const AUTH_BG_URL = "/background.jpg";
 
 export default function AuthPage() {
@@ -34,7 +36,10 @@ export default function AuthPage() {
         )}
 
         <AuthForm newAccount={newAccount} />
-
+        <div className={styled.authBtns}>
+          <GoogleBtn newAccount={newAccount} />
+          <GithubBtn newAccount={newAccount} />
+        </div>
         {newAccount ? (
           <div className={styled.auth__notification}>
             <span>{t("NO_ACCOUNT")}</span>

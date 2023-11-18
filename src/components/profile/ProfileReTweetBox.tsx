@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
 import ProfileReTweets from "./ProfileReTweets";
 import ProfileReTweetsReplies from "./ProfileReTweetsReplies";
@@ -9,6 +9,20 @@ import { divide } from "lodash";
 export default function ProfileReTweetBox({ userObj, creatorInfo }: any) {
   const location = useLocation();
   const [selected, setSelected] = useState(1);
+  const navigate = useNavigate();
+
+  const goPage = (e: any) => {
+    e.stopPropagation();
+    if (location.pathname.includes("/user/")) {
+      if (selected === 1) {
+        navigate(`/user/retweets/${creatorInfo.email}`);
+        navigate(`/profile/retweets/${creatorInfo.email}`);
+      } else {
+        navigate(`/user/retweetsreplies/${creatorInfo.email}`);
+        navigate(`/user/retweetsreplies/${creatorInfo.email}`);
+      }
+    }
+  };
 
   useEffect(() => {
     if (location.pathname.includes("/retweets/")) {
@@ -31,7 +45,7 @@ export default function ProfileReTweetBox({ userObj, creatorInfo }: any) {
                   ? "/user/retweets/" + creatorInfo.email
                   : "/profile/retweets/" + creatorInfo.email
               }
-              text={"TAB_USER"}
+              text={"TAB_TWEET"}
             />
             <TabMenuBtn
               num={2}
@@ -47,28 +61,16 @@ export default function ProfileReTweetBox({ userObj, creatorInfo }: any) {
         </div>
 
         {selected === 1 ? (
-          <Link
-            to={
-              location.pathname.includes("/user/")
-                ? "/user/retweets/" + creatorInfo.email
-                : "/profile/retweets/" + creatorInfo.email
-            }
-          >
+          <div onClick={goPage}>
             <ProfileReTweets userObj={userObj} creatorInfo={creatorInfo} />
-          </Link>
+          </div>
         ) : (
-          <Link
-            to={
-              location.pathname.includes("/user/")
-                ? "/user/retweetsreplies/" + creatorInfo.email
-                : "/profile/retweetsreplies/" + creatorInfo.email
-            }
-          >
+          <div onClick={goPage}>
             <ProfileReTweetsReplies
               userObj={userObj}
               creatorInfo={creatorInfo}
             />
-          </Link>
+          </div>
         )}
         {/* <Routes>
           <Route

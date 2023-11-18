@@ -76,7 +76,9 @@ export default function Header({
               {menu === "profile" ? text : t(text)}
             </p>
             {myTweets && (
-              <p className={styled.category__sub}>{myTweets.length} {t('TAB_TWEET')}</p>
+              <p className={styled.category__sub}>
+                {myTweets.length} {t("TAB_TWEET")}
+              </p>
             )}
 
             {creatorInfo && (

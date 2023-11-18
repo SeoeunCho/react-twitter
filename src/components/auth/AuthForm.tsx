@@ -1,27 +1,21 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { FcGoogle } from "react-icons/fc";
-import { AiFillGithub } from "react-icons/ai";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signInWithPopup,
-  GithubAuthProvider,
-  GoogleAuthProvider,
 } from "firebase/auth";
 import { app, db } from "firebaseApp";
 import { toast } from "react-toastify";
 import useTranslation from "hooks/useTranslation";
 import styled from "./AuthForm.module.scss";
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
-import AuthContext from "context/AuthContext";
 import { setCurrentUser, setLoginToken } from "reducer/user";
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 const PROFILE_BG_URL = "/bgimg.jpg";
 
-interface AuthProps {
+export interface AuthProps {
   newAccount: boolean;
 }
 
@@ -180,108 +174,6 @@ export default function AuthForm({ newAccount }: AuthProps) {
     }
   };
 
-  const onClickSocialLogin = async (e: any) => {
-    const {
-      target: { name },
-    } = e;
-
-    let provider: any;
-    let user: any;
-
-    const auth = getAuth(app);
-
-    if (name === "google") {
-      provider = new GoogleAuthProvider();
-    }
-
-    if (name === "github") {
-      provider = new GithubAuthProvider();
-    }
-
-    try {
-      await signInWithPopup(
-        auth,
-        provider as GoogleAuthProvider | GithubAuthProvider
-      ).then(async (result: any) => {
-        const credential = provider.credentialFromResult(result);
-        const token = credential.accessToken;
-        user = result.user;
-
-        const docRef = doc(db, "Users", user.email);
-        await getDoc(docRef).then(async (docSnap) => {
-          if (docSnap.exists()) {
-            dispatch(setLoginToken("login"));
-            dispatch(
-              setCurrentUser({
-                ...docSnap.data(),
-              })
-            );
-          } else {
-            const usersRef = collection(db, "Users");
-            await setDoc(doc(usersRef, user.email), {
-              uid: user.uid,
-              displayName: user.email.split("@")[0],
-              email: user.email,
-              photoURL: PROFILE_DEFAULT_URL,
-              createdAtId: Date.now(),
-              description: "",
-              bgURL: PROFILE_BG_URL,
-              bookmark: [],
-              followerAt: [],
-              followingAt: [],
-              follower: [],
-              following: [],
-              reTweet: [],
-              token: token,
-            });
-            dispatch(setLoginToken("login"));
-            dispatch(
-              setCurrentUser({
-                uid: user?.uid,
-                displayName: user?.email.split("@")[0],
-                email: user?.email,
-                photoURL: PROFILE_DEFAULT_URL,
-                bgURL: PROFILE_BG_URL,
-                description: "",
-                createdAtId: Date.now(),
-                bookmark: [],
-                followerAt: [],
-                followingAt: [],
-                follower: [],
-                following: [],
-                reTweet: [],
-              })
-            );
-          }
-        });
-      });
-      navigate("/");
-      toast.success(t("LOGIN_TOAST"));
-    } catch (error: any) {
-      const errorKey = Object.keys(errorMessages).find((key) =>
-        error.message.includes(key)
-      );
-      const errorMessage = errorKey ? errorMessages[errorKey] : error.message;
-      toast?.error(errorMessage);
-    }
-
-    // await signInWithPopup(
-    //   auth,
-    //   provider as GoogleAuthProvider | GithubAuthProvider
-    // )
-    //   .then((result) => {
-    //     console.log(result);
-    //     toast.success(t("LOGIN_TOAST"));
-    //   })
-    //   .catch((error: any) => {
-    //     const errorKey = Object.keys(errorMessages).find((key) =>
-    //       error.message.includes(key)
-    //     );
-    //     const errorMessage = errorKey ? errorMessages[errorKey] : error.message;
-    //     toast?.error(errorMessage);
-    //   });
-  };
-
   return (
     <>
       <div className={styled.container}>
@@ -346,26 +238,6 @@ export default function AuthForm({ newAccount }: AuthProps) {
         <>
           <div className={styled.separator}>
             <p>또는</p>
-          </div>
-          <div className={styled.authBtns}>
-            <button
-              type="button"
-              name="google"
-              className={styled.authBtn}
-              onClick={onClickSocialLogin}
-            >
-              <FcGoogle />
-              {t("LOGIN_WITH_GOOGLE")}
-            </button>
-            <button
-              type="button"
-              name="github"
-              className={styled.authBtn}
-              onClick={onClickSocialLogin}
-            >
-              <AiFillGithub />
-              {t("LOGIN_WITH_GITHUB")}
-            </button>
           </div>
         </>
       ) : (

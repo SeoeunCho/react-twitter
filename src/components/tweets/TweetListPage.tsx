@@ -4,8 +4,7 @@ import { db } from "firebaseApp";
 import TweetBox from "./TweetBox";
 // import { TweetProps } from "pages/home";
 // import { UserProps } from "Router";
-import useToggleRepliesRetweet from "hooks/useToggleRepliesRetweet";
-
+import { useToggleRepliesRetweet } from "hooks/useToggleRepliesRetweet";
 
 // export interface TweetCompProps {
 //   isOwner?: boolean;
@@ -29,11 +28,11 @@ export default function TweetListPage({
 }: any) {
   const [creatorInfo, setCreatorInfo] = useState({});
   const [loading, setLoading] = useState(false);
-  const { reTweet, setReTweet, toggleReTweet } = useToggleRepliesRetweet(
+  const { reTweet, setReTweet, toggleReTweet } = useToggleRepliesRetweet({
     userObj,
     tweetObj,
-    reTweetsObj
-  );
+    reTweetsObj,
+  });
 
   //  map 처리 된 유저 정보들
   useEffect(() => {

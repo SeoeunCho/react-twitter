@@ -11,7 +11,6 @@ import {
 } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import useToggleRepliesRetweet from "hooks/useToggleRepliesRetweet";
 import useToggleLike from "hooks/useToggleLike";
 import { useToggleBookmark } from "hooks/useToggleBookmark";
 import { useTimeToString } from "hooks/useTimeToString";
@@ -21,6 +20,7 @@ import EditTweetModal from "components/modal/EditTweetModal";
 import ReplyModal from "components/modal/ReplyModal";
 import useHandleOutsideClick from "hooks/useHandleOutsideClick";
 import useTranslation from "hooks/useTranslation";
+import { useToggleRepliesRetweet } from "hooks/useToggleRepliesRetweet";
 
 export default function DetailTweetParent({
   tweetObj,
@@ -35,11 +35,11 @@ export default function DetailTweetParent({
   const [loading, setLoading] = useState<boolean>(false);
   const [replyModal, setReplyModal] = useState<boolean>(false);
   const [tweetEditDelBtn, setTweetEditDelBtn] = useState<boolean>(false);
-  const { reTweet, setReTweet, toggleReTweet } = useToggleRepliesRetweet(
+  const { reTweet, setReTweet, toggleReTweet } = useToggleRepliesRetweet({
     reTweetsObj,
     tweetObj,
-    userObj
-  );
+    userObj,
+  });
   const { liked, setLiked, toggleLike } = useToggleLike(tweetObj);
   const { bookmark, setBookmark, toggleBookmark } = useToggleBookmark(tweetObj);
   const t = useTranslation();

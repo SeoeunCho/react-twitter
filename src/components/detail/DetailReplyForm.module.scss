@@ -4,7 +4,7 @@
   align-items: center;
   margin-top: 12px;
   height: 16px;
-  color: #53716a;
+  color: var(--darkBlue);
 }
 
 .select {
@@ -108,7 +108,7 @@
 
 .factoryInput__input::placeholder {
   font-weight: 400;
-  color: #9e9e9e;
+  color: var(--grayDark);
 }
 
 .focus textarea::placeholder {
@@ -157,7 +157,7 @@
 }
 
 .factoryInput__icon:hover {
-  background-color: #5cb69134;
+  background-color: var(--grayLightSky);
 }
 
 /* 배경 아이콘 */
@@ -209,12 +209,12 @@
 }
 
 .factoryInput__arrow:hover {
-  background-color: #337258;
+  background-color: var(--active);
   cursor: pointer;
 }
 
 .factoryInput__arrow:disabled {
-  background-color: #6ba087a9;
+  background-color: var(--disabled);
   transition: all 0.3s;
   cursor: auto;
 }

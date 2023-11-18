@@ -2,7 +2,7 @@ import { useRef } from "react";
 import styled from "./ExploreUsers.module.scss";
 import { collection, getDocs, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { cloneDeep } from "lodash";
 import { db } from "firebaseApp";
 import useGetFbInfo from "hooks/useGetFbInfo";
@@ -17,6 +17,7 @@ const ExploreUsers = () => {
   const { myInfo } = useGetFbInfo();
   const toggleFollow = useToggleFollow(myInfo);
   const t = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userInfo = async () => {
@@ -56,6 +57,11 @@ const ExploreUsers = () => {
     }
   };
 
+  const goPage = (e: any, userInfo: any) => {
+    e.stopPropagation();
+    navigate(`/profile/mytweets/${userInfo?.email}`);
+  };
+
   return (
     <>
       {loading ? (
@@ -64,9 +70,9 @@ const ExploreUsers = () => {
             <ul className={styled.follows}>
               {users?.map((userInfo: any) => (
                 <li key={userInfo?.uid} className={styled.follow__user}>
-                  <Link
+                  <div
                     className={styled.follow__userInfo}
-                    to={`/profile/mytweets/${userInfo?.email}`}
+                    onClick={(e) => goPage(e, userInfo)}
                   >
                     <img
                       src={userInfo?.photoURL}
@@ -80,7 +86,7 @@ const ExploreUsers = () => {
                         <p>: {userInfo?.description}</p>
                       )}
                     </div>
-                  </Link>
+                  </div>
                   <div ref={btnRef}>
                     {myInfo.following?.some(
                       (follow: any) => follow.email === userInfo?.email

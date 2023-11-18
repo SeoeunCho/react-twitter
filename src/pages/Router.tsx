@@ -2,7 +2,7 @@ import TopButton from "../components/buttons/TopButton";
 import LeftMenu from "pages/menu/LeftMenu";
 import HomePage from "pages/home";
 import ExplorePage from "pages/explore";
-import NotificationPage from "pages/notification";
+import NotificationPage from "pages/notifications";
 import BookmarkPage from "pages/bookmark";
 import DetailTweet from "components/detail/DetailTweet";
 import ProfilePage from "pages/profile";
@@ -32,7 +32,7 @@ export default function Router({ isAuthenticated, userObj }: RouterProps) {
           <LeftMenu userObj={userObj} />
           <div className="center__container">
             <Routes>
-              <Route path="/" element={<HomePage userObj={userObj} />} />
+              <Route path="/*" element={<HomePage userObj={userObj} />} />
               <Route
                 path="/explore/*"
                 element={<ExplorePage userObj={userObj} />}
@@ -57,8 +57,7 @@ export default function Router({ isAuthenticated, userObj }: RouterProps) {
                 path="/user/:type/:id"
                 element={<ProfilePage userObj={userObj} />}
               />
-
-              {/* <Route path="*" element={<Navigate replace to="/" />} /> */}
+              <Route path="*" element={<Navigate replace to="/" />} />
               {/* <Route path="*" element={<NotFound />} /> */}
             </Routes>
           </div>

@@ -39,10 +39,28 @@ export default function Profile({ userObj }: any) {
   const toggleFollow = useToggleFollow(myInfo);
   const [language, setLanguage] = useRecoilState(languageState);
   const t = useTranslation();
+  const navigate = useNavigate();
 
   const onClickLanguage = () => {
     setLanguage(language === "ko" ? "en" : "ko");
     localStorage.setItem("language", language === "ko" ? "en" : "ko");
+  };
+
+  const goPage = () => {
+    if (selected === 1) {
+      navigate(`/profile/mytweets/${userEmail}`);
+    } else if (selected === 2) {
+      navigate(`/profile/replies/${userEmail}`);
+    } else if (selected === 3) {
+      navigate(`/profile/retweets/${userEmail}`);
+      navigate(`/profile/retweetsreplies/${userEmail}`);
+    } else if (selected === 4) {
+      navigate(`/profile/liketweets/${userEmail}`);
+      navigate(`/profile/likereplies/${userEmail}`);
+    } else if (selected === 5) {
+      navigate(`/profile/bookmarktweets/${userEmail}`);
+      navigate(`/profile/bookmarkreplies/${userEmail}`);
+    }
   };
 
   useEffect(() => {
@@ -50,11 +68,11 @@ export default function Profile({ userObj }: any) {
       mytweets: 1,
       replies: 2,
       retweets: 3,
-      retweetsreplies: 31,
+      retweetsreplies: 3,
       liketweets: 4,
-      likereplies: 41,
+      likereplies: 4,
       bookmarktweets: 5,
-      bookmarkreplies: 51,
+      bookmarkreplies: 5,
     };
 
     const selectedValue = paths[pathname.split("/")[2]];
@@ -247,62 +265,42 @@ export default function Profile({ userObj }: any) {
                     </nav>
 
                     {selected === 1 && (
-                      <Link to={`/profile/mytweets/${userEmail}`}>
+                      <div onClick={goPage}>
                         <ProfileMyTweets
                           myTweets={myTweets}
                           userObj={userObj}
                         />
-                      </Link>
+                      </div>
                     )}
 
                     {selected === 2 && (
-                      <Link to={`/profile/replies/${userEmail}`}>
+                      <div onClick={goPage}>
                         <ProfileReplies
                           userObj={userObj}
                           creatorInfo={creatorInfo}
                         />
-                      </Link>
+                      </div>
                     )}
 
                     {selected === 3 && (
-                      <Link to={`/profile/retweets/${userEmail}`}>
+                      <div onClick={goPage}>
                         <ProfileReTweetBox
                           userObj={userObj}
                           creatorInfo={creatorInfo}
                         />
-                      </Link>
-                    )}
-
-                    {selected === 31 && (
-                      <Link to={`/profile/retweetsreplies/${userEmail}`}>
-                        <ProfileReTweetBox
-                          userObj={userObj}
-                          creatorInfo={creatorInfo}
-                        />
-                      </Link>
+                      </div>
                     )}
 
                     {selected === 4 && (
-                      <Link to={`/profile/liketweets/${userEmail}`}>
+                      <div onClick={goPage}>
                         <ProfileLikeBox userObj={userObj} />
-                      </Link>
-                    )}
-
-                    {selected === 41 && (
-                      <Link to={`/profile/likereplies/${userEmail}`}>
-                        <ProfileLikeBox userObj={userObj} />
-                      </Link>
+                      </div>
                     )}
 
                     {selected === 5 && (
-                      <Link to={`/profile/bookmarktweets/${userEmail}`}>
+                      <div onClick={goPage}>
                         <BookmarkPage userObj={userObj} />
-                      </Link>
-                    )}
-                    {selected === 51 && (
-                      <Link to={`/profile/bookmarkreplies/${userEmail}`}>
-                        <BookmarkPage userObj={userObj} />
-                      </Link>
+                      </div>
                     )}
                   </>
                 ) : (

@@ -23,7 +23,11 @@ export default function TweetModal({
           </div>
         </div>
         <div className={styled.editInput__container}>
-          <TweetForm userObj={userObj} tweetModal={tweetModal} setTweetModal={setTweetModal} />
+          <TweetForm
+            userObj={userObj}
+            tweetModal={tweetModal}
+            setTweetModal={setTweetModal}
+          />
         </div>
       </div>
     </Modal>

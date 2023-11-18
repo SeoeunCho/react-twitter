@@ -68,9 +68,9 @@ export default function EditProfileModal({
     setIsAddFile(true);
     const file = e.target.files[0]; // 파일 1개만 첨부
     const compressedImage = await compressImage(file); // 이미지 압축
-    const reader = new FileReader(); // 파일 이름 읽기
+    const fileReader = new FileReader(); // 파일 이름 읽기
 
-    reader.onloadend = (e: any) => {
+    fileReader.onloadend = (e: any) => {
       if (type === "profile") {
         setEditAttachment(e.currentTarget.result);
       } else {
@@ -81,7 +81,7 @@ export default function EditProfileModal({
     /* 파일 선택 누르고 이미지 한 개 선택 뒤 다시 파일선택 누르고 취소 누르면
           Failed to execute 'readAsDataURL' on 'FileReader': parameter 1 is not of type 'Blob'. 이런 오류가 나옴. -> if문으로 예외 처리 */
     if (file && compressedImage) {
-      reader.readAsDataURL(compressedImage);
+      fileReader.readAsDataURL(compressedImage);
     }
   };
 

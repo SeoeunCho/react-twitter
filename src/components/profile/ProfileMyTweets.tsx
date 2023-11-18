@@ -1,9 +1,11 @@
 import CircleLoader from "components/loader/CircleLoader";
 import useGetFbInfo from "hooks/useGetFbInfo";
 import TweetListPage from "components/tweets/TweetListPage";
+import useTranslation from "hooks/useTranslation";
 
 export default function ProfileMyTweets({ myTweets, userObj }: any) {
   const { reTweets } = useGetFbInfo();
+  const t = useTranslation();
 
   return (
     <>
@@ -24,8 +26,8 @@ export default function ProfileMyTweets({ myTweets, userObj }: any) {
           ) : (
             <div className="noInfoBox">
               <div className="noInfo">
-                <h2>아직 트윗이 없습니다</h2>
-                <p>지금 일어나는 일을 트윗에 담아보세요.</p>
+                <h2>{t("NO_BOOKMARK_TWEET")}</h2>
+                <p>{t("NO_MY_TWEET_LIST")}</p>
               </div>
             </div>
           )}

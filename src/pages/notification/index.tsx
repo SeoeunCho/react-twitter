@@ -1,6 +1,6 @@
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { db } from "firebaseApp";
 import Header from "components/header";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
@@ -22,6 +22,18 @@ export default function NotificationPage({ userObj }: any) {
   });
   const [replies, setReplies] = useState([]);
   const { myInfo, fbLoading } = useGetFbInfo();
+  const navigate = useNavigate();
+
+  const goPage = (e: any) => {
+    e.stopPropagation();
+    if (selected === 1) {
+      navigate("/notification/retweets");
+    } else if (selected === 2) {
+      navigate("/notification/replies");
+    } else if (selected === 3) {
+      navigate("/notification/followers");
+    }
+  };
 
   // 리트윗 가져오기
   useEffect(() => {
@@ -114,7 +126,7 @@ export default function NotificationPage({ userObj }: any) {
         </div>
 
         {selected === 1 && (
-          <Link to="/notification/retweets">
+          <div onClick={goPage}>
             {loading.reTweets ? (
               <>
                 {reTweets.length !== 0 ? (
@@ -138,11 +150,11 @@ export default function NotificationPage({ userObj }: any) {
             ) : (
               <CircleLoader />
             )}
-          </Link>
+          </div>
         )}
 
         {selected === 2 && (
-          <Link to="/notification/replies">
+          <div onClick={goPage}>
             {loading.replies ? (
               <>
                 {replies.length !== 0 ? (
@@ -166,11 +178,11 @@ export default function NotificationPage({ userObj }: any) {
             ) : (
               <CircleLoader />
             )}
-          </Link>
+          </div>
         )}
 
         {selected === 3 && (
-          <Link to="/notification/followers">
+          <div onClick={goPage}>
             {fbLoading.myInfo ? (
               <>
                 {myInfo && myInfo.follower.length !== 0 ? (
@@ -196,7 +208,7 @@ export default function NotificationPage({ userObj }: any) {
             ) : (
               <CircleLoader />
             )}
-          </Link>
+          </div>
         )}
       </div>
     </>

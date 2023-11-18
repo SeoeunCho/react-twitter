@@ -130,13 +130,13 @@
   align-items: center;
 }
 
-.userInfo .userInfo__name .userInfo__one a {
+.userInfo .userInfo__name .userInfo__one p {
   font-size: 14px;
   font-weight: bold;
   margin-right: 10px;
 }
 
-.userInfo .userInfo__name .userInfo__one a:hover {
+.userInfo .userInfo__name .userInfo__one p:hover {
   text-decoration: underline;
   text-underline-position: under;
 }
@@ -270,7 +270,7 @@
   position: absolute;
   width: 34px;
   height: 34px;
-  background-color: rgba(51, 114, 88, 0.1);
+  background-color: #1d9bf01a;
 }
 
 .tweet__editIcon svg {

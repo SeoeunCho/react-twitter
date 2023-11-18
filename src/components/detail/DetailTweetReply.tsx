@@ -2,7 +2,7 @@ import TweetBox from "components/tweets/TweetBox";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "firebaseApp";
 import { useTimeToString } from "hooks/useTimeToString";
-import useToggleRepliesRetweet from "hooks/useToggleRepliesRetweet";
+import { useToggleRepliesRetweet } from "hooks/useToggleRepliesRetweet";
 import { useEffect, useState } from "react";
 
 const DetailTweetReply = ({ tweetObj, userObj, reTweetsObj }: any) => {
@@ -20,11 +20,11 @@ const DetailTweetReply = ({ tweetObj, userObj, reTweetsObj }: any) => {
     return () => unsubscribe();
   }, [tweetObj]);
 
-  const { reTweet, setReTweet, toggleReTweet } = useToggleRepliesRetweet(
+  const { reTweet, setReTweet, toggleReTweet } = useToggleRepliesRetweet({
     reTweetsObj,
     tweetObj,
-    userObj
-  );
+    userObj,
+  });
 
   const { timeToString2 } = useTimeToString();
 

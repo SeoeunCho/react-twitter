@@ -7,6 +7,7 @@ import Picker from "emoji-picker-react";
 import useEmojiModalOutClick from "hooks/useEmojiModalOutClick";
 import { db } from "firebaseApp";
 import useTranslation from "hooks/useTranslation";
+import { toast } from "react-toastify";
 
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
@@ -46,7 +47,6 @@ export default function EditTweetModal({
   };
 
   const onSubmit = async (e: any) => {
-    alert("업데이트 되었습니다");
     e.preventDefault();
 
     if (tweetObj?.parent) {
@@ -56,6 +56,7 @@ export default function EditTweetModal({
         text: newTweet,
         attachmentUrl: tweetObj.attachmentUrl,
       });
+      toast.success(t("EDIT_REPLY_TOAST"));
     } else {
       // 원글 업뎃
       const tweetsRef = doc(db, "Tweets", tweetObj.id);
@@ -63,6 +64,7 @@ export default function EditTweetModal({
         text: newTweet,
         attachmentUrl: tweetObj.attachmentUrl,
       });
+      toast.success(t("EDIT_TWEET_TOAST"));
     }
 
     if (filterReTweetId) {

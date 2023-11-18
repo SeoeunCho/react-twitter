@@ -8,31 +8,30 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentUser } from "../reducer/user";
-import { TweetCompProps } from "components/tweets/TweetListPage";
 import { db } from "firebaseApp";
 
-export default function useToggleRepliesRetweet(
-  userObj: any,
-  tweetObj: any,
-  reTweetsObj: any
-) {
+export const useToggleRepliesRetweet = ({
+  reTweetsObj,
+  tweetObj,
+  userObj,
+}: any) => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state: any) => state.user.currentUser);
   const [reTweetsId, setReTweetsId] = useState<any>({});
   const [replyReTweetsId, setReplyReTweetsId] = useState<any>({});
-  const [reTweet, setReTweet] = useState(false);
+  const [reTweet, setReTweet] = useState<boolean>(false);
 
   // map 처리 된 리트윗 정보들 중 본인 ID와 같은 index 정보들만 필터링
   useEffect(() => {
     const filter = reTweetsObj.filter((obj: any) => obj.parent === tweetObj.id);
-    const index = filter.findIndex((obj: any) => obj?.email === userObj?.email);
+    const index = filter.findIndex((obj: any) => obj?.email === userObj.email);
     setReTweetsId(filter[index]);
 
     const index2 = reTweetsObj?.findIndex(
       (obj: any) => obj?.replyId && obj?.email === userObj.email
     );
     setReplyReTweetsId(reTweetsObj[index2]);
-  }, [tweetObj.id, reTweetsObj, userObj.email]);
+  }, [reTweetsObj, tweetObj.id, userObj.email]);
 
   const toggleReTweet = async () => {
     const copy = [...tweetObj.reTweet];
@@ -125,4 +124,4 @@ export default function useToggleRepliesRetweet(
   };
 
   return { reTweet, setReTweet, toggleReTweet };
-}
+};

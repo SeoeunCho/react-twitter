@@ -81,7 +81,7 @@ const TRANSLATIONS = {
     en: "Tweet your reply.",
   },
   REPLY_TO: {
-    ko: "이에게 보내는 답글",
+    ko: "에게 보내는 답글",
     en: "Replying to",
   },
 
@@ -169,13 +169,45 @@ const TRANSLATIONS = {
     ko: "지금 일어나는 일을 북마크에 담아보세요.",
     en: "Bookmark what's happening now.",
   },
-  NO_NOTIFICATION_FOLLOWING: {
-    ko: "누군가가 나를 팔로우를 하면 여기에 표시됩니다.",
-    en: "No Notifications",
+  NO_NOTIFICATION_RETWEET: {
+    ko: "누군가가 나의 트윗을 리트윗 하면 여기에 표시됩니다.",
+    en: "When someone retweets your tweet, it will appear here.",
   },
   NO_NOTIFICATION_REPLY: {
     ko: "누군가가 나의 트윗에 답글을 달면 여기에 표시됩니다.",
-    en: "No Notifications",
+    en: "When someone replies to your tweet, it will appear here.",
+  },
+  NO_NOTIFICATION_FOLLOW: {
+    ko: "누군가가 나를 팔로우 하면 여기에 표시됩니다.",
+    en: "When someone follows you, they'll show up here.",
+  },
+  NOTIFICATION_RETWEET: {
+    ko: "답글에 리트윗을 했습니다.",
+    en: " reply.",
+  },
+  NOTIFICATION_TWEET: {
+    ko: "글에 리트윗을 했습니다.",
+    en: " tweet.",
+  },
+  NOTIFICATION_REPLY: {
+    ko: "글에 답글을 했습니다.",
+    en: " tweet.",
+  },
+  NOTIFICATION_FOLLOW: {
+    ko: "회원님을 팔로우 했습니다.",
+    en: "followed you.",
+  },
+  NOTIFICATION_FROM_RETWEET: {
+    ko: "님이",
+    en: " retweeted",
+  },
+  NOTIFICATION_FROM_REPLY: {
+    ko: "님이",
+    en: "",
+  },
+  NOTIFICATION_FROM_FOLLOWING: {
+    ko: "님이",
+    en: "followed",
   },
   /* no tweet === end */
 
@@ -238,8 +270,56 @@ const TRANSLATIONS = {
     ko: "가입일",
     en: "Join Date",
   },
+  NO_MY_TWEET: {
+    ko: "아직 작성한 트윗이 없습니다.",
+    en: "No tweets have been written yet.",
+  },
+  NO_MY_TWEET_LIST: {
+    ko: "지금 일어나는 일을 트윗에 담아보세요.",
+    en: "Tweet what's happening.",
+  },
+  NO_MY_REPLY: {
+    ko: "아직 작성한 답글이 없습니다.",
+    en: "No replies have been written yet.",
+  },
+  NO_MY_REPLY_LIST: {
+    ko: "좋은 트윗과 소통하고 싶다면 답글을 달아보세요.",
+    en: "If you want to communicate with good tweets, please reply to them.",
+  },
+  NO_MY_RETWEET: {
+    ko: "아직 리트윗한 트윗이 없습니다.",
+    en: "No tweets have been retweeted yet.",
+  },
+  NO_MY_RETWEET_LIST: {
+    ko: "좋은 트윗을 알리고 싶다면 리트윗을 눌러 표시를 해보세요.",
+    en: "If you want to communicate with good tweets, please reply to them.",
+  },
+  NO_MY_RETWEET_REPLY: {
+    ko: "아직 리트윗한 답글이 없습니다.",
+    en: "No replies have been retweeted yet.",
+  },
+  NO_LIKE_REPLY: {
+    ko: "아직 마음에 들어한 답글이 없습니다.",
+    en: "No replies have liked it yet.",
+  },
+  NO_LIKE_REPLY_LIST: {
+    ko: "좋아하는 답글에 하트를 눌러 표시 해보세요. 마음에 들어한 답글은 여기에 표시됩니다.",
+    en: "Click the heart on your favorite reply to mark it. Replies you like will appear here.",
+  },
+  NO_LIKE_TWEET: {
+    ko: "아직 마음에 들어한 트윗이 없습니다.",
+    en: "No tweets have liked it yet.",
+  },
+  NO_LIKE_TWEET_LIST: {
+    ko: "좋아하는 트윗에 하트를 눌러 표시 해보세요. 마음에 들어한 트윗은 여기에 표시됩니다.",
+    en: "Click the heart on your favorite tweet to mark it. Tweets you like will appear here.",
+  },
 
   // signin, signup
+  AUTH_OR: {
+    ko: "또는",
+    en: "OR",
+  },
   AUTH_TEXT: {
     ko: "지금 일어나고 있는 일",
     en: "Happening now",
@@ -330,21 +410,13 @@ const TRANSLATIONS = {
     ko: "답글을 생성했습니다.",
     en: "Reply completed.",
   },
-  CHECK_DELETE_REPLY_TOAST: {
-    ko: "정말로 이 답글을 삭제하시겠습니까?",
-    en: "Are you sure deleting this reply?",
+  CHECK_DELETE_TOAST: {
+    ko: "정말로 삭제하시겠습니까?",
+    en: "Do you really want to delete it?",
   },
-  DELETE_REPLY_TOAST: {
-    ko: "답글을 삭제했습니다.",
-    en: "Reply deleted.",
-  },
-  DELETE_TWEET_TOAST: {
-    ko: "트윗을 삭제했습니다.",
-    en: "The tweet has been deleted.",
-  },
-  CHECK_DELETE_TWEET_TOAST: {
-    ko: "정말로 이 트윗을 삭제하시겠습니까?",
-    en: "Are you sure deleting this tweet?",
+  DELETE_TOAST: {
+    ko: "삭제되었습니다.",
+    en: "It has been deleted.",
   },
   ADD_TWEET_TOAST: {
     ko: "트윗이 등록되었습니다.",
@@ -353,6 +425,10 @@ const TRANSLATIONS = {
   EDIT_TWEET_TOAST: {
     ko: "트윗이 수정되었습니다.",
     en: "The tweet has been edited.",
+  },
+  EDIT_REPLY_TOAST: {
+    ko: "답글이 수정되었습니다.",
+    en: "The reply has been edited.",
   },
   SAME_TAG_TOAST: {
     ko: "같은 태그가 있습니다.",

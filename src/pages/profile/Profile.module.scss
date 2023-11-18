@@ -103,7 +103,11 @@
   border: 1.5px solid var(--primary);
 }
 
-.container .main__container .profile .profile__edit .profile__languageBtn:hover {
+.container
+  .main__container
+  .profile
+  .profile__edit
+  .profile__languageBtn:hover {
   background: var(--grayPale);
   color: var(--primary);
 }
@@ -115,8 +119,8 @@
   .profile__edit
   .profile__editBtn.profile__followBtn {
   color: white;
-  background-color: #213025;
-  border: 1.5px solid #213025;
+  background-color: var(--followPrimary);
+  border: 1.5px solid var(--followPrimary);
 }
 
 .container
@@ -124,7 +128,7 @@
   .profile
   .profile__edit
   .profile__editBtn.profile__followBtn:hover {
-  background-color: #414d45;
+  background-color: var(--followSecondary);
 }
 
 /* 팔로잉 버튼 */
@@ -134,7 +138,7 @@
   .profile__edit
   .profile__editBtn.profile__followBtn.follow {
   background-color: white;
-  color: #213025;
+  color: var(--followSecondary);
   border: 1.5px solid var(--secondary);
 }
 
@@ -167,7 +171,7 @@
 
 .container .main__container .profile .profile__info .userInfo p:last-child {
   font-size: 14px;
-  color: #53716a;
+  color: var(--darkBlue);
 }
 
 /* 자기소개 */
@@ -178,7 +182,7 @@
 }
 
 .container .main__container .profile .profile__info .profile__desc .notDesc {
-  color: #53716a;
+  color: var(--darkBlue);
   opacity: 0.7;
 }
 
@@ -186,7 +190,7 @@
 .container .main__container .profile .profile__info .profile__createdAt {
   display: flex;
   align-items: center;
-  color: #53716a;
+  color: var(--darkBlue);
   margin-bottom: 16px;
 }
 

@@ -7,7 +7,7 @@ import {
   query,
 } from "firebase/firestore";
 import Loader from "components/loader/Loader";
-import TweetBox from "components/tweets/TweetBox";
+// import TweetBox from "components/tweets/TweetBox";
 import { TweetProps } from "pages/home";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -76,13 +76,13 @@ export default function TweetDetail() {
       <Header menu={"detail"} text={"TAB_USER"} />
       {tweet ? (
         <>
-          <TweetBox
+          {/* <TweetBox
             tweet={tweet}
             reply={findReplies}
             detailId={tweet?.id}
             tweetType={"tweet"}
             detailTweet={true}
-          />
+          /> */}
           <ReplyForm tweet={tweet} replyModal={false} setReplyModal={false} />
 
           <ReplyBox

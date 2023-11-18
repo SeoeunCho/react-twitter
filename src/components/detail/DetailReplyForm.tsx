@@ -152,10 +152,10 @@ export default function DetailReplyForm({
     navigate("/profile/mytweets/" + tweetObj.email);
   };
 
-  const onEmojiClick = (event: any, emojiObject: any) => {
+  const onEmojiClick = (event: any) => {
     const textEmoji =
       reply.slice(0, textRef.current.selectionStart) +
-      emojiObject.emoji +
+      event.emoji +
       reply.slice(textRef.current.selectionEnd, reply.length);
     setReply(textEmoji);
   };

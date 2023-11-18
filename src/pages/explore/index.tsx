@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import SearchBar from "components/searchBar/SearchBar";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
 import ExploreTweets from "components/explore/ExploreTweets";
@@ -9,6 +15,15 @@ import { Link } from "react-router-dom";
 export default function ExplorePage({ userObj }: any) {
   const location = useLocation();
   const [selected, setSelected] = useState<number>(1);
+  const navigate = useNavigate();
+
+  const goTweet = () => {
+    if (selected === 1) {
+      navigate("/explore/tweets");
+    } else {
+      navigate("/explore/users");
+    }
+  };
 
   useEffect(() => {
     if (location.pathname.includes("/tweets")) {
@@ -26,7 +41,7 @@ export default function ExplorePage({ userObj }: any) {
           style={{ borderBottom: "1px solid var(--grayLight)" }}
         >
           <div className="main__category">
-            <SearchBar userObj={userObj} />
+            <SearchBar />
           </div>
           <nav className="categoryList">
             <TabMenuBtn
@@ -45,13 +60,13 @@ export default function ExplorePage({ userObj }: any) {
         </div>
 
         {selected === 1 ? (
-          <Link to="/explore/tweets">
+          <div onClick={goTweet}>
             <ExploreTweets userObj={userObj} />
-          </Link>
+          </div>
         ) : (
-          <Link to={"/explore/users"}>
+          <div onClick={goTweet}>
             <ExploreUsers />
-          </Link>
+          </div>
         )}
       </div>
     </>

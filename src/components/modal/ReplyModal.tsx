@@ -1,7 +1,8 @@
 import styled from "./TweetModal.module.scss";
 import Modal from "@mui/material/Modal";
+import ReplyForm from "components/reply/ReplyForm";
 import { GrClose } from "react-icons/gr";
-import ReplyForm, { ReplyPropsBox } from "components/reply/ReplyForm";
+
 
 export default function ReplyModal({
   userObj,
