@@ -13,8 +13,9 @@ const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
 export default function RecommendUser() {
   const [creatorInfo, setCreatorInfo] = useState<any>([]);
-  const [refresh, setRefresh] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  
   const { myInfo } = useGetFbInfo();
   const toggleFollow = useToggleFollow(myInfo);
   const t = useTranslation();

@@ -4,11 +4,13 @@ import { db } from "firebaseApp";
 import useGetFbInfo from "hooks/useGetFbInfo";
 import CircleLoader from "components/loader/CircleLoader";
 import TweetListPage from "components/tweets/TweetListPage";
+import useTranslation from "hooks/useTranslation";
 
 export default function ProfileLikeReplies({ userObj }: any) {
   const [myLikeReplies, setMyLikeReplies] = useState<any>([] || null);
   const [loading, setLoading] = useState<boolean>(false);
   const { reTweets } = useGetFbInfo();
+  const t = useTranslation();
 
   // 답글의 좋아요 정보 가져오기
   useEffect(() => {
@@ -61,11 +63,8 @@ export default function ProfileLikeReplies({ userObj }: any) {
           ) : (
             <div className="noInfoBox">
               <div className="noInfo">
-                <h2>아직 마음에 들어한 답글이 없습니다</h2>
-                <p>
-                  좋아하는 답글의 하트를 눌러 표시 해보세요. 마음에 들어한
-                  답글은 여기에 표시됩니다.
-                </p>
+                <h2>{t("NO_LIKE_REPLY")}</h2>
+                <p>{t("NO_LIKE_REPLY_LIST")}</p>
               </div>
             </div>
           )}

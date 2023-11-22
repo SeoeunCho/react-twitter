@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-
 import { RiArrowUpSLine } from "react-icons/ri";
-import styled from "./TopButton.module.scss";
 import { throttle } from "lodash";
 import { useLocation } from "react-router-dom";
+import styled from "./TopButton.module.scss";
 
 export default function TopButton() {
-  const [scrollY, setScrollY] = useState(0);
-  const [topBtnStatus, setTopBtnStatus] = useState(false); // 버튼 상태
+  const [scrollY, setScrollY] = useState<number>(0);
+  const [topBtnStatus, setTopBtnStatus] = useState<boolean>(false); // 버튼 상태
   const navigate = useLocation();
 
   const handleFollow = throttle(() => {

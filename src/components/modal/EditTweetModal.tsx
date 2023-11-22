@@ -31,16 +31,16 @@ export default function EditTweetModal({
   setIsEditing,
   isEditing,
 }: any) {
-  const editRef = useRef<any>();
-  const emojiRef = useRef<any>();
+  const editRef = useRef<HTMLTextAreaElement>(null);
+  const emojiRef = useRef<HTMLDivElement>(null);
+  const fileInput = useRef<HTMLInputElement>(null);
   const [filterReTweetId, setFilterReTweetId] = useState<any>({});
   const [attachment, setAttachment] = useState<string>(tweetAttachment);
-  const [select, setSelect] = useState("");
+  const [select, setSelect] = useState<string>("");
   const [hashTag, setHashTag] = useState<string>("");
   const [tags, setTags] = useState<string[]>(tweetObj?.hashTags);
-  const fileInput = useRef<any>();
-  const t = useTranslation();
 
+  const t = useTranslation();
   const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({ emojiRef });
 
   // 수정된 글 firebase에 업데이트
@@ -133,7 +133,7 @@ export default function EditTweetModal({
 
   const handleDeleteImage = () => {
     setAttachment("");
-    fileInput.current.value = ""; // 취소 시 파일 문구 없애기
+    if (fileInput.current) fileInput.current.value = ""; // 취소 시 파일 문구 없애기
   };
 
   // 이미지 압축
@@ -192,9 +192,9 @@ export default function EditTweetModal({
 
   const onEmojiClick = (event: any) => {
     const textEmoji =
-      newTweet.slice(0, editRef.current.selectionStart) +
+      newTweet.slice(0, editRef?.current?.selectionStart) +
       event.emoji +
-      newTweet.slice(editRef.current.selectionEnd, newTweet.length);
+      newTweet.slice(editRef?.current?.selectionEnd, newTweet.length);
     setNewTweet(textEmoji);
   };
 
@@ -274,65 +274,65 @@ export default function EditTweetModal({
               </div>
 
               <div className={styled.editInput__add}>
-                  <div className={styled.editInput__iconBox}>
-                    <label
-                      htmlFor="modal-attach-file"
-                      className={styled.editInput__label}
+                <div className={styled.editInput__iconBox}>
+                  <label
+                    htmlFor="modal-attach-file"
+                    className={styled.editInput__label}
+                  >
+                    <div className={styled.editInput__icon}>
+                      <IoImageOutline />
+                    </div>
+                  </label>
+                  <input
+                    ref={fileInput}
+                    id="modal-attach-file"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileUpload}
+                  />
+                </div>
+                <div
+                  ref={emojiRef}
+                  onClick={toggleEmoji}
+                  className={styled.editInput__iconBox}
+                >
+                  <div
+                    className={`${styled.editInput__icon} ${styled.emoji__icon}`}
+                  >
+                    <GrEmoji />
+                  </div>
+                  {clickEmoji && (
+                    <div
+                      className={`${styled.emoji} 
+                    ${clickEmoji ? styled.emoji__block : styled.emoji__hidden}
+                  `}
                     >
-                      <div className={styled.editInput__icon}>
-                        <IoImageOutline />
-                      </div>
-                    </label>
-                    <input
-                      ref={fileInput}
-                      id="modal-attach-file"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileUpload}
+                      <Picker onEmojiClick={onEmojiClick} />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* 이미지 컨텐츠 */}
+              {attachment && (
+                <div className={styled.editForm__attachment}>
+                  <div className={styled.editForm__image}>
+                    <img
+                      src={attachment}
+                      alt="upload file"
+                      style={{
+                        backgroundImage: attachment,
+                      }}
                     />
                   </div>
                   <div
-                    ref={emojiRef}
-                    onClick={toggleEmoji}
-                    className={styled.editInput__iconBox}
+                    className={styled.editForm__clear}
+                    onClick={handleDeleteImage}
                   >
-                    <div
-                      className={`${styled.editInput__icon} ${styled.emoji__icon}`}
-                    >
-                      <GrEmoji />
-                    </div>
-                    {clickEmoji && (
-                      <div
-                        className={`${styled.emoji} 
-                    ${clickEmoji ? styled.emoji__block : styled.emoji__hidden}
-                  `}
-                      >
-                        <Picker onEmojiClick={onEmojiClick} />
-                      </div>
-                    )}
+                    <IoCloseSharp />
                   </div>
                 </div>
-
-                {/* 이미지 컨텐츠 */}
-                {attachment && (
-                  <div className={styled.editForm__attachment}>
-                    <div className={styled.editForm__image}>
-                      <img
-                        src={attachment}
-                        alt="upload file"
-                        style={{
-                          backgroundImage: attachment,
-                        }}
-                      />
-                    </div>
-                    <div
-                      className={styled.editForm__clear}
-                      onClick={handleDeleteImage}
-                    >
-                      <IoCloseSharp />
-                    </div>
-                  </div>
-                )}
+              )}
             </div>
           </div>
         </form>

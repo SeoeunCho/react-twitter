@@ -21,7 +21,7 @@ export default function useGetFbInfo() {
   // 본인 정보 가져오기
   useEffect(() => {
     if (currentUser?.email) {
-      onSnapshot(doc(db, "Users", `${currentUser.email}`), (doc: any) => {
+      onSnapshot(doc(db, "Users", `${currentUser.email}`), (doc) => {
         setMyInfo(doc.data());
         setFbLoading((prev) => ({ ...prev, myInfo: true }));
       });

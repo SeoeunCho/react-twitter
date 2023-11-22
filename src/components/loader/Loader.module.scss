@@ -27,3 +27,17 @@
     height: calc(100vh - 54px);
   }
 }
+
+.render__loading {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .render__logo {
+    color: var(--tertiary);
+    font-size: 80px;
+  }
+}

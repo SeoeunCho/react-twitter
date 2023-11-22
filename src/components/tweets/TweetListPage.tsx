@@ -26,8 +26,8 @@ export default function TweetListPage({
   tweetObj,
   reTweetsObj,
 }: any) {
-  const [creatorInfo, setCreatorInfo] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [creatorInfo, setCreatorInfo] = useState<any>({});
+  const [loading, setLoading] = useState<boolean>(false);
   const { reTweet, setReTweet, toggleReTweet } = useToggleRepliesRetweet({
     userObj,
     tweetObj,

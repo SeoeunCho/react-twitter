@@ -7,10 +7,10 @@ import {
 } from "firebase/auth";
 import { auth, db } from "firebaseApp";
 import { toast } from "react-toastify";
-import useTranslation from "hooks/useTranslation";
-import styled from "./AuthForm.module.scss";
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { setCurrentUser, setLoginToken } from "reducer/user";
+import styled from "./AuthForm.module.scss";
+import useTranslation from "hooks/useTranslation";
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 const PROFILE_BG_URL = "/bgimg.jpg";
 
@@ -246,7 +246,7 @@ export default function AuthForm({ newAccount }: AuthProps) {
       {newAccount ? (
         <>
           <div className={styled.separator}>
-            <p>또는</p>
+            <p>{t("AUTH_OR")}</p>
           </div>
         </>
       ) : (

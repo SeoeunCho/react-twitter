@@ -2,17 +2,19 @@ import { collection, doc, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { db } from "firebaseApp";
+import { UserObjProps } from "../Router";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
 import CircleLoader from "components/loader/CircleLoader";
 import Header from "components/header";
 import BookmarkTweets from "components/bookmark/BookmarkTweets";
 import BookmarkReplies from "components/bookmark/BookmarkReplies";
+import { ReTweetProps } from "pages/home";
 
-export default function BookmarkPage({ userObj }: any) {
+export default function BookmarkPage({ userObj }: UserObjProps) {
   const location = useLocation();
   const uid = location.pathname.split("/")[3];
   const [creatorInfo, setCreatorInfo] = useState<any>([]);
-  const [reTweets, setReTweets] = useState<any>([]);
+  const [reTweets, setReTweets] = useState<ReTweetProps[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selected, setSelected] = useState<number>(1);
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ export default function BookmarkPage({ userObj }: any) {
   const goPage = (e: any) => {
     e.stopPropagation();
 
-    if (location.pathname.includes(userObj.email)) {
+    if (userObj?.email && location.pathname.includes(userObj.email)) {
       if (selected === 1) {
         navigate(`/profile/bookmarktweets/${userObj.email}`);
       } else if (selected === 2) {
@@ -51,7 +53,7 @@ export default function BookmarkPage({ userObj }: any) {
         setLoading(true);
       });
     }
-  }, [userObj.email]);
+  }, [creatorInfo, userObj?.email]);
 
   // 리트윗 정보
   useEffect(() => {
@@ -63,14 +65,14 @@ export default function BookmarkPage({ userObj }: any) {
         ...doc.data(),
       }));
 
-      setReTweets(reTweetArray);
+      setReTweets(reTweetArray as ReTweetProps[]);
     });
   }, []);
 
   return (
     <>
       <div>
-        {uid !== userObj.email && (
+        {uid !== userObj?.email && (
           <Header text={"MENU_BOOKMARK"} creatorInfo={creatorInfo} />
         )}
         <div className="main__container">
@@ -79,7 +81,7 @@ export default function BookmarkPage({ userObj }: any) {
               num={1}
               selected={selected}
               url={
-                location.pathname.includes(userObj.email)
+                userObj?.email && location.pathname.includes(userObj.email)
                   ? `/profile/bookmarktweets/${userObj.email}`
                   : "/bookmark/tweets"
               }
@@ -89,7 +91,7 @@ export default function BookmarkPage({ userObj }: any) {
               num={2}
               selected={selected}
               url={
-                location.pathname.includes(userObj.email)
+                userObj?.email && location.pathname.includes(userObj.email)
                   ? `/profile/bookmarkreplies/${userObj.email}`
                   : "/bookmark/replies"
               }

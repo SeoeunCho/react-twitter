@@ -100,10 +100,6 @@ const TRANSLATIONS = {
     ko: "해시태그 + 스페이스바 입력",
     en: "Enter Hashtags with Spacebar",
   },
-  TWEET_CHANGE_IMAGE: {
-    ko: "이미지 변경",
-    en: "Change Image",
-  },
 
   // retweet
   RETWEET_TEXT: {
@@ -146,10 +142,6 @@ const TRANSLATIONS = {
   EXPLORE_HASHTAGS: {
     ko: "해시태그 탐색",
     en: "Explore Hashtags",
-  },
-  NO_EXPLORE_LIST: {
-    ko: "타임라인이 비어있습니다. 지금 트윗해보세요.",
-    en: "No Posts Yet",
   },
   RECOMMEND_FOLLOW: {
     ko: "팔로우 추천",
@@ -204,10 +196,6 @@ const TRANSLATIONS = {
   NOTIFICATION_FROM_REPLY: {
     ko: "님이",
     en: "",
-  },
-  NOTIFICATION_FROM_FOLLOWING: {
-    ko: "님이",
-    en: "followed",
   },
   /* no tweet === end */
 
@@ -331,18 +319,6 @@ const TRANSLATIONS = {
   AUTH_SIGNUP_TEXT: {
     ko: "지금 가입하세요.",
     en: "Join today.",
-  },
-  FORM_EMAIL: {
-    ko: "이메일",
-    en: "Email",
-  },
-  FORM_PASSWORD: {
-    ko: "비밀번호",
-    en: "Password",
-  },
-  FORM_PASSWORD_CHECK: {
-    ko: "비밀번호 확인",
-    en: "Confirm Password",
   },
   NO_ACCOUNT: {
     ko: "계정이 없으신가요?",

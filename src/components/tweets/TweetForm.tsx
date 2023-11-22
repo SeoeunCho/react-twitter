@@ -21,14 +21,14 @@ const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
 export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
   const [tweet, setTweet] = useState<string>("");
-  const [attachment, setAttachment] = useState("");
+  const [attachment, setAttachment] = useState<string>("");
   const [hashTag, setHashTag] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [progressBarCount, setProgressBarCount] = useState<number>(0);
   const [select, setSelect] = useState<string>("");
-  const fileInput = useRef<any>();
-  const textRef = useRef<any>();
-  const emojiRef = useRef<any>();
+  const fileInput = useRef<HTMLInputElement>(null);
+  const textRef = useRef<HTMLTextAreaElement>(null);
+  const emojiRef = useRef<HTMLDivElement>(null);
   const { myInfo } = useGetFbInfo();
 
   // 이모지 모달 밖 클릭 시 창 끔
@@ -155,7 +155,7 @@ export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
 
   const handleDeleteImage = () => {
     setAttachment("");
-    fileInput.current.value = ""; // 취소 시 파일 문구 없애기
+    if (fileInput.current) fileInput.current.value = ""; // 취소 시 파일 문구 없애기
   };
 
   const removeTag = (tag: string) => {

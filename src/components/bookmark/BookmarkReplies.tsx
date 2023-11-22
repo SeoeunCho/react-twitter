@@ -1,16 +1,18 @@
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "firebaseApp";
-import useTranslation from "hooks/useTranslation";
 import TweetListPage from "components/tweets/TweetListPage";
+import useTranslation from "hooks/useTranslation";
+import { BookmarkProps } from "./BookmarkTweets";
+import { RepliesProps } from "pages/home";
 
 export default function BookmarkReplies({
   creatorInfo,
   reTweetsObj,
   userObj,
-}: any) {
-  const [repliesBookmark, setRepliesBookmark] = useState<any>([]);
-  const [loading, setLoading] = useState(false);
+}: BookmarkProps) {
+  const [repliesBookmark, setRepliesBookmark] = useState<RepliesProps[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const t = useTranslation();
 
   // 답글 정보 가져오기
@@ -24,7 +26,7 @@ export default function BookmarkReplies({
       const filter = userArray.filter((id) =>
         creatorInfo.bookmark?.includes(id.id)
       );
-      setRepliesBookmark(filter);
+      setRepliesBookmark(filter as RepliesProps[]);
       setLoading(true);
     });
   }, [creatorInfo.bookmark]);

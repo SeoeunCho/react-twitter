@@ -10,8 +10,8 @@ export default function NotificationInnerContents({
   text,
   tweets,
 }: any) {
-  const imgRef = useRef<any>();
-  const nameRef = useRef<any>();
+  const imgRef = useRef<HTMLDivElement>(null);
+  const nameRef = useRef<HTMLSpanElement>(null);
   const location = useLocation();
   const [followTime, setFollowTime] = useState<any>([]);
   const t = useTranslation();

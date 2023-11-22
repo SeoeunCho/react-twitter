@@ -1,20 +1,15 @@
 import { useEffect, useState } from "react";
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SearchBar from "components/searchBar/SearchBar";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
 import ExploreTweets from "components/explore/ExploreTweets";
 import ExploreUsers from "components/explore/ExploreUsers";
-import { Link } from "react-router-dom";
+import { UserObjProps } from "pages/Router";
 
-export default function ExplorePage({ userObj }: any) {
-  const location = useLocation();
+export default function ExplorePage({ userObj }: UserObjProps) {
   const [selected, setSelected] = useState<number>(1);
+  
+  const location = useLocation();
   const navigate = useNavigate();
 
   const goTweet = () => {

@@ -1,17 +1,17 @@
 import { useRef } from "react";
-import styled from "./ExploreUsers.module.scss";
 import { collection, getDocs, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { cloneDeep } from "lodash";
 import { db } from "firebaseApp";
-import useGetFbInfo from "hooks/useGetFbInfo";
 import { useToggleFollow } from "hooks/useToggleFollow";
+import useGetFbInfo from "hooks/useGetFbInfo";
 import CircleLoader from "components/loader/CircleLoader";
 import useTranslation from "hooks/useTranslation";
+import styled from "./ExploreUsers.module.scss";
 
 const ExploreUsers = () => {
-  const btnRef = useRef<any>();
+  const btnRef = useRef<HTMLDivElement>(null);
   const [users, setUsers] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { myInfo } = useGetFbInfo();
@@ -112,7 +112,7 @@ const ExploreUsers = () => {
           )}
         </div>
       ) : (
-        <CircleLoader />
+        <CircleLoader height={60} />
       )}
     </>
   );

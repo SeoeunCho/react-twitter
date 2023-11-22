@@ -3,11 +3,12 @@ import SearchBar from "components/searchBar/SearchBar";
 import styled from "./RightMenu.module.scss";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { UserObjProps } from "pages/Router";
 
-export default function RightMenu({ userObj }: any) {
+export default function RightMenu({ userObj }: UserObjProps) {
+  const [hiddenSearch, setHiddenSearch] = useState<boolean>(false);
   const location = useLocation();
-  const [hiddenSearch, setHiddenSearch] = useState(false);
-
+  
   useEffect(() => {
     if (location.pathname.includes("explore")) {
       setHiddenSearch(true);

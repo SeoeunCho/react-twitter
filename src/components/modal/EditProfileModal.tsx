@@ -25,7 +25,7 @@ export default function EditProfileModal({
 }: any) {
   const currentUser = useSelector((state: any) => state.user.currentUser);
   const dispatch = useDispatch();
-  const inputRef = useRef<any>();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [newDisplayName, setNewDisplayName] = useState<any>(
     creatorInfo.displayName
   );
@@ -38,7 +38,7 @@ export default function EditProfileModal({
   );
   const [isDeleteProfileURL, setIsDeleteProfileURL] = useState<boolean>(false);
   const [isDeleteBgURL, setIsDeleteBgURL] = useState<boolean>(false);
-  const [isAddFile, setIsAddFile] = useState<any>(null);
+  const [isAddFile, setIsAddFile] = useState<boolean | null>(null);
   const [select, setSelect] = useState<string>("");
   const t = useTranslation();
 
@@ -88,8 +88,8 @@ export default function EditProfileModal({
   const onDeleteClick = async (type: any) => {
     const profileType = type === "profile";
     const confirmMessage = profileType
-      ? "프로필 사진을 삭제하시겠어요?"
-      : "배경사진을 삭제하시겠어요?";
+      ? t("CHECK_DELETE_PROFILE_IMG_TOAST")
+      : t("CHECK_DELETE_BG_IMG_TOAST");
     const setDeleteType = profileType
       ? setIsDeleteProfileURL
       : setIsDeleteBgURL;

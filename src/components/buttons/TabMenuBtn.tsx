@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "./TabMenuBtn.module.scss";
 import useTranslation from "hooks/useTranslation";
 
 export default function TabMenuBtn({ url, text, selected, num }: any) {
-  const [size, setSize] = useState(null);
+  const [size, setSize] = useState<boolean | null>(null);
   const t = useTranslation();
   const navigate = useNavigate();
 

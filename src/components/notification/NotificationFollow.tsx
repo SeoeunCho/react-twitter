@@ -9,7 +9,7 @@ import useTranslation from "hooks/useTranslation";
 
 export default function NotificationFollow({ followObj }: any) {
   const [creatorInfo, setCreatorInfo] = useState<any>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const { myInfo } = useGetFbInfo(); // 내 정보 가져오기
   const t = useTranslation();
 

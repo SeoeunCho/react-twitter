@@ -4,11 +4,14 @@ import { db } from "firebaseApp";
 import useGetFbInfo from "hooks/useGetFbInfo";
 import TweetListPage from "components/tweets/TweetListPage";
 import { useEffect, useState } from "react";
+import useTranslation from "hooks/useTranslation";
 
 export default function ProfileReTweets({ userObj }: any) {
   const [ogTweets, setOgTweets] = useState<any>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  
   const { reTweets } = useGetFbInfo();
+  const t = useTranslation();
 
   // 원글의 리트윗 정보 가져오기
   useEffect(() => {
@@ -52,8 +55,8 @@ export default function ProfileReTweets({ userObj }: any) {
           ) : (
             <div className="noInfoBox">
               <div className="noInfo">
-                <h2>아직 리트윗한 트윗이 없습니다</h2>
-                <p>좋은 트윗을 알리고 싶다면 리트윗을 눌러 표시를 해보세요.</p>
+                <h2>{t("NO_MY_RETWEET")}</h2>
+                <p>{t("NO_MY_RETWEET_LIST")}</p>
               </div>
             </div>
           )}

@@ -2,11 +2,11 @@ import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { setCurrentUser, setLoginToken } from "reducer/user";
-import styled from "../../pages/auth/Auth.module.scss";
 import { AiFillGithub } from "react-icons/ai";
 import { AuthProps } from "components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "firebaseApp";
+import styled from "../../pages/auth/Auth.module.scss";
 import useTranslation from "hooks/useTranslation";
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 const PROFILE_BG_URL = "/bgimg.jpg";
@@ -21,6 +21,7 @@ export const GithubBtn = ({ newAccount }: AuthProps) => {
     let user: any;
 
     provider = new GithubAuthProvider();
+    
     try {
       await signInWithPopup(auth, provider as GithubAuthProvider).then(
         async (result) => {

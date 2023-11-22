@@ -4,11 +4,14 @@ import { db } from "firebaseApp";
 import useGetFbInfo from "hooks/useGetFbInfo";
 import TweetListPage from "components/tweets/TweetListPage";
 import { useEffect, useState } from "react";
+import useTranslation from "hooks/useTranslation";
 
 export default function ProfileReplies({ userObj, creatorInfo }: any) {
   const [filterReplies, setFilterReplies] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  
   const { reTweets } = useGetFbInfo();
+  const t = useTranslation();
 
   // 답글 가져오기
   useEffect(() => {
@@ -53,8 +56,8 @@ export default function ProfileReplies({ userObj, creatorInfo }: any) {
           ) : (
             <div className="noInfoBox">
               <div className="noInfo">
-                <h2>아직 답글이 없습니다</h2>
-                <p>좋은 트윗과 소통하고 싶다면 답글을 달아보세요.</p>
+                <h2>{t("NO_MY_REPLY")}</h2>
+                <p>{t("NO_MY_REPLY_LIST")}</p>
               </div>
             </div>
           )}

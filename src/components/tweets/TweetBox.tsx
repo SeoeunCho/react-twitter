@@ -7,7 +7,7 @@ import {
   FaBookmark,
   FaRegBookmark,
 } from "react-icons/fa";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FiRepeat, FiMoreHorizontal } from "react-icons/fi";
 import TweetEditDeleteBtn from "components/buttons/TweetEditDeleteBtn";
 import ReplyModal from "components/modal/ReplyModal";
@@ -22,6 +22,7 @@ import { useToggleBookmark } from "hooks/useToggleBookmark";
 import useToggleLike from "hooks/useToggleLike";
 import useTranslation from "hooks/useTranslation";
 import useHandleOutsideClick from "hooks/useHandleOutsideClick";
+import { UserObjProps } from "pages/Router";
 
 // import { UserProps } from "Router";
 
@@ -29,7 +30,7 @@ const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
 interface TweetBoxProps {
   loading: boolean;
-  // userObj: UserProps;
+  userObj: UserObjProps;
   tweetObj: TweetProps;
   creatorInfo: any;
   reTweetsObj: any;
@@ -64,7 +65,7 @@ export default function TweetBox({
 
   const navigate = useNavigate();
   // const imageRef = ref(storage, tweet?.imageUrl);
-  const editRef = useRef<any>();
+  const editRef = useRef<HTMLDivElement>(null);
   const t = useTranslation();
 
   // 커스텀 훅
@@ -80,7 +81,7 @@ export default function TweetBox({
 
   /** 수정삭제 버튼 토글 */
   const toggleEditDelBtn = (e: any) => {
-    e.stopPropagation()
+    e.stopPropagation();
     setTweetEditDelBtn((prev) => !prev);
   };
 
@@ -109,6 +110,11 @@ export default function TweetBox({
   const goProfile = (e: any) => {
     e.stopPropagation();
     navigate(`/profile/mytweets/${tweetObj.email}`);
+  };
+
+  const goParentProfile = (e: any) => {
+    e.stopPropagation();
+    navigate(`/profile/mytweets/${tweetObj.parentEmail}`);
   };
 
   useEffect(() => {
@@ -222,9 +228,9 @@ export default function TweetBox({
           {/* 컨텐츠 */}
           {tweetObj.parent && (
             <div className={`${styled.tweet__reply} ${styled.select}`}>
-              <Link
+              <div
                 className={styled.tweet__replyText}
-                to={`/profile/mytweets/${tweetObj.parentEmail}`}
+                onClick={goParentProfile}
               >
                 {language[0] === "en" && (
                   <>
@@ -239,22 +245,17 @@ export default function TweetBox({
                     <p>&nbsp;{t("REPLY_TO")}</p>
                   </>
                 )}
-              </Link>
+              </div>
             </div>
           )}
 
           <div className={styled.tweet__hashtags}>
             <h4>{tweetObj.text}</h4>
             {tweetObj?.hashTags?.length !== 0 && (
-              <div
-                className={`${styled.tweet__hashtags_box} ${styled.focus}`}
-              >
+              <div className={`${styled.tweet__hashtags_box} ${styled.focus}`}>
                 <span className={styled.tweet__hashtags_outputs}>
                   {tweetObj?.hashTags?.map((tag: any, index: number) => (
-                    <span
-                      className={styled.tweet__hashtags_tag}
-                      key={index}
-                    >
+                    <span className={styled.tweet__hashtags_tag} key={index}>
                       #{tag}
                     </span>
                   ))}

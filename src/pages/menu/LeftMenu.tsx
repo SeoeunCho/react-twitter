@@ -19,12 +19,12 @@ import { setCurrentUser, setLoginToken } from "reducer/user";
 import { useDispatch } from "react-redux";
 import useGetFbInfo from "hooks/useGetFbInfo";
 import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
+import { UserObjProps } from "pages/Router";
 
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
-export default function LeftMenu({ userObj }: any) {
-  const userLogoutRef = useRef<any>(null);
-  // const userLogoutRef = useRef<HTMLInputElement>(null);
+export default function LeftMenu({ userObj }: UserObjProps) {
+  const userLogoutRef = useRef<HTMLInputElement>(null);
   const [selected, setSelected] = useState<number>(1);
   const [size, setSize] = useState<number>(window.innerWidth);
   const [resize, setResize] = useState<boolean>(false);
@@ -32,8 +32,8 @@ export default function LeftMenu({ userObj }: any) {
   const [userLogout, setUserLogout] = useState<boolean>(false);
 
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
   const { myInfo } = useGetFbInfo();
 
   const t = useTranslation();
@@ -205,7 +205,7 @@ export default function LeftMenu({ userObj }: any) {
                 </li>
                 <li>
                   <Link
-                    to={`/profile/mytweets/${userObj.email}`}
+                    to={`/profile/mytweets/${userObj?.email}`}
                     onClick={() => onSelect(5)}
                   >
                     <div className={styled.leftMenu__list}>

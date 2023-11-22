@@ -8,8 +8,9 @@ import useTranslation from "hooks/useTranslation";
 
 export default function ProfileLikeTweets({ userObj }: any) {
   const [myLikeTweets, setMyLikeTweets] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  
   const { reTweets } = useGetFbInfo();
-  const [loading, setLoading] = useState(false);
   const t = useTranslation();
 
   // 원글의 좋아요 정보 가져오기

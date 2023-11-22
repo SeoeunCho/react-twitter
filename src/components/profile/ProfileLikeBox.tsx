@@ -7,7 +7,7 @@ import TabMenuBtn from "components/buttons/TabMenuBtn";
 export default function ProfileLikeBox({ userObj }: any) {
   const location = useLocation();
   const uid = location.pathname.split("/")[3];
-  const [selected, setSelected] = useState(1);
+  const [selected, setSelected] = useState<number>(1);
   const navigate = useNavigate();
 
   const goPage = (e: any) => {

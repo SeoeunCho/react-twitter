@@ -11,18 +11,14 @@ import RightMenu from "pages/menu/RightMenu";
 import AuthPage from "pages/auth";
 
 import { Route, Routes, Navigate } from "react-router-dom";
+import { UserProps } from "App";
 
-// export interface UserProps {
-//   userObj: any;
-//   // userObj: User | null;
-// }
-
-interface RouterProps {
-  isAuthenticated: boolean;
-  userObj: any | null;
+export interface UserObjProps {
+  isAuthenticated?: boolean;
+  userObj: UserProps;
 }
 
-export default function Router({ isAuthenticated, userObj }: RouterProps) {
+export default function Router({ isAuthenticated, userObj }: UserObjProps) {
   return (
     <>
       <TopButton />
@@ -32,7 +28,7 @@ export default function Router({ isAuthenticated, userObj }: RouterProps) {
           <LeftMenu userObj={userObj} />
           <div className="center__container">
             <Routes>
-              <Route path="/*" element={<HomePage userObj={userObj} />} />
+              <Route path="/" element={<HomePage userObj={userObj} />} />
               <Route
                 path="/explore/*"
                 element={<ExplorePage userObj={userObj} />}
@@ -61,7 +57,7 @@ export default function Router({ isAuthenticated, userObj }: RouterProps) {
               {/* <Route path="*" element={<NotFound />} /> */}
             </Routes>
           </div>
-          <RightMenu />
+          <RightMenu userObj={userObj} />
         </div>
       ) : (
         <Routes>

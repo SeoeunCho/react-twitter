@@ -10,9 +10,11 @@ import Loader from "components/loader/Loader";
 import { RecoilRoot } from "recoil";
 import Router from "pages/Router";
 
+export type UserProps = User | null;
+
 function App() {
   const [init, setInit] = useState<boolean>(false);
-  const [userObj, setUserObj] = useState<User | null>(null);
+  const [userObj, setUserObj] = useState<UserProps>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     !!auth?.currentUser
   );

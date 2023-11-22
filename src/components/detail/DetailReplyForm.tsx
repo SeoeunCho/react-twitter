@@ -25,15 +25,16 @@ export default function DetailReplyForm({
   setReplyModal,
 }: any) {
   const navigate = useNavigate();
-  const fileInput = useRef<any>();
-  const textRef = useRef<any>();
-  const emojiRef = useRef<any>();
-  const [reply, setReply] = useState("");
-  const [attachment, setAttachment] = useState("");
+  const fileInput = useRef<HTMLInputElement>(null);
+  const textRef = useRef<HTMLTextAreaElement>(null);
+  const emojiRef = useRef<HTMLDivElement>(null);
+  const [reply, setReply] = useState<string>("");
+  const [attachment, setAttachment] = useState<string>("");
   const [hashTag, setHashTag] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
-  const [select, setSelect] = useState("");
-  const [progressBarCount, setProgressBarCount] = useState(0);
+  const [select, setSelect] = useState<string>("");
+  const [progressBarCount, setProgressBarCount] = useState<number>(0);
+
   // 이모지 모달 밖 클릭 시 창 끔
   const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({ emojiRef });
   const { myInfo } = useGetFbInfo();
@@ -64,14 +65,14 @@ export default function DetailReplyForm({
       const tweetReply = {
         text: reply,
         createdAt: Date.now(),
-        creatorId: userObj.uid,
-        email: userObj.email,
+        creatorId: userObj?.uid,
+        email: userObj?.email,
         attachmentUrl,
         like: [],
         reTweet: [],
         reTweetAt: [],
-        parent: tweetObj.id,
-        parentEmail: tweetObj.email,
+        parent: tweetObj?.id,
+        parentEmail: tweetObj?.email,
         replyId: [],
         reTweetEmail: [],
         isReply: true,
@@ -81,7 +82,7 @@ export default function DetailReplyForm({
 
       const addReply = async () => {
         const replies = await addDoc(collection(db, "Replies"), tweetReply);
-        await updateDoc(doc(db, "Tweets", tweetObj.id), {
+        await updateDoc(doc(db, "Tweets", tweetObj?.id), {
           replyId: [...tweetObj?.replyId, replies.id],
         });
 
@@ -91,7 +92,7 @@ export default function DetailReplyForm({
         setAttachment("");
         setSelect("");
         setProgressBarCount(0); // 프로그레스 바 초기화
-        if (!replyModal) {
+        if (!replyModal && textRef.current) {
           textRef.current.style.height = "52px";
         } else {
           setReplyModal(false);
@@ -156,7 +157,7 @@ export default function DetailReplyForm({
 
   const onClearAttachment = () => {
     setAttachment("");
-    fileInput.current.value = ""; // 취소 시 파일 문구 없애기
+    if (fileInput.current) fileInput.current.value = ""; // 취소 시 파일 문구 없애기
   };
 
   const removeTag = (tag: string) => {
@@ -180,15 +181,16 @@ export default function DetailReplyForm({
     }
   };
 
-  const goPage = () => {
-    navigate("/profile/mytweets/" + tweetObj.email);
+  const goPage = (e: any) => {
+    e.stopPropagation();
+    navigate("/profile/mytweets/" + tweetObj?.email);
   };
 
   const onEmojiClick = (event: any) => {
     const textEmoji =
-      reply.slice(0, textRef.current.selectionStart) +
+      reply.slice(0, textRef?.current?.selectionStart) +
       event.emoji +
-      reply.slice(textRef.current.selectionEnd, reply.length);
+      reply.slice(textRef?.current?.selectionEnd, reply.length);
     setReply(textEmoji);
   };
 
@@ -205,7 +207,7 @@ export default function DetailReplyForm({
         </div>
         <div className={styled.tweet__replyText}>
           {language[0] === "en" && <p>{t("REPLY_TO")}&nbsp;</p>}
-          <p onClick={goPage}>@{tweetObj.email?.split("@")[0]}</p>
+          <p onClick={goPage}>@{tweetObj?.email?.split("@")[0]}</p>
           {language[0] === "ko" && <p>&nbsp;{t("REPLY_TO")}</p>}
         </div>
       </div>

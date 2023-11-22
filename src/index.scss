@@ -120,20 +120,6 @@ form {
   padding-bottom: 57px;
 }
 
-.render__loading {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .render__logo {
-    color: var(--tertiary);
-    font-size: 80px;
-  }
-}
-
 @media screen and (max-width: 705px) {
   .center__container {
     border: 0;
@@ -218,32 +204,5 @@ form {
         line-height: 35px;
       }
     }
-  }
-}
-
-.loader {
-  width: 48px;
-  height: 48px;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  border: 5px solid var(--primary);
-  border-bottom-color: transparent;
-  border-radius: 50%;
-  display: inline-block;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
-  z-index: 999999;
-}
-
-@keyframes rotation {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
   }
 }

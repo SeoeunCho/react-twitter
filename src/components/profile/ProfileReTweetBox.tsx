@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
 import ProfileReTweets from "./ProfileReTweets";
 import ProfileReTweetsReplies from "./ProfileReTweetsReplies";
-import { Link } from "react-router-dom";
-import { divide } from "lodash";
 
 export default function ProfileReTweetBox({ userObj, creatorInfo }: any) {
+  const [selected, setSelected] = useState<number>(1);
+  
   const location = useLocation();
-  const [selected, setSelected] = useState(1);
   const navigate = useNavigate();
 
   const goPage = (e: any) => {

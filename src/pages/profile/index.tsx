@@ -4,7 +4,6 @@ import styled from "./Profile.module.scss";
 import { doc, onSnapshot } from "firebase/firestore";
 import { collection, orderBy, query, where } from "firebase/firestore";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { BsCalendar3 } from "react-icons/bs";
 import useGetFbInfo from "hooks/useGetFbInfo";
 import { useTimeToString } from "hooks/useTimeToString";
@@ -19,20 +18,22 @@ import ProfileLikeBox from "components/profile/ProfileLikeBox";
 import BookmarkPage from "pages/bookmark";
 import CircleLoader from "components/loader/CircleLoader";
 import EditProfileModal from "components/modal/EditProfileModal";
-import { useRecoilState } from "recoil";
 import useTranslation from "hooks/useTranslation";
+import { useRecoilState } from "recoil";
+import { UserObjProps } from "pages/Router";
 
-export default function Profile({ userObj }: any) {
+export default function Profile({ userObj }: UserObjProps) {
   const [creatorInfo, setCreatorInfo] = useState<any>({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [myTweets, setMyTweets] = useState<any>([]);
-  const [selected, setSelected] = useState(1);
-  const [isEditing, setIsEditing] = useState(false);
+  const [selected, setSelected] = useState<number>(1);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+
   const { pathname } = useLocation();
-  const userEmail = pathname.split("/")[3];
   const { myInfo } = useGetFbInfo();
-  const { timeToString3 } = useTimeToString();
+  const userEmail = pathname.split("/")[3];
   const toggleFollow = useToggleFollow(myInfo);
+  const { timeToString3 } = useTimeToString();
   const [language, setLanguage] = useRecoilState(languageState);
   const t = useTranslation();
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ export default function Profile({ userObj }: any) {
     } else if (selected === 4) {
       navigate(`/profile/liketweets/${userEmail}`);
       navigate(`/profile/likereplies/${userEmail}`);
-    } else if (selected === 5){
+    } else if (selected === 5) {
       navigate(`/profile/bookmarktweets/${userEmail}`);
       navigate(`/profile/bookmarkreplies/${userEmail}`);
     }
@@ -72,11 +73,10 @@ export default function Profile({ userObj }: any) {
       bookmarkreplies: 5,
     };
 
-    
     const selectedValue = paths[pathname.split("/")[2]];
 
     setSelected(selectedValue);
-  }, [pathname, userObj.email]);
+  }, [pathname, userObj?.email]);
 
   // 필터링 방법 (본인이 작성한 것 확인)
   useEffect(() => {
@@ -139,7 +139,7 @@ export default function Profile({ userObj }: any) {
                             />
                           </div>
 
-                          {userObj.email === userEmail ? (
+                          {userObj?.email === userEmail ? (
                             <>
                               <div
                                 className={styled.profile__editBtn}
@@ -238,11 +238,11 @@ export default function Profile({ userObj }: any) {
                         text={"TAB_LIKES"}
                       />
                       <TabMenuBtn
-                          num={5}
-                          selected={selected}
-                          url={`/profile/bookmarktweets/${userEmail}`}
-                          text={"TAB_BOOKMARK"}
-                        />
+                        num={5}
+                        selected={selected}
+                        url={`/profile/bookmarktweets/${userEmail}`}
+                        text={"TAB_BOOKMARK"}
+                      />
                     </nav>
 
                     {selected === 1 && (

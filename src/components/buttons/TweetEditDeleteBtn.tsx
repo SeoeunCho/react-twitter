@@ -15,6 +15,7 @@ import styled from "./TweetEditDeleteBtn.module.scss";
 import { db, storage } from "firebaseApp";
 import useTranslation from "hooks/useTranslation";
 import { toast } from "react-toastify";
+import { ReTweetProps, TweetProps } from "pages/home";
 
 export default function TweetEditDeleteBtn({
   tweetAttachment,
@@ -22,11 +23,10 @@ export default function TweetEditDeleteBtn({
   toggleEdit,
   setTweetEtc,
 }: any) {
-  // tweets는 원글 정보
-  // tweetObj는 답글 정보
+  // tweets는 원글 정보 , tweetObj는 답글 정보
   const currentUser = useSelector((state: any) => state.user.currentUser);
-  const [tweets, setTweets] = useState<any>([]);
-  const [reTweets, setReTweets] = useState<any>([]);
+  const [tweets, setTweets] = useState<TweetProps | null>(null);
+  const [reTweets, setReTweets] = useState<ReTweetProps | null>(null);
   const [replies, setReplies] = useState<any>("");
   const dispatch = useDispatch();
   const dbRef = doc(db, "Tweets", `${tweetObj.id}`);
@@ -34,7 +34,7 @@ export default function TweetEditDeleteBtn({
   const dbAttachmentRef = ref(storage, tweetAttachment);
   const t = useTranslation();
 
-  // 원글의 답글 정보 가져오기
+  // 답글을 단 원글의 정보 가져오기
   useEffect(() => {
     const tweetsQuery = query(collection(db, "Tweets"));
     onSnapshot(tweetsQuery, (snapShot) => {
@@ -47,7 +47,7 @@ export default function TweetEditDeleteBtn({
         asd?.replyId?.includes(tweetObj.id)
       );
 
-      setTweets(filter[0]);
+      setTweets(filter[0] as TweetProps);
     });
   }, [tweetObj.id]);
 
@@ -63,7 +63,6 @@ export default function TweetEditDeleteBtn({
       const parentTweet = replyArray.findIndex(
         (reply: any) => reply.parent === tweetObj.id
       );
-
       setReplies(replyArray[parentTweet]);
     });
   }, [currentUser, tweetObj.id]);
@@ -79,10 +78,10 @@ export default function TweetEditDeleteBtn({
       }));
 
       const filter = reTweetArray.findIndex(
-        (asd: any) => asd.parentEmail === currentUser.email
+        (reTweet: any) => reTweet.parentEmail === currentUser.email
       );
 
-      setReTweets(reTweetArray[filter]);
+      setReTweets(reTweetArray[filter] as ReTweetProps);
     });
   }, [currentUser.email]);
 

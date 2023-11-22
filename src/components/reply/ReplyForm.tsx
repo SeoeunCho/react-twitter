@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { TweetProps } from "pages/home";
+
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { db, storage } from "firebaseApp";
@@ -18,16 +18,19 @@ import { BsReplyFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { languageState } from "atom";
 import { useRecoilState } from "recoil";
+import { TweetProps } from "pages/home";
+import { UserObjProps } from "pages/Router";
 import imageCompression from "browser-image-compression";
 import useGetFbInfo from "hooks/useGetFbInfo";
 
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
-export interface ReplyPropsBox {
-  tweet: TweetProps;
-  replyModal: boolean;
-  setReplyModal: any;
-}
+// export interface ReplyPropsBox {
+//   userObj: UserObjProps;
+//   tweetObj: TweetProps;
+//   replyModal: boolean;
+//   setReplyModal: any;
+// }
 
 export default function ReplyForm({
   userObj,
@@ -41,9 +44,9 @@ export default function ReplyForm({
   const [select, setSelect] = useState<string>("");
   const [hashTag, setHashTag] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
-  const fileInput = useRef<any>();
-  const textRef = useRef<any>();
-  const emojiRef = useRef<any>();
+  const fileInput = useRef<HTMLInputElement>(null);
+  const textRef = useRef<HTMLTextAreaElement>(null);
+  const emojiRef = useRef<HTMLDivElement>(null);
 
   // 이모지 모달 밖 클릭 시 창 끔
   const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({ emojiRef });
@@ -114,7 +117,7 @@ export default function ReplyForm({
             setProgressBarCount(0); // 프로그레스 바 초기화
 
             if (!replyModal) {
-              textRef.current.style.height = "52px";
+              if (textRef.current) textRef.current.style.height = "52px";
             } else {
               setReplyModal(false);
             }
@@ -193,7 +196,7 @@ export default function ReplyForm({
 
   const handleDeleteImage = () => {
     setImageUrl("");
-    fileInput.current.value = ""; // 취소 시 파일 문구 없애기
+    if (fileInput.current) fileInput.current.value = ""; // 취소 시 파일 문구 없애기
   };
 
   const removeTag = (tag: string) => {
@@ -217,7 +220,8 @@ export default function ReplyForm({
     }
   };
 
-  const goPage = () => {
+  const goPage = (e: any) => {
+    e.stopPropagation();
     navigate("/profile/mytweets/" + tweetObj.email);
   };
 

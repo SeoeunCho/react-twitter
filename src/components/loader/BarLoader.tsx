@@ -1,4 +1,4 @@
-import styled from "./BarLoader.module.scss";
+import styled from "./Loader.module.scss";
 
 interface CountProps {
   count?: number;
