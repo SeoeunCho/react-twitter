@@ -109,12 +109,14 @@ export default function EditProfileModal({
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    await updateDoc(doc(db, "Users", creatorInfo.email), {
-      displayName: newDisplayName, // 바뀐 이름 업데이트
-      photoURL: editAttachment,
-      bgURL: editAttachmentBg,
-      description: desc,
-    });
+    if (creatorInfo?.email) {
+      await updateDoc(doc(db, "Users", `${creatorInfo.email}`), {
+        displayName: newDisplayName, // 바뀐 이름 업데이트
+        photoURL: editAttachment,
+        bgURL: editAttachmentBg,
+        description: desc,
+      });
+    }
 
     dispatch(
       setCurrentUser({
@@ -127,8 +129,8 @@ export default function EditProfileModal({
     );
 
     // 프로필 이미지 삭제 버튼 클릭 시
-    if (isDeleteProfileURL) {
-      await updateDoc(doc(db, "Users", creatorInfo.email), {
+    if (isDeleteProfileURL && creatorInfo?.email) {
+      await updateDoc(doc(db, "Users", `${creatorInfo.email}`), {
         photoURL: PROFILE_DEFAULT_URL,
       });
       dispatch(
@@ -142,8 +144,8 @@ export default function EditProfileModal({
     }
 
     // 배경 이미지 삭제 버튼 클릭 시
-    if (isDeleteBgURL) {
-      await updateDoc(doc(db, "Users", creatorInfo.email), {
+    if (isDeleteBgURL && creatorInfo?.email) {
+      await updateDoc(doc(db, "Users", `${creatorInfo.email}`), {
         bgURL: PROFILE_BG_URL,
       });
       dispatch(

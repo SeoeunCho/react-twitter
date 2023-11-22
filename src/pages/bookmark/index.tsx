@@ -17,19 +17,21 @@ export default function BookmarkPage({ userObj }: any) {
   const [selected, setSelected] = useState<number>(1);
   const navigate = useNavigate();
 
-  const goTweet = () => {
-    if (location.pathname.includes(userObj.email)) {
-      navigate(`/profile/bookmarktweets/${userObj.email}`);
-    } else {
-      navigate("/bookmark/tweets");
-    }
-  };
+  const goPage = (e: any) => {
+    e.stopPropagation();
 
-  const goReply = () => {
     if (location.pathname.includes(userObj.email)) {
-      navigate(`/profile/bookmarkreplies/${userObj.email}`);
+      if (selected === 1) {
+        navigate(`/profile/bookmarktweets/${userObj.email}`);
+      } else if (selected === 2) {
+        navigate(`/profile/bookmarkreplies/${userObj.email}`);
+      }
     } else {
-      navigate("/bookmark/replies");
+      if (selected === 1) {
+        navigate("/bookmark/tweets");
+      } else if (selected === 2) {
+        navigate("/bookmark/replies");
+      }
     }
   };
 
@@ -43,10 +45,12 @@ export default function BookmarkPage({ userObj }: any) {
 
   // 본인 정보 가져오기
   useEffect(() => {
-    onSnapshot(doc(db, "Users", userObj.email), (doc) => {
-      setCreatorInfo(doc.data());
-      setLoading(true);
-    });
+    if (userObj?.email) {
+      onSnapshot(doc(db, "Users", `${userObj.email}`), (doc) => {
+        setCreatorInfo(doc.data());
+        setLoading(true);
+      });
+    }
   }, [userObj.email]);
 
   // 리트윗 정보
@@ -76,7 +80,7 @@ export default function BookmarkPage({ userObj }: any) {
               selected={selected}
               url={
                 location.pathname.includes(userObj.email)
-                  ? "/profile/bookmarktweets/" + userObj.email
+                  ? `/profile/bookmarktweets/${userObj.email}`
                   : "/bookmark/tweets"
               }
               text={"TAB_TWEET"}
@@ -86,7 +90,7 @@ export default function BookmarkPage({ userObj }: any) {
               selected={selected}
               url={
                 location.pathname.includes(userObj.email)
-                  ? "/profile/bookmarkreplies/" + userObj.email
+                  ? `/profile/bookmarkreplies/${userObj.email}`
                   : "/bookmark/replies"
               }
               text={"TAB_REPLY"}
@@ -95,29 +99,27 @@ export default function BookmarkPage({ userObj }: any) {
         </div>
 
         {loading && selected === 1 && (
-          <div onClick={goTweet}>
-            {
-              <BookmarkTweets
-                userObj={userObj}
-                reTweetsObj={reTweets}
-                creatorInfo={creatorInfo}
-                loading={loading}
-              />
-            }
+          <div onClick={goPage}>
+            <BookmarkTweets
+              userObj={userObj}
+              reTweetsObj={reTweets}
+              creatorInfo={creatorInfo}
+              loading={loading}
+            />
           </div>
         )}
+
         {loading && selected === 2 && (
-          <div onClick={goReply}>
-            {
-              <BookmarkReplies
-                userObj={userObj}
-                reTweetsObj={reTweets}
-                creatorInfo={creatorInfo}
-                loading={loading}
-              />
-            }
+          <div onClick={goPage}>
+            <BookmarkReplies
+              userObj={userObj}
+              reTweetsObj={reTweets}
+              creatorInfo={creatorInfo}
+              loading={loading}
+            />
           </div>
         )}
+
         {!loading && <CircleLoader />}
       </div>
     </>

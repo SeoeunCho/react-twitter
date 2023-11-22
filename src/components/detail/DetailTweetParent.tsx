@@ -53,13 +53,13 @@ export default function DetailTweetParent({
 
   //  map 처리 된 각 유저 정보들
   useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "Users", tweetObj.email), (doc) => {
-      setCreatorInfo(doc.data());
-      setLoading(true);
-    });
-
-    return () => unsubscribe();
-  }, [tweetObj]);
+    if (tweetObj?.email) {
+      onSnapshot(doc(db, "Users", `${tweetObj.email}`), (doc) => {
+        setCreatorInfo(doc.data());
+        setLoading(true);
+      });
+    }
+  }, [tweetObj.email]);
 
   useEffect(() => {
     // 좋아요 목록 중 본인 아이디 있으면 true
@@ -168,9 +168,27 @@ export default function DetailTweetParent({
                   )}
                 </div>
               </div>
+
               <div className={styled.tweet__text}>
                 <h4>{tweetObj.text}</h4>
+                {tweetObj?.hashTags?.length !== 0 && (
+                  <div
+                    className={`${styled.tweet__hashtags} ${styled.focus}`}
+                  >
+                    <span className={styled.tweet__hashtags_outputs}>
+                      {tweetObj?.hashTags?.map((tag: any, index: number) => (
+                        <span
+                          className={styled.tweet__hashtags_tag}
+                          key={index}
+                        >
+                          #{tag}
+                        </span>
+                      ))}
+                    </span>
+                  </div>
+                )}
               </div>
+
               <div className={styled.tweet__created}>
                 <p className={styled.tweet__createdAt}>
                   {timeToString2(tweetObj.createdAt)}

@@ -17,6 +17,10 @@ export default function NotificationInnerContents({
   const t = useTranslation();
   const navigate = useNavigate();
 
+  const truncate = (content: string) => {
+    return content?.length > 13 ? content?.substring(0, 13) + "..." : content;
+  };
+
   const goProfilePage = (e: any) => {
     e.stopPropagation();
     navigate(`/profile/mytweets/${notificationUser?.email}`);
@@ -25,11 +29,9 @@ export default function NotificationInnerContents({
   const goPage = (e: any) => {
     e.stopPropagation();
 
-    navigate(`/tweet/${notificationUser?.parent}`);
-
-    if (location.pathname.includes("followers")) {
-      navigate(`/profile/mytweets/${notificationUser?.email}`);
-    }
+    location.pathname.includes("followers")
+      ? navigate(`/profile/mytweets/${notificationUser?.email}`)
+      : navigate(`/tweet/${notificationUser?.parent}`);
   };
 
   // 팔로우 시간 정보 가져오기
@@ -75,8 +77,8 @@ export default function NotificationInnerContents({
                     <span className={styled.reTweet__name}>
                       "
                       {notificationUser?.text
-                        ? notificationUser?.text
-                        : tweets?.text}
+                        ? truncate(notificationUser?.text)
+                        : truncate(tweets?.text)}
                       "
                     </span>
                   </>
@@ -85,7 +87,7 @@ export default function NotificationInnerContents({
                   <>
                     {t("NOTIFICATION_FROM_REPLY")}{" "}
                     <span className={styled.reTweet__name}>
-                      "{tweets?.text}"
+                      "{truncate(tweets?.text)}"
                     </span>
                   </>
                 )}

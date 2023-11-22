@@ -151,8 +151,8 @@ export default function HomePage({ userObj }: any) {
 
   return (
     <>
-      <div className="menu_container">
-        <div className="main__container">
+      <div>
+        <div>
           <Header menu={"home"} text={"MENU_HOME"} />
           {loading && <TweetForm userObj={userObj} />}
           <ul>

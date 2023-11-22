@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import styled from "./Profile.module.scss";
 import { doc, onSnapshot } from "firebase/firestore";
 import { collection, orderBy, query, where } from "firebase/firestore";
-import { Route, useNavigate, useLocation, Routes } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { BsCalendar3 } from "react-icons/bs";
 import useGetFbInfo from "hooks/useGetFbInfo";
@@ -21,17 +21,13 @@ import CircleLoader from "components/loader/CircleLoader";
 import EditProfileModal from "components/modal/EditProfileModal";
 import { useRecoilState } from "recoil";
 import useTranslation from "hooks/useTranslation";
-import { Link } from "react-router-dom";
 
 export default function Profile({ userObj }: any) {
   const [creatorInfo, setCreatorInfo] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const [myTweets, setMyTweets] = useState<any>([]);
   const [selected, setSelected] = useState(1);
-  const [selectedTab, setSelectedTab] = useState(1);
   const [isEditing, setIsEditing] = useState(false);
-  const [size, setSize] = useState(window.innerWidth);
-  const [resize, setResize] = useState(false);
   const { pathname } = useLocation();
   const userEmail = pathname.split("/")[3];
   const { myInfo } = useGetFbInfo();
@@ -46,7 +42,8 @@ export default function Profile({ userObj }: any) {
     localStorage.setItem("language", language === "ko" ? "en" : "ko");
   };
 
-  const goPage = () => {
+  const goPage = (e: any) => {
+    e.stopPropagation();
     if (selected === 1) {
       navigate(`/profile/mytweets/${userEmail}`);
     } else if (selected === 2) {
@@ -57,7 +54,7 @@ export default function Profile({ userObj }: any) {
     } else if (selected === 4) {
       navigate(`/profile/liketweets/${userEmail}`);
       navigate(`/profile/likereplies/${userEmail}`);
-    } else if (selected === 5) {
+    } else if (selected === 5){
       navigate(`/profile/bookmarktweets/${userEmail}`);
       navigate(`/profile/bookmarkreplies/${userEmail}`);
     }
@@ -75,8 +72,8 @@ export default function Profile({ userObj }: any) {
       bookmarkreplies: 5,
     };
 
+    
     const selectedValue = paths[pathname.split("/")[2]];
-    console.log("selectedValue", selectedValue);
 
     setSelected(selectedValue);
   }, [pathname, userObj.email]);
@@ -102,29 +99,13 @@ export default function Profile({ userObj }: any) {
 
   // 렌더링 시 실시간 정보 가져오고 이메일, 닉네임, 사진 바뀔 때마다 리렌더링(업데이트)
   useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "Users", userEmail), (doc) => {
+    const unsubscribe = onSnapshot(doc(db, "Users", `${userEmail}`), (doc) => {
       setCreatorInfo(doc.data());
       setLoading(true);
     });
 
     return () => unsubscribe();
   }, [userEmail]);
-
-  // 리사이징
-  useEffect(() => {
-    // 렌더 시
-    if (size < 500) {
-      setResize(true);
-    } else if (size > 500) {
-      setResize(false);
-    }
-    const Resize = () => {
-      let innerSize = window.innerWidth;
-      setSize(innerSize);
-    };
-    window.addEventListener("resize", Resize);
-    return () => window.addEventListener("resize", Resize);
-  }, [size]);
 
   const toggleEdit = () => {
     setIsEditing((prev) => !prev);
@@ -257,11 +238,11 @@ export default function Profile({ userObj }: any) {
                         text={"TAB_LIKES"}
                       />
                       <TabMenuBtn
-                        num={5}
-                        selected={selected}
-                        url={`/profile/bookmarktweets/${userEmail}`}
-                        text={"TAB_BOOKMARK"}
-                      />
+                          num={5}
+                          selected={selected}
+                          url={`/profile/bookmarktweets/${userEmail}`}
+                          text={"TAB_BOOKMARK"}
+                        />
                     </nav>
 
                     {selected === 1 && (

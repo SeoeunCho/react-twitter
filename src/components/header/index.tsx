@@ -1,5 +1,5 @@
-import { getAuth, signOut } from "firebase/auth";
-import { app } from "firebaseApp";
+import { signOut } from "firebase/auth";
+import { auth } from "firebaseApp";
 import useTranslation from "hooks/useTranslation";
 import { IoMdExit } from "react-icons/io";
 import { IoArrowBackOutline } from "react-icons/io5";
@@ -29,7 +29,6 @@ export default function Header({
   const onLogOutClick = async () => {
     const confirm = window.confirm(t("CHECK_LOGOUT_TOAST"));
     if (confirm) {
-      const auth = getAuth(app);
       await signOut(auth);
       dispatch(setLoginToken("logout"));
       dispatch(

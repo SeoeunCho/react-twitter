@@ -13,12 +13,12 @@ export default function NotificationReply({ replyObj }: any) {
 
   // 정보 가져오기
   useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "Users", replyObj.email), (doc) => {
-      setCreatorInfo(doc.data());
-    });
-
-    return () => unsubscribe();
-  }, [replyObj]);
+    if (replyObj?.email) {
+      onSnapshot(doc(db, "Users", `${replyObj.email}`), (doc) => {
+        setCreatorInfo(doc.data());
+      });
+    }
+  }, [replyObj.email]);
 
   // 트윗 가져오기
   useEffect(() => {

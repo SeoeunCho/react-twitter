@@ -8,6 +8,7 @@
   outline: none;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.363);
   background: white;
+  max-width: 600px;
 }
 
 .container .editForm {
@@ -17,7 +18,7 @@
 
 /* X바 */
 .topBox {
-  z-index: 10;
+  // z-index: 10;
   position: sticky;
   top: 0;
   display: flex;
@@ -72,24 +73,21 @@
 }
 
 .editInput {
+  // position: relative;
   width: 100%;
 }
 
 .editInput__input {
   width: 100%;
   max-height: 100%;
-  /* height: auto; */
   height: 52px;
   max-height: 100px;
-  /* overflow: hidden; */
   box-sizing: border-box;
   outline: none;
   resize: none;
   border: none;
-  border-bottom: 1px solid var(--grayLight);
   font-weight: 500;
   font-size: 20px;
-  margin-bottom: 6px;
   font-size: 16px;
   line-height: 24px;
   caret-color: var(--primary);
@@ -105,23 +103,109 @@
   transition: all 0.2s;
 }
 
+/* 이미지 */
+.editForm__attachment {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin: 16px 0;
+  overflow: hidden;
+  max-width: 400px;
+  // position: relative;
+}
+
+.editForm__image {
+  width: 100%;
+  height: 100%;
+}
+
+.editForm__attachment img {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+}
+
+.editForm__clear {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.6s;
+  padding: 3px;
+  border-radius: 50%;
+  font-size: 25px;
+  background-color: #0f1419bf;
+  color: white;
+}
+
+/* 해쉬태그 */
+.editInput__hashtags {
+  padding-top: 5px;
+  border-bottom: 1px solid var(--grayLight);
+
+  &_outputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 1px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  &_tag {
+    font-size: 12px;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    border-radius: 10px;
+    padding: 4px 8px;
+    margin-right: 6px;
+    line-height: 12px;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+  }
+
+  &__input {
+    font-size: 14px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    color: var(--primary);
+    width: 100%;
+
+    &::placeholder {
+      color: var(--secondary);
+    }
+
+    &:focus {
+      color: var(--primary);
+    }
+  }
+
+  &.focus input::placeholder {
+    opacity: 0.6;
+    transition: all 0.2s;
+  }
+}
+
 /* 아래 칸 */
 .editInput__add {
   display: flex;
   align-items: center;
-  background-color: #ffffffd9;
-  backdrop-filter: blur(12px);
+  position: relative;
+  margin-top: 12px;
+  margin-bottom: -6px;
 }
 
-/* 배경 아이콘 */
-.editInput__image input[type="file"] {
-  display: hidden;
-  width: 0px;
-  height: 0px;
-  opacity: 0;
-}
-
-.editInput__image {
+/* 아이콘 공통 */
+.editInput__iconBox {
   width: 34px;
   height: 34px;
   display: flex;
@@ -133,25 +217,7 @@
   transition: all 0.2s;
 }
 
-.editInput__image label {
-  cursor: pointer;
-}
-
-.editInput__image .editInput__label svg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  color: var(--primary);
-}
-
-.editInput__image:hover {
-  background-color: rgba(51, 114, 88, 0.1);
-}
-
-/* 이모지 아이콘 */
-.editInput__emoji {
+.editInput__icon {
   width: 34px;
   height: 34px;
   display: flex;
@@ -162,7 +228,7 @@
   transition: all 0.2s;
 }
 
-.editInput__emoji svg {
+.editInput__icon svg {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -171,17 +237,34 @@
   color: var(--primary);
 }
 
-.editInput__emoji:active {
-  background-color: var(--grayLightSky);
+.editInput__icon:hover {
+  background-color: var(--quaternary);
 }
 
+.editInput__iconBox input {
+  opacity: 0;
+  display: none;
+}
+
+/* 배경 아이콘 */
+.editInput__image input[type="file"] {
+  display: hidden;
+  width: 0px;
+  height: 0px;
+  opacity: 0;
+}
+
+.editInput__iconBox label {
+  cursor: pointer;
+}
+
+/* 이모지 아이콘 */
 .emoji {
   position: absolute;
-  top: 15px;
-  left: 15px;
-  z-index: 2;
-  color: black;
+  top: 18px;
+  left: 50px;
   user-select: none;
+  z-index: 20;
 }
 
 .emoji__hidden {
@@ -215,24 +298,6 @@
   transition: all 0.3s;
   cursor: auto;
   z-index: 10;
-}
-
-/* 이미지 */
-.editForm__attachment {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  margin: 16px 0;
-  overflow: hidden;
-  max-width: 400px;
-}
-
-.editForm__attachment img {
-  width: 100%;
-  height: 100%;
-  border-radius: 15px;
 }
 
 @media screen and (max-width: 687px) {

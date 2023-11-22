@@ -14,9 +14,13 @@ export const useToggleBookmark = (tweetObj: any) => {
       setBookmark(false);
       const copy = [...currentUser.bookmark];
       const filter = copy.filter((id) => id !== tweetObj.id);
-      await updateDoc(doc(db, "Users", currentUser.email), {
-        bookmark: filter,
-      });
+      
+      if (currentUser?.email) {
+        await updateDoc(doc(db, "Users", `${currentUser.email}`), {
+          bookmark: filter,
+        });
+      }
+
       dispatch(
         setCurrentUser({
           ...currentUser,
@@ -27,9 +31,13 @@ export const useToggleBookmark = (tweetObj: any) => {
       setBookmark(true);
       const copy = [...currentUser.bookmark];
       copy.push(tweetObj.id);
-      await updateDoc(doc(db, "Users", currentUser.email), {
-        bookmark: copy,
-      });
+
+      if (currentUser?.email) {
+        await updateDoc(doc(db, "Users", `${currentUser.email}`), {
+          bookmark: copy,
+        });
+      }
+
       dispatch(
         setCurrentUser({
           ...currentUser,

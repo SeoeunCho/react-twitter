@@ -20,17 +20,12 @@ export default function useGetFbInfo() {
 
   // 본인 정보 가져오기
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      doc(db, "Users", currentUser.email),
-      (doc: any) => {
+    if (currentUser?.email) {
+      onSnapshot(doc(db, "Users", `${currentUser.email}`), (doc: any) => {
         setMyInfo(doc.data());
         setFbLoading((prev) => ({ ...prev, myInfo: true }));
-      }
-    );
-
-    return () => {
-      unsubscribe();
-    };
+      });
+    }
   }, [currentUser.email]);
 
   // 리트윗 정보

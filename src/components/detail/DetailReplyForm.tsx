@@ -13,7 +13,10 @@ import useEmojiModalOutClick from "hooks/useEmojiModalOutClick";
 import useGetFbInfo from "hooks/useGetFbInfo";
 import BarLoader from "components/loader/BarLoader";
 import useTranslation from "hooks/useTranslation";
+import { languageState } from "atom";
 import { toast } from "react-toastify";
+import { useRecoilState } from "recoil";
+import { BsReplyFill } from "react-icons/bs";
 
 export default function DetailReplyForm({
   userObj,
@@ -27,24 +30,28 @@ export default function DetailReplyForm({
   const emojiRef = useRef<any>();
   const [reply, setReply] = useState("");
   const [attachment, setAttachment] = useState("");
+  const [hashTag, setHashTag] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
   const [select, setSelect] = useState("");
   const [progressBarCount, setProgressBarCount] = useState(0);
   // 이모지 모달 밖 클릭 시 창 끔
   const { clickEmoji, toggleEmoji } = useEmojiModalOutClick({ emojiRef });
   const { myInfo } = useGetFbInfo();
   const t = useTranslation();
+  const language = useRecoilState(languageState);
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
     let attachmentUrl = "";
     let start = 0;
+    const imgUid = uuidv4();
     setProgressBarCount(0); // 프로그레스 바 초기화
     // 입력 값 없을 시 업로드 X
     if (reply !== "") {
       // 이미지 있을 때만 첨부
       if (attachment !== "") {
         //파일 경로 참조 만들기
-        const key = `${userObj?.uid}/${uuidv4()}`;
+        const key = `${userObj?.uid}/${imgUid}`;
         const attachmentfileRef = ref(storage, key);
 
         //storage 참조 경로로 파일 업로드 하기
@@ -68,6 +75,8 @@ export default function DetailReplyForm({
         replyId: [],
         reTweetEmail: [],
         isReply: true,
+        imgUid: attachment ? imgUid : "",
+        hashTags: tags,
       };
 
       const addReply = async () => {
@@ -77,6 +86,8 @@ export default function DetailReplyForm({
         });
 
         setReply("");
+        setTags([]);
+        setHashTag("");
         setAttachment("");
         setSelect("");
         setProgressBarCount(0); // 프로그레스 바 초기화
@@ -148,6 +159,27 @@ export default function DetailReplyForm({
     fileInput.current.value = ""; // 취소 시 파일 문구 없애기
   };
 
+  const removeTag = (tag: string) => {
+    setTags(tags?.filter((val) => val !== tag));
+  };
+
+  const onChangeHashTag = (e: any) => {
+    setHashTag(e?.target?.value.trim());
+  };
+
+  const handleKeyUp = (e: any) => {
+    if (e.keyCode === 32 && e.target.value.trim() !== "") {
+      // 만약 같은 태그가 있다면 에러를 띄운다
+      // 태그를 생성해준다
+      if (tags?.includes(e.target.value?.trim())) {
+        toast.error(t("SAME_TAG_TOAST"));
+      } else {
+        setTags((prev) => (prev?.length > 0 ? [...prev, hashTag] : [hashTag]));
+        setHashTag("");
+      }
+    }
+  };
+
   const goPage = () => {
     navigate("/profile/mytweets/" + tweetObj.email);
   };
@@ -168,10 +200,13 @@ export default function DetailReplyForm({
           select === "text" && styled.select
         } `}
       >
-        <div className={styled.tweet__replyIcon}>{/* <BsReplyFill /> */}</div>
+        <div className={styled.tweet__replyIcon}>
+          <BsReplyFill />
+        </div>
         <div className={styled.tweet__replyText}>
+          {language[0] === "en" && <p>{t("REPLY_TO")}&nbsp;</p>}
           <p onClick={goPage}>@{tweetObj.email?.split("@")[0]}</p>
-          <p>&nbsp;님에게 보내는 답글</p>
+          {language[0] === "ko" && <p>&nbsp;{t("REPLY_TO")}</p>}
         </div>
       </div>
       <div
@@ -186,11 +221,7 @@ export default function DetailReplyForm({
             />
           </div>
           <form onSubmit={onSubmit} className={styled.factoryInput}>
-            <div
-              className={`${styled.factoryForm__content} ${
-                select === "text" && styled.focus
-              }`}
-            >
+            <div className={`${select === "text" && styled.focus}`}>
               <textarea
                 spellCheck="false"
                 className={styled.factoryInput__input}
@@ -201,25 +232,38 @@ export default function DetailReplyForm({
                 maxLength={280}
                 placeholder={t("REPLY_PLACEHOLDER")}
               />
-              {attachment && (
-                <div className={styled.factoryForm__attachment}>
-                  <div className={styled.factoryForm__Image}>
-                    <img
-                      src={attachment}
-                      alt="upload file"
-                      style={{
-                        backgroundImage: attachment,
-                      }}
-                    />
-                  </div>
-                  <div
-                    className={styled.factoryForm__clear}
-                    onClick={onClearAttachment}
-                  >
-                    <IoCloseSharp />
-                  </div>
-                </div>
-              )}
+
+              {/* 해쉬태그 */}
+              <div
+                className={`${styled.factoryInput__hashtags} ${
+                  select === "hashtag" && styled.focus
+                }`}
+              >
+                {tags.length !== 0 ? (
+                  <span className={styled.factoryInput__hashtags_outputs}>
+                    {tags?.map((tag, index) => (
+                      <span
+                        className={styled.factoryInput__hashtags_tag}
+                        key={index}
+                        onClick={() => removeTag(tag)}
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </span>
+                ) : null}
+                <input
+                  className={styled.factoryInput__hashtags_input}
+                  name="hashtag"
+                  id="hashtag"
+                  placeholder={t("TWEET_HASHTAG")}
+                  onChange={onChangeHashTag}
+                  onKeyUp={handleKeyUp}
+                  value={hashTag}
+                  onFocus={() => setSelect("hashtag")}
+                  onBlur={() => setSelect("")}
+                />
+              </div>
             </div>
             <div className={styled.factoryInput__add}>
               <div className={styled.factoryInput__iconBox}>
@@ -267,6 +311,27 @@ export default function DetailReplyForm({
                 disabled={reply === "" && attachment === ""}
               />
             </div>
+
+            {/* 이미지 컨텐츠 */}
+            {attachment && (
+              <div className={styled.factoryForm__attachment}>
+                <div className={styled.factoryForm__Image}>
+                  <img
+                    src={attachment}
+                    alt="upload file"
+                    style={{
+                      backgroundImage: attachment,
+                    }}
+                  />
+                </div>
+                <div
+                  className={styled.factoryForm__clear}
+                  onClick={onClearAttachment}
+                >
+                  <IoCloseSharp />
+                </div>
+              </div>
+            )}
           </form>
         </div>
       </div>

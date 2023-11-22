@@ -79,7 +79,8 @@ export default function TweetBox({
   });
 
   /** 수정삭제 버튼 토글 */
-  const toggleEditDelBtn = () => {
+  const toggleEditDelBtn = (e: any) => {
+    e.stopPropagation()
     setTweetEditDelBtn((prev) => !prev);
   };
 
@@ -181,12 +182,6 @@ export default function TweetBox({
                 <div className={styled.userInfo__one} onClick={goProfile}>
                   <p>{creatorInfo.displayName}</p>
                 </div>
-                {/* <Link
-                  className={styled.userInfo__one}
-                  to={`/profile/mytweets/${tweetObj.email}`}
-                >
-                  <p>{creatorInfo.displayName}</p>
-                </Link> */}
                 <div className={styled.userInfo__two}>
                   <p>
                     @{creatorInfo.email ? creatorInfo.email.split("@")[0] : ""}
@@ -248,16 +243,16 @@ export default function TweetBox({
             </div>
           )}
 
-          <div className={styled.tweet__text}>
+          <div className={styled.tweet__hashtags}>
             <h4>{tweetObj.text}</h4>
-            {/* {tweetType === "tweet" && tweet?.hashTags?.length !== 0 && (
+            {tweetObj?.hashTags?.length !== 0 && (
               <div
-                className={`${styled.tweet__text__hashtags} ${styled.focus}`}
+                className={`${styled.tweet__hashtags_box} ${styled.focus}`}
               >
-                <span className={styled.tweet__text__hashtags_outputs}>
-                  {tweet?.hashTags?.map((tag, index) => (
+                <span className={styled.tweet__hashtags_outputs}>
+                  {tweetObj?.hashTags?.map((tag: any, index: number) => (
                     <span
-                      className={styled.tweet__text__hashtags_tag}
+                      className={styled.tweet__hashtags_tag}
                       key={index}
                     >
                       #{tag}
@@ -265,21 +260,8 @@ export default function TweetBox({
                   ))}
                 </span>
               </div>
-            )} */}
+            )}
           </div>
-
-          {/* {tweetType === "reply" && (
-              <div className={`${styled.tweet__reply} ${styled.select}`}>
-                <Link
-                  className={styled.tweet__replyText}
-                  to={`/profile/${reply?.email}`}
-                >
-                  {language[0] === "en" && <p>{t("REPLY_TO")}&nbsp;</p>}
-                  <p>@{tweet.email?.split("@")[0]}</p>
-                  {language[0] === "ko" && <p>&nbsp;{t("REPLY_TO")}</p>}
-                </Link>
-              </div>
-            )} */}
         </div>
 
         {/* 트윗 이미지 콘텐츠 */}

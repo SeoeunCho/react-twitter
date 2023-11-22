@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { collection, addDoc, doc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { db, storage } from "firebaseApp";
 import { v4 as uuidv4 } from "uuid";
@@ -21,8 +21,8 @@ const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
 export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
   const [tweet, setTweet] = useState<string>("");
-  const [hashTag, setHashTag] = useState<string>("");
   const [attachment, setAttachment] = useState("");
+  const [hashTag, setHashTag] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [progressBarCount, setProgressBarCount] = useState<number>(0);
   const [select, setSelect] = useState<string>("");
@@ -40,20 +40,20 @@ export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
     e.preventDefault();
     setProgressBarCount(0); // 프로그레스 바 초기화
     let attachmentUrl = "";
+    const imgUid = uuidv4();
 
     // 입력 값 없을 시 업로드 X
     if (tweet !== "") {
       // 이미지 있을 때만 첨부
       if (attachment !== "") {
         //파일 경로 참조 만들기
-        const key = `${userObj?.uid}/${uuidv4()}`;
+        const key = `${userObj?.uid}/${imgUid}`;
         const storageRef = ref(storage, key);
         //storage 참조 경로로 파일 업로드 하기
         await uploadString(storageRef, attachment, "data_url");
 
         // storage 참조 경로에 있는 파일의 URL을 다운로드해서 attachmentUrl 변수에 넣어서 업데이트
         attachmentUrl = await getDownloadURL(ref(storageRef));
-        // attachmentUrl = await getDownloadURL(data?.ref);
       }
 
       const attachmentTweet = {
@@ -65,6 +65,8 @@ export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
         like: [],
         reTweet: [],
         replyId: [],
+        imgUid: attachment ? imgUid : "",
+        hashTags: tags,
       };
 
       const addTweet = async () => {
@@ -72,10 +74,9 @@ export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
         await addDoc(collection(db, "Tweets"), attachmentTweet)
           .then(() => {
             toast.success(t("ADD_TWEET_TOAST"));
-            // setTags([]);
-            // setHashTag("");
+            setTags([]);
+            setHashTag("");
             setTweet("");
-            // setSelect("");
             setAttachment("");
             setProgressBarCount(0); // 프로그레스 바 초기화
             if (!tweetModal) {
@@ -152,6 +153,11 @@ export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
     };
   };
 
+  const handleDeleteImage = () => {
+    setAttachment("");
+    fileInput.current.value = ""; // 취소 시 파일 문구 없애기
+  };
+
   const removeTag = (tag: string) => {
     setTags(tags?.filter((val) => val !== tag));
   };
@@ -173,17 +179,12 @@ export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
     }
   };
 
-  const handleDeleteImage = () => {
-    setAttachment("");
-    fileInput.current.value = ""; // 취소 시 파일 문구 없애기
-  };
-
   const onEmojiClick = (event: any) => {
     const textEmoji =
       tweet.slice(0, textRef.current?.selectionStart) +
       event.emoji +
       tweet.slice(textRef.current?.selectionEnd, tweet.length);
-      setTweet(textEmoji);
+    setTweet(textEmoji);
   };
 
   return (
@@ -203,11 +204,7 @@ export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
             )}
           </div>
           <form className={styled.tweetInput} onSubmit={onSubmit}>
-            <div
-              className={`${styled.tweetForm__content} ${
-                select === "text" && styled.focus
-              }`}
-            >
+            <div className={`${select === "text" && styled.focus}`}>
               <textarea
                 className={styled.tweetInput__input}
                 spellCheck="false"
@@ -222,7 +219,9 @@ export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
                 onBlur={() => setSelect("")}
                 maxLength={280}
               />
-              {/* <div
+
+              {/* 해쉬태그 */}
+              <div
                 className={`${styled.tweetInput__hashtags} ${
                   select === "hashtag" && styled.focus
                 }`}
@@ -251,27 +250,7 @@ export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
                   onFocus={() => setSelect("hashtag")}
                   onBlur={() => setSelect("")}
                 />
-              </div> */}
-
-              {attachment && (
-                <div className={styled.tweetForm__attachment}>
-                  <div className={styled.tweetForm__Image}>
-                    <img
-                      src={attachment}
-                      alt="upload file"
-                      style={{
-                        backgroundImage: attachment,
-                      }}
-                    />
-                  </div>
-                  <div
-                    className={styled.tweetForm__clear}
-                    onClick={handleDeleteImage}
-                  >
-                    <IoCloseSharp />
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
             <div className={styled.tweetInput__add}>
               <div className={styled.tweetInput__iconBox}>
@@ -319,6 +298,27 @@ export default function TweetForm({ userObj, tweetModal, setTweetModal }: any) {
                 disabled={tweet === "" && attachment === ""}
               />
             </div>
+
+            {/* 이미지 컨텐츠 */}
+            {attachment && (
+              <div className={styled.tweetForm__attachment}>
+                <div className={styled.tweetForm__image}>
+                  <img
+                    src={attachment}
+                    alt="upload file"
+                    style={{
+                      backgroundImage: attachment,
+                    }}
+                  />
+                </div>
+                <div
+                  className={styled.tweetForm__clear}
+                  onClick={handleDeleteImage}
+                >
+                  <IoCloseSharp />
+                </div>
+              </div>
+            )}
           </form>
         </div>
       </div>

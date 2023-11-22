@@ -4,9 +4,9 @@ import { FaFeatherAlt, FaHashtag, FaTwitter } from "react-icons/fa";
 import { AiFillHome, AiOutlineHome } from "react-icons/ai";
 import { FiHash, FiMoreHorizontal } from "react-icons/fi";
 import { BsBell, BsBellFill, BsPerson, BsPersonFill } from "react-icons/bs";
-import { useContext, useEffect, useRef, useState } from "react";
-import { getAuth, signOut } from "firebase/auth";
-import { app } from "firebaseApp";
+import { useEffect, useRef, useState } from "react";
+import { signOut } from "firebase/auth";
+import { auth } from "firebaseApp";
 import { toast } from "react-toastify";
 
 import TweetModal from "components/modal/TweetModal";
@@ -16,7 +16,6 @@ import styled from "./LeftMenu.module.scss";
 
 import useTranslation from "hooks/useTranslation";
 import { setCurrentUser, setLoginToken } from "reducer/user";
-// import { UserProps } from "Router";
 import { useDispatch } from "react-redux";
 import useGetFbInfo from "hooks/useGetFbInfo";
 import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
@@ -60,7 +59,6 @@ export default function LeftMenu({ userObj }: any) {
   const onLogOutClick = async () => {
     const confirm = window.confirm(t("CHECK_LOGOUT_TOAST"));
     if (confirm) {
-      const auth = getAuth(app);
       await signOut(auth);
       dispatch(setLoginToken("logout"));
       dispatch(
@@ -83,40 +81,6 @@ export default function LeftMenu({ userObj }: any) {
     }
   };
 
-  const goPage = (e: any) => {
-    e.stopPropagation();
-    if (selected === 1) {
-    } else if (selected === 2) {
-    } else if (selected === 3) {
-    } else if (selected === 4) {
-    } else if (selected === 5) {
-    }
-  };
-
-  // 리사이징
-  useEffect(() => {
-    // 렌더 시
-    if (size < 500) {
-      setResize(true);
-      // if (location.pathname.includes("bookmark")) {
-      //   navigate(`/profile/bookmarktweets/${userObj?.email}`);
-      // }
-    } else if (size > 500) {
-      setResize(false);
-      // if (location.pathname.includes("bookmark")) {
-      //   navigate("/bookmark/tweets");
-      // }
-    }
-
-    const Resize = () => {
-      let innerSize = window.innerWidth;
-      setSize(innerSize);
-    };
-
-    window.addEventListener("resize", Resize);
-    return () => window.addEventListener("resize", Resize);
-  }, [size, location.pathname, navigate, userObj?.email]);
-
   useEffect(() => {
     if (location.pathname === "/") {
       setSelected(1);
@@ -130,6 +94,24 @@ export default function LeftMenu({ userObj }: any) {
       setSelected(5);
     }
   }, [location.pathname]);
+
+  // 리사이징
+  useEffect(() => {
+    // 렌더 시
+    if (size < 500) {
+      setResize(true);
+    } else if (size > 500) {
+      setResize(false);
+    }
+
+    const Resize = () => {
+      let innerSize = window.innerWidth;
+      setSize(innerSize);
+    };
+
+    window.addEventListener("resize", Resize);
+    return () => window.addEventListener("resize", Resize);
+  }, [size, location.pathname, navigate, userObj?.email]);
 
   return (
     <>
@@ -203,7 +185,7 @@ export default function LeftMenu({ userObj }: any) {
                   </Link>
                 </li>
                 <li>
-                  <Link to={"/bookmark/tweets"} onClick={() => onSelect(4)}>
+                  <Link to="/bookmark/tweets" onClick={() => onSelect(4)}>
                     <div className={styled.leftMenu__list}>
                       {selected === 4 ? (
                         <>

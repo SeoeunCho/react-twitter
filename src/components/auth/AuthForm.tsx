@@ -2,11 +2,10 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { app, db } from "firebaseApp";
+import { auth, db } from "firebaseApp";
 import { toast } from "react-toastify";
 import useTranslation from "hooks/useTranslation";
 import styled from "./AuthForm.module.scss";
@@ -42,24 +41,32 @@ export default function AuthForm({ newAccount }: AuthProps) {
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
+
     try {
-      const auth = getAuth(app);
       if (newAccount) {
         // Log in
         await signInWithEmailAndPassword(auth, email, password).then(
-          async (result: any) => {
-            let signUser = result?.user;
-            const docRef = doc(db, "Users", signUser?.email);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-              dispatch(setLoginToken("login"));
-              dispatch(
-                setCurrentUser({
-                  ...docSnap.data(),
-                })
-              );
-            } else {
-              console.log("error");
+          async (result) => {
+            const signUser: any = result.user;
+
+            /** 에러 해결!
+             * FirebaseError: Invalid document reference. Document references must have an even number of segments, but Users has 1.
+             * 에러 : db구조의 document -> 유저의 email이 null일 경우 경로를 구성할 때 발생하는 에러
+             * 해결 : email 값이 null이 아닐때 로직을 돌리도록 조건문 추가
+             */
+            if (signUser?.email) {
+              const docRef = doc(db, "Users", `${signUser?.email}`);
+              const docSnap = await getDoc(docRef);
+              if (docSnap.exists()) {
+                dispatch(setLoginToken("login"));
+                dispatch(
+                  setCurrentUser({
+                    ...docSnap.data(),
+                  })
+                );
+              } else {
+                console.log("error");
+              }
             }
           }
         );
@@ -69,23 +76,26 @@ export default function AuthForm({ newAccount }: AuthProps) {
         // Sign up
         await createUserWithEmailAndPassword(auth, email, password).then(
           async (result) => {
-            let createUser: any = result.user;
+            const createUser: any = result.user;
             const usersRef = collection(db, "Users");
-            await setDoc(doc(usersRef, createUser?.email), {
-              uid: createUser.uid,
-              displayName: createUser.email.split("@")[0],
-              email: createUser.email,
-              photoURL: PROFILE_DEFAULT_URL,
-              createdAtId: Date.now(),
-              description: "",
-              bgURL: PROFILE_BG_URL,
-              bookmark: [],
-              followerAt: [],
-              followingAt: [],
-              follower: [],
-              following: [],
-              reTweet: [],
-            });
+            if (createUser?.email) {
+              await setDoc(doc(usersRef, `${createUser?.email}`), {
+                uid: createUser.uid,
+                displayName: createUser.email.split("@")[0],
+                email: createUser.email,
+                photoURL: PROFILE_DEFAULT_URL,
+                createdAtId: Date.now(),
+                description: "",
+                bgURL: PROFILE_BG_URL,
+                bookmark: [],
+                followerAt: [],
+                followingAt: [],
+                follower: [],
+                following: [],
+                reTweet: [],
+              });
+            }
+
             dispatch(setLoginToken("login"));
             dispatch(
               setCurrentUser({
@@ -106,16 +116,15 @@ export default function AuthForm({ newAccount }: AuthProps) {
             );
           }
         );
+        navigate("/");
+        toast.success(t("SUCCESS_SIGNIN_TOAST"));
       }
-      navigate("/");
-      toast.success(t("SUCCESS_SIGNIN_TOAST"));
     } catch (error: any) {
-      console.log("error", error, error.message);
       const errorKey = Object.keys(errorMessages).find((key) =>
         error.message.includes(key)
       );
       const errorMessage = errorKey ? errorMessages[errorKey] : error.message;
-      toast?.error(errorMessage);
+      toast.error(errorMessage);
     }
   };
 

@@ -14,16 +14,13 @@ export default function NotificationReTweet({ reTweetsObj, userObj }: any) {
 
   // 정보 가져오기
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      doc(db, "Users", reTweetsObj?.email),
-      (doc) => {
+    if (reTweetsObj?.email) {
+      onSnapshot(doc(db, "Users", `${reTweetsObj?.email}`), (doc) => {
         setCreatorInfo(doc.data());
         setLoading(true);
-      }
-    );
-
-    return () => unsubscribe();
-  }, [reTweetsObj, userObj.email]);
+      });
+    }
+  }, [reTweetsObj?.email]);
 
   // 트윗 가져오기
   useEffect(() => {

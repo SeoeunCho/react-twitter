@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ProfileLikeTweets from "./ProfileLikeTweets";
 import ProfileLikeReplies from "./ProfileLikeReplies";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
-import { Link } from "react-router-dom";
 
 export default function ProfileLikeBox({ userObj }: any) {
   const location = useLocation();
@@ -16,9 +15,13 @@ export default function ProfileLikeBox({ userObj }: any) {
     if (location.pathname.includes("/user/")) {
       if (selected === 1) {
         navigate(`/user/liketweets/${uid}`);
-        navigate(`/profile/liketweets/${uid}`);
       } else {
         navigate(`/user/likereplies/${uid}`);
+      }
+    } else {
+      if (selected === 1) {
+        navigate(`/profile/liketweets/${uid}`);
+      } else {
         navigate(`/profile/likereplies/${uid}`);
       }
     }

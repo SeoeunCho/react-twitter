@@ -15,16 +15,17 @@ export default function NotificationFollow({ followObj }: any) {
 
   // 팔로워 정보 가져오기
   useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "Users", followObj.email), (doc) => {
-      setCreatorInfo(doc.data());
-      setLoading(true);
-    });
+    if (followObj?.email) {
+      onSnapshot(doc(db, "Users", `${followObj.email}`), (doc) => {
+        setCreatorInfo(doc.data());
+        setLoading(true);
+      });
+    }
 
     return () => {
-      unsubscribe();
       setLoading(false);
     };
-  }, [followObj]);
+  }, [followObj.email]);
 
   return (
     <>

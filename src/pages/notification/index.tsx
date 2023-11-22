@@ -1,6 +1,6 @@
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { db } from "firebaseApp";
 import Header from "components/header";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
@@ -9,7 +9,6 @@ import useGetFbInfo from "hooks/useGetFbInfo";
 import NotificationReTweet from "components/notification/NotificationReTweet";
 import NotificationReply from "components/notification/NotificationReply";
 import NotificationFollow from "components/notification/NotificationFollow";
-import { Link } from "react-router-dom";
 import useTranslation from "hooks/useTranslation";
 
 export default function NotificationPage({ userObj }: any) {

@@ -13,12 +13,13 @@ const DetailTweetReply = ({ tweetObj, userObj, reTweetsObj }: any) => {
 
   //  map 처리 된 유저 정보들
   useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "Users", tweetObj.email), (doc) => {
-      setCreatorInfo(doc.data());
-      setLoading(true);
-    });
-    return () => unsubscribe();
-  }, [tweetObj]);
+    if (tweetObj?.email) {
+      onSnapshot(doc(db, "Users", `${tweetObj.email}`), (doc) => {
+        setCreatorInfo(doc.data());
+        setLoading(true);
+      });
+    }
+  }, [tweetObj.email]);
 
   const { reTweet, setReTweet, toggleReTweet } = useToggleRepliesRetweet({
     reTweetsObj,

@@ -19,15 +19,19 @@ export const useToggleFollow = (myInfo: any) => {
         (follow: any) => follow.email !== myInfo.email
       );
 
-      const updateMyInfo = () =>
-        updateDoc(doc(db, "Users", myInfo.email), {
-          following: followCopyFilter,
-        });
+      const updateMyInfo = () => {
+        if (myInfo?.email)
+          updateDoc(doc(db, "Users", `${myInfo.email}`), {
+            following: followCopyFilter,
+          });
+      };
 
-      const updateUserInfo = () =>
-        updateDoc(doc(db, "Users", userInfo.email), {
-          follower: followerCopyFilter,
-        });
+      const updateUserInfo = () => {
+        if (userInfo?.email)
+          updateDoc(doc(db, "Users", `${userInfo.email}`), {
+            follower: followerCopyFilter,
+          });
+      };
 
       await Promise.all([updateMyInfo(), updateUserInfo()]).then(() => {
         dispatch(
@@ -40,20 +44,25 @@ export const useToggleFollow = (myInfo: any) => {
     } else {
       const time = Date.now();
 
-      const updateMyInfo = () =>
-        updateDoc(doc(db, "Users", myInfo.email), {
-          following: [
-            ...myInfo.following,
-            { email: userInfo.email, followAt: time },
-          ],
-        });
-      const updateUserInfo = () =>
-        updateDoc(doc(db, "Users", userInfo.email), {
-          follower: [
-            ...userInfo.follower,
-            { email: myInfo.email, followAt: time },
-          ],
-        });
+      const updateMyInfo = () => {
+        if (myInfo?.email)
+          updateDoc(doc(db, "Users", `${myInfo.email}`), {
+            following: [
+              ...myInfo.following,
+              { email: userInfo.email, followAt: time },
+            ],
+          });
+      };
+
+      const updateUserInfo = () => {
+        if (userInfo?.email)
+          updateDoc(doc(db, "Users", `${userInfo.email}`), {
+            follower: [
+              ...userInfo.follower,
+              { email: myInfo.email, followAt: time },
+            ],
+          });
+      };
 
       await Promise.all([updateMyInfo(), updateUserInfo()]).then(() => {
         dispatch(

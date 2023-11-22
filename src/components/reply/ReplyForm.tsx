@@ -39,6 +39,8 @@ export default function ReplyForm({
   const [progressBarCount, setProgressBarCount] = useState<number>(0);
   const [imageUrl, setImageUrl] = useState<string | null>("");
   const [select, setSelect] = useState<string>("");
+  const [hashTag, setHashTag] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
   const fileInput = useRef<any>();
   const textRef = useRef<any>();
   const emojiRef = useRef<any>();
@@ -52,21 +54,18 @@ export default function ReplyForm({
   const t = useTranslation();
   const language = useRecoilState(languageState);
 
-  const truncate = (str: string) => {
-    return str?.length > 10 ? str?.substring(0, 10) + "..." : str;
-  };
-
   const onSubmit = async (e: any) => {
     e.preventDefault();
     setProgressBarCount(0); // 프로그레스 바 초기화
     let imageUrl = "";
+    const imgUid = uuidv4();
 
     // 입력 값 없을 시 업로드 X
     if (reply !== "") {
       // 이미지 있을 때만 첨부
       if (imageUrl !== "") {
         //파일 경로 참조 만들기
-        const key = `${userObj?.uid}/${uuidv4()}`;
+        const key = `${userObj?.uid}/${imgUid}`;
         const storageRef = ref(storage, key);
 
         //storage 참조 경로로 파일 업로드 하기
@@ -90,6 +89,8 @@ export default function ReplyForm({
         replyId: [],
         reTweetEmail: [],
         isReply: true,
+        imgUid: imageUrl ? imgUid : "",
+        hashTags: tags,
       };
 
       /* 하위 컬렉션 생성하기
@@ -106,6 +107,8 @@ export default function ReplyForm({
           .then(() => {
             toast.success(t("ADD_REPLY_TOAST"));
             setReply("");
+            setTags([]);
+            setHashTag("");
             setSelect("");
             setImageUrl("");
             setProgressBarCount(0); // 프로그레스 바 초기화
@@ -193,6 +196,27 @@ export default function ReplyForm({
     fileInput.current.value = ""; // 취소 시 파일 문구 없애기
   };
 
+  const removeTag = (tag: string) => {
+    setTags(tags?.filter((val) => val !== tag));
+  };
+
+  const onChangeHashTag = (e: any) => {
+    setHashTag(e?.target?.value.trim());
+  };
+
+  const handleKeyUp = (e: any) => {
+    if (e.keyCode === 32 && e.target.value.trim() !== "") {
+      // 만약 같은 태그가 있다면 에러를 띄운다
+      // 태그를 생성해준다
+      if (tags?.includes(e.target.value?.trim())) {
+        toast.error(t("SAME_TAG_TOAST"));
+      } else {
+        setTags((prev) => (prev?.length > 0 ? [...prev, hashTag] : [hashTag]));
+        setHashTag("");
+      }
+    }
+  };
+
   const goPage = () => {
     navigate("/profile/mytweets/" + tweetObj.email);
   };
@@ -253,30 +277,43 @@ export default function ReplyForm({
                 maxLength={280}
                 placeholder={t("REPLY_PLACEHOLDER")}
               />
-              {imageUrl && (
-                <div className={styled.replyForm__attachment}>
-                  <div className={styled.replyForm__Image}>
-                    <img
-                      src={imageUrl}
-                      alt="upload file"
-                      style={{
-                        backgroundImage: imageUrl,
-                      }}
-                    />
-                  </div>
-                  <div
-                    className={styled.replyForm__clear}
-                    onClick={handleDeleteImage}
-                  >
-                    <IoCloseSharp />
-                  </div>
-                </div>
-              )}
+
+              {/* 해쉬태그 */}
+              <div
+                className={`${styled.replyInput__hashtags} ${
+                  select === "hashtag" && styled.focus
+                }`}
+              >
+                {tags.length !== 0 ? (
+                  <span className={styled.replyInput__hashtags_outputs}>
+                    {tags?.map((tag, index) => (
+                      <span
+                        className={styled.replyInput__hashtags_tag}
+                        key={index}
+                        onClick={() => removeTag(tag)}
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </span>
+                ) : null}
+                <input
+                  className={styled.replyInput__hashtags_input}
+                  name="hashtag"
+                  id="hashtag"
+                  placeholder={t("TWEET_HASHTAG")}
+                  onChange={onChangeHashTag}
+                  onKeyUp={handleKeyUp}
+                  value={hashTag}
+                  onFocus={() => setSelect("hashtag")}
+                  onBlur={() => setSelect("")}
+                />
+              </div>
             </div>
             <div className={styled.replyInput__add}>
               <div className={styled.replyInput__iconBox}>
                 <label
-                  htmlFor="reply-attach-file"
+                  htmlFor="modal-attach-file"
                   className={styled.replyInput__label}
                 >
                   <div className={styled.replyInput__icon}>
@@ -285,7 +322,7 @@ export default function ReplyForm({
                 </label>
                 <input
                   ref={fileInput}
-                  id="reply-attach-file"
+                  id="modal-attach-file"
                   type="file"
                   accept="image/*"
                   onChange={handleFileUpload}
@@ -319,6 +356,26 @@ export default function ReplyForm({
                 disabled={reply === "" && imageUrl === ""}
               />
             </div>
+            {/* 이미지 컨텐츠 */}
+            {imageUrl && (
+              <div className={styled.replyForm__attachment}>
+                <div className={styled.replyForm__Image}>
+                  <img
+                    src={imageUrl}
+                    alt="upload file"
+                    style={{
+                      backgroundImage: imageUrl,
+                    }}
+                  />
+                </div>
+                <div
+                  className={styled.replyForm__clear}
+                  onClick={handleDeleteImage}
+                >
+                  <IoCloseSharp />
+                </div>
+              </div>
+            )}
           </form>
         </div>
       </div>

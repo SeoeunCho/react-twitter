@@ -152,76 +152,8 @@
   font-size: 12px;
 }
 
-/* 컨텐츠 */
-.tweet__content {
-  display: block;
-  // cursor: pointer;
-
-  &.detailTweet {
-    cursor: auto;
-  }
-
-  .tweet__text {
-    /* 텍스트 */
-    h4 {
-      margin-bottom: 10px;
-    }
-
-    /* 해쉬태그 */
-    &__hashtags {
-      padding-top: 5px;
-
-      &.focus input::placeholder {
-        opacity: 0.6;
-        transition: all 0.2s;
-      }
-
-      &_outputs {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px 1px;
-        align-items: center;
-        margin-bottom: 8px;
-      }
-
-      &_tag {
-        font-size: 12px;
-        border: 1px solid var(--primary);
-        color: var(--primary);
-        border-radius: 10px;
-        padding: 4px 8px;
-        margin-right: 6px;
-        line-height: 12px;
-        cursor: pointer;
-
-        &:hover,
-        &:focus {
-          color: var(--primary);
-          border: 1px solid var(--primary);
-        }
-      }
-
-      &_input {
-        font-size: 14px;
-        padding-bottom: 5px;
-        padding-left: 5px;
-        color: var(--primary);
-        width: 100%;
-
-        &::placeholder {
-          color: var(--secondary);
-        }
-
-        &:focus {
-          color: var(--primary);
-        }
-      }
-    }
-  }
-}
-
-/* 텍스트 */
-.tweet__text {
+/* 해쉬태그 */
+.tweet__hashtags {
   font-size: 14px;
   padding: 0 16px;
   margin: 12px 0;
@@ -229,11 +161,65 @@
   height: auto;
   white-space: pre-wrap;
   line-height: 24px;
+
+  h4 {
+    margin-bottom: 10px;
+  }
+
+  &_box {
+    padding: 5px 0;
+
+    &.focus input::placeholder {
+      opacity: 0.6;
+      transition: all 0.2s;
+    }
+
+    &_input {
+      font-size: 14px;
+      padding-bottom: 5px;
+      padding-left: 5px;
+      color: var(--primary);
+      width: 100%;
+
+      &::placeholder {
+        color: var(--secondary);
+      }
+
+      &:focus {
+        color: var(--primary);
+      }
+    }
+  }
+
+  &_outputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 1px;
+    align-items: center;
+    // margin-bottom: 8px;
+  }
+
+  &_tag {
+    font-size: 12px;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    border-radius: 10px;
+    padding: 4px 8px;
+    margin-right: 6px;
+    line-height: 12px;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+  }
 }
 
 /* 이미지 */
 .tweet__image {
-  // cursor: pointer;
+  cursor: pointer;
   width: 100%;
   height: 100%;
   display: flex;

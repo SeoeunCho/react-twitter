@@ -19,7 +19,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 
 interface RouterProps {
   isAuthenticated: boolean;
-  userObj: any;
+  userObj: any | null;
 }
 
 export default function Router({ isAuthenticated, userObj }: RouterProps) {
