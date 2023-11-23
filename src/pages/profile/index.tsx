@@ -20,9 +20,9 @@ import CircleLoader from "components/loader/CircleLoader";
 import EditProfileModal from "components/modal/EditProfileModal";
 import useTranslation from "hooks/useTranslation";
 import { useRecoilState } from "recoil";
-import { UserObjProps } from "pages/Router";
+// import { UserObjProps } from "pages/Router";
 
-export default function Profile({ userObj }: UserObjProps) {
+export default function Profile({ userObj }: any) {
   const [creatorInfo, setCreatorInfo] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [myTweets, setMyTweets] = useState<any>([]);
@@ -76,7 +76,7 @@ export default function Profile({ userObj }: UserObjProps) {
     const selectedValue = paths[pathname.split("/")[2]];
 
     setSelected(selectedValue);
-  }, [pathname, userObj?.email]);
+  }, [pathname, userObj.email]);
 
   // 필터링 방법 (본인이 작성한 것 확인)
   useEffect(() => {
@@ -139,7 +139,7 @@ export default function Profile({ userObj }: UserObjProps) {
                             />
                           </div>
 
-                          {userObj?.email === userEmail ? (
+                          {userObj.email === userEmail ? (
                             <>
                               <div
                                 className={styled.profile__editBtn}

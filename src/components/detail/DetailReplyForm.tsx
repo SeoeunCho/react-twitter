@@ -65,14 +65,14 @@ export default function DetailReplyForm({
       const tweetReply = {
         text: reply,
         createdAt: Date.now(),
-        creatorId: userObj?.uid,
-        email: userObj?.email,
+        creatorId: userObj.uid,
+        email: userObj.email,
         attachmentUrl,
         like: [],
         reTweet: [],
         reTweetAt: [],
-        parent: tweetObj?.id,
-        parentEmail: tweetObj?.email,
+        parent: tweetObj.id,
+        parentEmail: tweetObj.email,
         replyId: [],
         reTweetEmail: [],
         isReply: true,
@@ -82,7 +82,7 @@ export default function DetailReplyForm({
 
       const addReply = async () => {
         const replies = await addDoc(collection(db, "Replies"), tweetReply);
-        await updateDoc(doc(db, "Tweets", tweetObj?.id), {
+        await updateDoc(doc(db, "Tweets", tweetObj.id), {
           replyId: [...tweetObj?.replyId, replies.id],
         });
 
@@ -183,7 +183,7 @@ export default function DetailReplyForm({
 
   const goPage = (e: any) => {
     e.stopPropagation();
-    navigate("/profile/mytweets/" + tweetObj?.email);
+    navigate("/profile/mytweets/" + tweetObj.email);
   };
 
   const onEmojiClick = (event: any) => {

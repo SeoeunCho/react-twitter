@@ -1,24 +1,24 @@
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "firebaseApp";
-import { UserProps } from "App";
 import useTranslation from "hooks/useTranslation";
 import TweetListPage from "components/tweets/TweetListPage";
-import { TweetProps } from "pages/home";
+// import { TweetProps } from "pages/home";
+// import { UserObjProps } from "pages/Router";
 
-export interface BookmarkProps {
-  creatorInfo: any;
-  reTweetsObj: any;
-  userObj: UserProps;
-  loading: boolean;
-}
+// export interface BookmarkProps {
+//   creatorInfo: any;
+//   reTweetsObj: any;
+//   userObj: UserObjProps;
+//   loading: boolean;
+// }
 
 export default function BookmarkTweets({
   creatorInfo,
   reTweetsObj,
   userObj,
-}: BookmarkProps) {
-  const [tweetBookmark, setTweetBookmark] = useState<TweetProps[]>([]);
+}: any) {
+  const [tweetBookmark, setTweetBookmark] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const t = useTranslation();
 
@@ -33,7 +33,7 @@ export default function BookmarkTweets({
       const filter = userArray.filter((id) =>
         creatorInfo.bookmark?.includes(id.id)
       );
-      setTweetBookmark(filter as TweetProps[]);
+      setTweetBookmark(filter);
       setLoading(true);
     });
   }, [creatorInfo.bookmark]);

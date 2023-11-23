@@ -15,7 +15,7 @@ import styled from "./TweetEditDeleteBtn.module.scss";
 import { db, storage } from "firebaseApp";
 import useTranslation from "hooks/useTranslation";
 import { toast } from "react-toastify";
-import { ReTweetProps, TweetProps } from "pages/home";
+// import { ReTweetProps, TweetProps } from "pages/home";
 
 export default function TweetEditDeleteBtn({
   tweetAttachment,
@@ -25,8 +25,8 @@ export default function TweetEditDeleteBtn({
 }: any) {
   // tweets는 원글 정보 , tweetObj는 답글 정보
   const currentUser = useSelector((state: any) => state.user.currentUser);
-  const [tweets, setTweets] = useState<TweetProps | null>(null);
-  const [reTweets, setReTweets] = useState<ReTweetProps | null>(null);
+  const [tweets, setTweets] = useState<any>(null);
+  const [reTweets, setReTweets] = useState<any>(null);
   const [replies, setReplies] = useState<any>("");
   const dispatch = useDispatch();
   const dbRef = doc(db, "Tweets", `${tweetObj.id}`);
@@ -47,7 +47,7 @@ export default function TweetEditDeleteBtn({
         asd?.replyId?.includes(tweetObj.id)
       );
 
-      setTweets(filter[0] as TweetProps);
+      setTweets(filter[0]);
     });
   }, [tweetObj.id]);
 
@@ -81,7 +81,7 @@ export default function TweetEditDeleteBtn({
         (reTweet: any) => reTweet.parentEmail === currentUser.email
       );
 
-      setReTweets(reTweetArray[filter] as ReTweetProps);
+      setReTweets(reTweetArray[filter]);
     });
   }, [currentUser.email]);
 

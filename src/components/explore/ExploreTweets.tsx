@@ -4,10 +4,10 @@ import CircleLoader from "../loader/CircleLoader";
 import useGetFbInfo from "../../hooks/useGetFbInfo";
 import TweetListPage from "components/tweets/TweetListPage";
 import { db } from "firebaseApp";
-import { TweetProps } from "pages/home";
+// import { TweetProps } from "pages/home";
 
 export default function ExploreTweets({ userObj }: any) {
-  const [tweets, setTweets] = useState<TweetProps[]>([]);
+  const [tweets, setTweets] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { reTweets } = useGetFbInfo();
 
@@ -22,7 +22,7 @@ export default function ExploreTweets({ userObj }: any) {
         id: doc.id,
         ...doc.data(),
       }));
-      setTweets(tweetArray as TweetProps[]);
+      setTweets(tweetArray);
       setLoading(true);
     });
 

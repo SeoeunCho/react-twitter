@@ -4,9 +4,9 @@ import SearchBar from "components/searchBar/SearchBar";
 import TabMenuBtn from "components/buttons/TabMenuBtn";
 import ExploreTweets from "components/explore/ExploreTweets";
 import ExploreUsers from "components/explore/ExploreUsers";
-import { UserObjProps } from "pages/Router";
+// import { UserObjProps } from "pages/Router";
 
-export default function ExplorePage({ userObj }: UserObjProps) {
+export default function ExplorePage({ userObj }: any) {
   const [selected, setSelected] = useState<number>(1);
   
   const location = useLocation();

@@ -18,8 +18,8 @@ import { BsReplyFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { languageState } from "atom";
 import { useRecoilState } from "recoil";
-import { TweetProps } from "pages/home";
-import { UserObjProps } from "pages/Router";
+// import { TweetProps } from "pages/home";
+// import { UserObjProps } from "pages/Router";
 import imageCompression from "browser-image-compression";
 import useGetFbInfo from "hooks/useGetFbInfo";
 

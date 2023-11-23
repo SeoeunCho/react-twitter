@@ -10,13 +10,13 @@ import NotificationReTweet from "components/notification/NotificationReTweet";
 import NotificationReply from "components/notification/NotificationReply";
 import NotificationFollow from "components/notification/NotificationFollow";
 import useTranslation from "hooks/useTranslation";
-import { UserObjProps } from "pages/Router";
-import { ReTweetProps } from "pages/home";
+// import { UserObjProps } from "pages/Router";
+// import { ReTweetProps } from "pages/home";
 
-export default function NotificationPage({ userObj }: UserObjProps) {
+export default function NotificationPage({ userObj }: any) {
   const [selected, setSelected] = useState<number>(1);
   const [reTweets, setReTweets] = useState<any>([]);
-  const [replies, setReplies] = useState([]);
+  const [replies, setReplies] = useState<any>([]);
 
   const [loading, setLoading] = useState({
     reTweets: false,
@@ -54,9 +54,9 @@ export default function NotificationPage({ userObj }: UserObjProps) {
 
       const filter = reTweetArray.filter(
         (obj: any) =>
-          obj.email !== userObj?.email &&
+          obj.email !== userObj.email &&
           (obj?.replyEmail ? obj?.replyEmail : obj?.parentEmail) ===
-            userObj?.email
+            userObj.email
       );
 
       setReTweets(filter);
@@ -64,7 +64,7 @@ export default function NotificationPage({ userObj }: UserObjProps) {
     });
 
     return () => unsubscribe();
-  }, [userObj?.email]);
+  }, [userObj.email]);
 
   // 답글 가져오기
   useEffect(() => {
@@ -79,10 +79,10 @@ export default function NotificationPage({ userObj }: UserObjProps) {
       }));
 
       const filter = userArray.filter(
-        (id: any) => id.parentEmail === userObj?.email
+        (id: any) => id.parentEmail === userObj.email
       );
-      const notMe: any = filter.filter(
-        (obj: any) => obj.email !== userObj?.email
+      const notMe = filter.filter(
+        (obj: any) => obj.email !== userObj.email
       );
 
       setReplies(notMe);
@@ -90,7 +90,7 @@ export default function NotificationPage({ userObj }: UserObjProps) {
     });
 
     return () => unsubscribe();
-  }, [userObj?.email]);
+  }, [userObj.email]);
 
   useEffect(() => {
     if (location.pathname.includes("/retweets")) {
@@ -134,7 +134,7 @@ export default function NotificationPage({ userObj }: UserObjProps) {
             {loading.reTweets ? (
               <>
                 {reTweets.length !== 0 ? (
-                  reTweets?.map((reTweet: ReTweetProps) => (
+                  reTweets?.map((reTweet: any) => (
                     <NotificationReTweet
                       key={reTweet.id}
                       reTweetsObj={reTweet}

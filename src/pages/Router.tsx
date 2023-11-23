@@ -15,7 +15,7 @@ import { UserProps } from "App";
 
 export interface UserObjProps {
   isAuthenticated?: boolean;
-  userObj: UserProps;
+  userObj: any | null;
 }
 
 export default function Router({ isAuthenticated, userObj }: UserObjProps) {
@@ -28,7 +28,7 @@ export default function Router({ isAuthenticated, userObj }: UserObjProps) {
           <LeftMenu userObj={userObj} />
           <div className="center__container">
             <Routes>
-              <Route path="/" element={<HomePage userObj={userObj} />} />
+              <Route path="/*" element={<HomePage userObj={userObj} />} />
               <Route
                 path="/explore/*"
                 element={<ExplorePage userObj={userObj} />}
@@ -57,7 +57,7 @@ export default function Router({ isAuthenticated, userObj }: UserObjProps) {
               {/* <Route path="*" element={<NotFound />} /> */}
             </Routes>
           </div>
-          <RightMenu userObj={userObj} />
+          <RightMenu />
         </div>
       ) : (
         <Routes>

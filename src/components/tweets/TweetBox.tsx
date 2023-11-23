@@ -1,4 +1,4 @@
-import { TweetProps } from "pages/home";
+// import { TweetProps } from "pages/home";
 import { useEffect, useRef, useState } from "react";
 import {
   FaRegComment,
@@ -22,23 +22,22 @@ import { useToggleBookmark } from "hooks/useToggleBookmark";
 import useToggleLike from "hooks/useToggleLike";
 import useTranslation from "hooks/useTranslation";
 import useHandleOutsideClick from "hooks/useHandleOutsideClick";
-import { UserObjProps } from "pages/Router";
+// import { UserObjProps } from "pages/Router";
 
-// import { UserProps } from "Router";
 
 const PROFILE_DEFAULT_URL = "/noneProfile.jpg";
 
-interface TweetBoxProps {
-  loading: boolean;
-  userObj: UserObjProps;
-  tweetObj: TweetProps;
-  creatorInfo: any;
-  reTweetsObj: any;
-  reTweet: string;
-  setReTweet: string;
-  toggleReTweet: boolean;
-  isOwner: boolean;
-}
+// interface TweetBoxProps {
+//   loading: boolean;
+//   userObj: UserObjProps;
+//   tweetObj: TweetProps;
+//   creatorInfo: any;
+//   reTweetsObj: any;
+//   reTweet: string;
+//   setReTweet: string;
+//   toggleReTweet: boolean;
+//   isOwner: boolean;
+// }
 
 export default function TweetBox({
   loading,
@@ -51,21 +50,17 @@ export default function TweetBox({
   toggleReTweet,
   isOwner,
 }: any) {
-  // const [creatorInfo, setCreatorInfo] = useState<any>({});
+  const editRef = useRef<HTMLDivElement>(null);
   const [tweetEditDelBtn, setTweetEditDelBtn] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-
   const [replyModal, setReplyModal] = useState<boolean>(false);
-  // const [detailTweet, setDetailTweet] = useState<boolean>(false);
   const [newTweet, setNewTweet] = useState(tweetObj.text); // Modal 취소 후 다시 수정 시 내용 남게
-  const location = useLocation();
-  const { pathname } = useLocation();
+  
   const language = useRecoilState(languageState);
   const currentUser = useSelector((state: any) => state.user.currentUser);
 
+  const { pathname } = useLocation();
   const navigate = useNavigate();
-  // const imageRef = ref(storage, tweet?.imageUrl);
-  const editRef = useRef<HTMLDivElement>(null);
   const t = useTranslation();
 
   // 커스텀 훅

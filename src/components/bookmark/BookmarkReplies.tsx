@@ -3,15 +3,15 @@ import { useEffect, useState } from "react";
 import { db } from "firebaseApp";
 import TweetListPage from "components/tweets/TweetListPage";
 import useTranslation from "hooks/useTranslation";
-import { BookmarkProps } from "./BookmarkTweets";
-import { RepliesProps } from "pages/home";
+// import { BookmarkProps } from "./BookmarkTweets";
+// import { RepliesProps } from "pages/home";
 
 export default function BookmarkReplies({
   creatorInfo,
   reTweetsObj,
   userObj,
-}: BookmarkProps) {
-  const [repliesBookmark, setRepliesBookmark] = useState<RepliesProps[]>([]);
+}: any) {
+  const [repliesBookmark, setRepliesBookmark] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const t = useTranslation();
 
@@ -26,7 +26,7 @@ export default function BookmarkReplies({
       const filter = userArray.filter((id) =>
         creatorInfo.bookmark?.includes(id.id)
       );
-      setRepliesBookmark(filter as RepliesProps[]);
+      setRepliesBookmark(filter);
       setLoading(true);
     });
   }, [creatorInfo.bookmark]);

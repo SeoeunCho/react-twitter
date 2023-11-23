@@ -8,9 +8,9 @@ import { useSelector } from "react-redux";
 import { db } from "firebaseApp";
 import Header from "components/header";
 import BarLoader from "components/loader/BarLoader";
-import { UserObjProps } from "pages/Router";
+// import { UserObjProps } from "pages/Router";
 
-export default function DetailTweet({ userObj }: UserObjProps) {
+export default function DetailTweet({ userObj }: any) {
   const currentProgressBar = useSelector((state: any) => state.user.load);
   const currentNotModal = useSelector((state: any) => state.user.modal);
   const [tweets, setTweets] = useState<any>([]);
@@ -37,7 +37,7 @@ export default function DetailTweet({ userObj }: UserObjProps) {
     });
 
     return () => unsubscribe();
-  }, [userObj?.email]);
+  }, [userObj.email]);
 
   // 원글 정보 가져오기
   useEffect(() => {

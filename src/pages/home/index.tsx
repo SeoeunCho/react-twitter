@@ -8,62 +8,62 @@ import TweetForm from "components/tweets/TweetForm";
 import TweetListPage from "components/tweets/TweetListPage";
 import CircleLoader from "components/loader/CircleLoader";
 import useTranslation from "hooks/useTranslation";
-import { UserObjProps } from "pages/Router";
+// import { UserObjProps } from "pages/Router";
 
-export interface ActionProps {
-  email: string;
-  likeAt?: number;
-  reTweetAt?: number;
-}
+// export interface ActionProps {
+//   email: string;
+//   likeAt?: number;
+//   reTweetAt?: number;
+// }
 
-export interface TweetProps {
-  id: string;
-  attachmentUrl?: string;
-  createdAt: number;
-  creatorId?: string;
-  email: string;
-  hashTags?: string[];
-  imgUid?: string;
-  like?: ActionProps[];
-  reTweet?: ActionProps[];
-  replyId?: string[];
-  text: string;
-}
+// export interface TweetProps {
+//   id: string;
+//   attachmentUrl?: string;
+//   createdAt: number;
+//   creatorId?: string;
+//   email: string;
+//   hashTags?: string[];
+//   imgUid?: string;
+//   like?: ActionProps[];
+//   reTweet?: ActionProps[];
+//   replyId?: string[];
+//   text: string;
+// }
 
-export interface ReTweetProps {
-  id: string;
-  creatorId: string;
-  email: string;
-  like?: ActionProps[];
-  parent: string;
-  parentEmail: string;
-  reTweetAt: number;
-  reTweetEmail: string;
-  replyId: string;
-  text: string;
-}
+// export interface ReTweetProps {
+//   id: string;
+//   creatorId: string;
+//   email: string;
+//   like?: ActionProps[];
+//   parent: string;
+//   parentEmail: string;
+//   reTweetAt: number;
+//   reTweetEmail: string;
+//   replyId: string;
+//   text: string;
+// }
 
-export interface RepliesProps {
-  id: string;
-  attachmentUrl?: string;
-  createdAt: number;
-  creatorId?: string;
-  email: string;
-  hashTags?: string[];
-  imgUid?: string;
-  isReply: boolean;
-  like?: ActionProps[];
-  parent: string;
-  parentEmail: string;
-  reTweet?: ActionProps[];
-  reTweetAt?: ActionProps[];
-  replyId?: string[];
-  text: string;
-}
+// export interface RepliesProps {
+//   id: string;
+//   attachmentUrl?: string;
+//   createdAt: number;
+//   creatorId?: string;
+//   email: string;
+//   hashTags?: string[];
+//   imgUid?: string;
+//   isReply: boolean;
+//   like?: ActionProps[];
+//   parent: string;
+//   parentEmail: string;
+//   reTweet?: ActionProps[];
+//   reTweetAt?: ActionProps[];
+//   replyId?: string[];
+//   text: string;
+// }
 
-export default function HomePage({ userObj }: UserObjProps) {
-  const [tweets, setTweets] = useState<TweetProps[]>([]);
-  const [reTweets, setReTweets] = useState<ReTweetProps[]>([]);
+export default function HomePage({ userObj }: any) {
+  const [tweets, setTweets] = useState<any>([]);
+  const [reTweets, setReTweets] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
@@ -84,7 +84,7 @@ export default function HomePage({ userObj }: UserObjProps) {
         ...doc.data(),
       }));
 
-      setTweets(tweetArray as TweetProps[]);
+      setTweets(tweetArray);
 
       if (tweetArray) {
         setLoading(true);
@@ -94,7 +94,7 @@ export default function HomePage({ userObj }: UserObjProps) {
     });
 
     return () => unsubscribe();
-  }, [tweets]);
+  }, []);
 
   // 리트윗 정보
   useEffect(() => {
@@ -106,11 +106,11 @@ export default function HomePage({ userObj }: UserObjProps) {
         ...doc.data(),
       }));
 
-      setReTweets(reTweetArray as ReTweetProps[]);
+      setReTweets(reTweetArray);
     });
 
     return () => unsubscribe();
-  }, [reTweets]);
+  }, []);
 
   return (
     <>
@@ -120,7 +120,7 @@ export default function HomePage({ userObj }: UserObjProps) {
           {loading && <TweetForm userObj={userObj} />}
           <ul>
             {tweets?.length > 0 ? (
-              tweets?.map((tweet: TweetProps) => (
+              tweets?.map((tweet: any) => (
                 <TweetListPage
                   key={tweet.id}
                   tweetObj={tweet}
