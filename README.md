@@ -1,7 +1,7 @@
 # 🐦 React 트위터 앱
 ![image](https://github.com/SeoeunCho/react-twitter/blob/main/src/preview/react-twitter_preview.gif)
 
-> 👉 [사이트 바로가기](https://seoeuncho-twitter.vercel.app/)<br />
+> 👉 [사이트 바로가기](https://react-twitter-nine.vercel.app/)<br />
 > 작업 기간 : 15일
 
 <br />
