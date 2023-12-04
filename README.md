@@ -20,22 +20,22 @@
 ## 💡 학습
 
 - 웹 구조 : 반응형 웹
-- 스타일링 : SCSS(모바일 대응 스타일링)
-- 상태관리 : 대규모 프로젝트에 적합한 라이브러리 Recoil, Redux
+- 스타일링 : `SCSS`(모바일 대응 스타일링)
+- 상태관리 : 대규모 프로젝트에 적합한 라이브러리 `Recoil`, `Redux`
 - 라이브러리
   - [ **Uuid** ](https://yarnpkg.com/package?name=uuid) : 고유한 아이디를 만들어 이미지업로드시 파일명 중복 방지
   - [ **React-Icons** ](https://react-icons.github.io/react-icons/) : 아이콘 스타일링 구현
   - [ **React-Toastify** ](https://www.npmjs.com/package/react-toastify) : 토스트 알림 구현
   - [ **Emoji-Picket-React** ](https://www.npmjs.com/package/emoji-picker-react) : 이모지 입력창 구현
   - [ **Browser-Image-Compression** ](https://www.npmjs.com/package/browser-image-compression) : 이미지 압축
-- 프론트엔드 관련 : React, TypeScript
-- 백엔드 관련 : Firebase를 이용한 구글/깃허브 로그인, 보안, 통신 및 실시간 데이터 업데이트
+- 프론트엔드 관련 : `React`, `TypeScript`
+- 백엔드 관련 : `Firebase`를 이용한 구글/깃허브 로그인, 보안, 통신 및 실시간 데이터 업데이트
   - [ **Firebase** ](https://firebase.google.com/?hl=ko)에서 프로젝트 생성 필요
   - [ **Firebase Authentication** ](https://firebase.google.com/products/auth?hl=ko)에서 사용자 인증 시작하기
   - [ **Firebase OAuth** ](https://firebase.google.com/docs/auth/web/google-signin?hl=ko)을 참고해 SNS 로그인 구현
   - [ **Firestore** ](https://firebase.google.com/docs/firestore)를 사용해 데이터 생성 및 실시간 데이터 업데이트
   - [ **Firestore 기본 보안 규칙** ](https://firebase.google.com/docs/rules/basics?hl=ko&authuser=0)를 참고해 API키 보안 작업
-- 배포 방식: 단순배포(Vercel)
+- 배포 방식: `Vercel`(단순배포)
 
 <br />
 
